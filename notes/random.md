@@ -17,7 +17,7 @@ I just learned about `fill-paragraph` and `auto-fill-mode`. Useful for
 textual files (`*.md`) and prog-mode files that don't have a different
 formatter (or whose formatters don't care about long lines).
 
-# binutils `-m` flag
+## binutils `-m` flag
 binutils is the package that supplies common build tools like `ld` and
 `objdump`. They have a funky way of specifying architectures known as
 [BFD](https://en.wikipedia.org/wiki/Binary_File_Descriptor_library). You
@@ -37,3 +37,26 @@ objdump's `-m` flag are different. E.g., you can specify `i386`,
 `i386`, but x64 is `i386:x86_64`, which doesn't make much sense to me.
 
 Well, not that I'm building it in 64-bit mode now.
+
+## gdb and lldb notes
+I'm able to do most of what I want to do (poking at registers and
+disassembly). There's also a `gui` command which gives you something
+like gdb's `layout` commands, and a `gdb-remote` command similar to
+gdb's remote targets. The commands feel less archaic than GDB's.
+
+I find that lldb chokes when I try to step one instruction for a `jmp
+.` instruction, while gdb works.
+
+### i8086 (real mode) support
+Currently GDB's `set architecture i8086` command to disassemble
+real-mode instructions [seems
+broken](https://sourceware.org/bugzilla/show_bug.cgi?id=22869). (I'm
+using GDB 14, seems broken at least as of GDB 8.) [This
+workaround](https://gitlab.com/qemu-project/qemu/-/issues/141#note_567553482)
+works though.
+
+This is better than lldb though, where I don't see i8086 support at
+all. In this case you'll need to `objdump` (if you just want to look
+at the disassembly) or just switch to gdb (if you need the disassembly
+to be correct for stepping). It doesn't seem that LLVM is popular for
+OSDev so I'll just accept this.
