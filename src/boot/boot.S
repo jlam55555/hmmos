@@ -1,29 +1,44 @@
 	## See /notes/boot.md
 	.code16
-	.text
-_start:
-	## Display char: http://www.ctyme.com/intr/rb-0106.htm
+	.section .text.boot
+
+	## NOCOMMIT
+	.global print
+	.global msg
+	.global done
+start:
+	## Clear registers.
+	mov $0, %ax		# accumulator
+	mov %ax, %bx		# base
+	mov %ax, %cx		# counter
+	mov %ax, %bp		# base pointer
+	mov %ax, %di		# destination
+	mov %ax, %si		# source
+	mov %ax, %dx		# data
+
+	## (For now, assume segments regs are zeroed.)
+
+	## Set stack just under the bootloader. We should have plenty
+	## of space there, since the BDA ends at 0x0500 (and the
+	## bootloader starts at 0x7C00).
+	mov $start, %sp
+
+	jmp c_entry
+
+print:	## Text to print is in %di. %ax gets clobbered.
+	## Similar to x86_64 fncall ABI.
 	mov $0x0E, %ah
-
-	## Print characters 0-255.
-	xor %al, %al
-loop1:
-	int $0x10
-	inc %al
-	jnz loop1
-
-	## Hello world.
-	mov $msg, %bp
-
-loop2:
-	mov (%bp), %al
+.loop:	mov (%di), %al
 	test %al, %al
-	jz .
+	jz .done
 	int $0x10
-	inc %bp
-	jmp loop2
+	inc %di
+	jmp .loop
+.done:	ret
 
-msg:	.asciz "Hello, world!"
+done:	hlt
+	jmp done
 
-	.skip 510 - (. - _start), 0
-	.byte 0x55, 0xAA
+	.section .rodata
+msg:	.asciz "Hello, world!\r\n"
+msg2:	.asciz "Second line\r\n"
