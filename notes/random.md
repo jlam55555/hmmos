@@ -60,3 +60,30 @@ all. In this case you'll need to `objdump` (if you just want to look
 at the disassembly) or just switch to gdb (if you need the disassembly
 to be correct for stepping). It doesn't seem that LLVM is popular for
 OSDev so I'll just accept this.
+
+### clang version support
+I originally started out this project on a laptop running arch linux,
+which currently has support for LLVM 17. I tried running this on a
+debian bullseye (11) laptop, which only supports LLVM 11. There were a
+lot of issues on the older version -- some of the cmdline arguments
+were different (for example, `ld.lld --oformat=binary --build_id=none`
+and `ld.lld --oformat=binary --build_id none` didn't work, but `ld.lld
+--oformat binary --build_id=none` did) and the linker simply did not
+put output sections in the right location.
+
+I thought about building LLVM 17 on my own but decided to try
+upgrading debian first. Upgrading to bullseye (12) gives me LLVM 14,
+which did pretty much work OOTB (save for the fact that we lose _some_
+features such as new-style `[[ attribute ]]`s).
+
+In terms of C++ support (which I care about, since I'm planning for
+the majority of the kernel to be written in C++), clang 14
+[supports](https://clang.llvm.org/cxx_status.html) the main features
+of C++17 and C++20 that I care about (C++17 structured bindings, C++17
+CTAD, and (most of) C++20 concepts).
+
+I don't currently plan to build my own cross-compiler for now since
+clang [inherently supports
+cross-compiling](https://stackoverflow.com/a/72254698), but maybe a
+need will arise in the future. For now enforcing clang >= 14 is good
+enough for this project.
