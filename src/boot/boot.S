@@ -1,44 +1,89 @@
-	## See /notes/boot.md
+	## Bootloader entry point. This needs to fit into the 512-byte
+	## boot sector (MBR). See /notes/boot.md.
 	.code16
 	.section .text.boot
 
-	## NOCOMMIT
-	.global print
-	.global msg
-	.global done
-start:
-	## Clear registers.
-	mov $0, %ax		# accumulator
-	mov %ax, %bx		# base
-	mov %ax, %cx		# counter
-	mov %ax, %bp		# base pointer
-	mov %ax, %di		# destination
-	mov %ax, %si		# source
-	mov %ax, %dx		# data
+	## This print should only be used in real mode.
+	.globl print
+	.globl done
+.Lmbr_start:
+	## Clear registers (except %sp). We don't really depend on the
+	## initial values of most of these GPRs (except %sp), so this
+	## isn't too necessary. But might as well.
+	xor %eax, %eax		# accumulator
+	xor %ebx, %ebx		# base
+	xor %ecx, %ecx		# counter
+	xor %ebp, %ebp		# base pointer
+	xor %edi, %edi		# destination
+	xor %esi, %esi		# source
+	xor %edx, %edx		# data
 
-	## (For now, assume segments regs are zeroed.)
-
+	## Clear segment registers.
+	mov %ax, %ds
+	mov %ax, %es
+	mov %ax, %ss
+	mov %ax, %fs
+	mov %ax, %gs
+	jmp $0x0, $.Lclear_cs	# Far jump to clear %cs.
+.Lclear_cs:
 	## Set stack just under the bootloader. We should have plenty
 	## of space there, since the BDA ends at 0x0500 (and the
 	## bootloader starts at 0x7C00).
-	mov $start, %sp
+	mov $.Lmbr_start, %sp
 
-	jmp c_entry
+	## Print hello message (might as well).
+	mov $.Lwelcome_msg, %di
+	call print
 
-print:	## Text to print is in %di. %ax gets clobbered.
-	## Similar to x86_64 fncall ABI.
-	mov $0x0E, %ah
-.loop:	mov (%di), %al
-	test %al, %al
-	jz .done
-	int $0x10
-	inc %di
-	jmp .loop
-.done:	ret
+	## Load bootloader stage 1.5 into memory.
+	mov $.Ldisk_address_packet, %si
+	mov $0x42, %ah
+	mov $0x80, %dl
+	int $0x13
 
-done:	hlt
+	jc .Lload_stage_1_5_err
+	jmp stage_1_5
+
+.Lload_stage_1_5_err:
+	## If we run into this, it's debugger time. Since I'm too lazy
+	## to put printing functions here.
+	mov $.Lload_stage_1_5_err_msg, %di
+	call print
 	jmp done
 
-	.section .rodata
-msg:	.asciz "Hello, world!\r\n"
-msg2:	.asciz "Second line\r\n"
+	## Very simple string printing function.
+	## - Input: %di (char*)
+	## - Clobbers: %ax
+print:
+	mov $0x0E, %ah
+.Lprint_loop:
+	mov (%di), %al
+	test %al, %al
+	jz .Lprint_done
+	int $0x10
+	inc %di
+	jmp .Lprint_loop
+.Lprint_done:
+	ret
+
+	## System exit.
+done:	mov $.Ldone_msg, %di
+	call print
+.Ldone_loop:
+	hlt
+	jmp .Ldone_loop
+
+	.section .rodata.boot
+.Ldisk_address_packet:
+	## Hardcoded to copy the 1.5 bootloader.
+	.byte 0x10		# size
+	.byte 0x0		# reserved
+	.word 62		# number of sectors to transfer
+	.long 0x00007E00	# target segment:offset
+	.quad 0x1		# LBA
+.Lwelcome_msg:
+	.asciz "Welcome to HmmOS!\r\n"
+.Lload_stage_1_5_err_msg:
+	.asciz "Error loading stage 1.5 bootloader\r\n"
+.Ldone_msg:
+	.asciz "done()\r\n"

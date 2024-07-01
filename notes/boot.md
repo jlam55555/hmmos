@@ -32,15 +32,18 @@ bootloader](https://wiki.osdev.org/Rolling_Your_Own_Bootloader).
 
 - [X] Set up MBR
 - [ ] Set up basic printing
-	- [ ] BIOS 0x10 function
+	- [X] BIOS 0x10 function
 	- [ ] Serial port
+- [X] Copy rest of bootloader (stage 1.5) to memory
+- [ ] Enable A20 line
 - [ ] Enter protected mode
 	- [ ] Load GDTR
-	- [ ] Enter Virtual 8086 mode
-		- [ ] Query BIOS capabilities and memory map
-- [ ] Setup BIOS graphics mode
+	- [ ] Enter unreal mode
+		- [ ] Load kernel into memory
+		- [ ] Setup BIOS graphics mode
+	- [ ] Enter protected mode again (for real this time)
+	- [ ] Jump to kernel
 - [ ] Setup interrupts
-- [ ] Set up kernel
-	- [ ] Copy kernel from disk
-	- [ ] Parse ELF
-	- [ ] Jump to kernel start
+- [ ] Bootloader utilities
+	- [ ] ELF parsing (for kernel)
+	- [ ] Some basic printing functions
