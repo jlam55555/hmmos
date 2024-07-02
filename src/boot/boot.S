@@ -56,22 +56,22 @@
 	## - Clobbers: %ax
 print:
 	mov $0x0E, %ah
-.Lprint_loop:
+.Lprint__loop:
 	mov (%di), %al
 	test %al, %al
-	jz .Lprint_done
+	jz .Lprint__exit
 	int $0x10
 	inc %di
-	jmp .Lprint_loop
-.Lprint_done:
+	jmp .Lprint__loop
+.Lprint__exit:
 	ret
 
 	## System exit.
 done:	mov $.Ldone_msg, %di
 	call print
-.Ldone_loop:
+.Ldone__loop:
 	hlt
-	jmp .Ldone_loop
+	jmp .Ldone__loop
 
 	.section .rodata.boot
 .Ldisk_address_packet:

@@ -25,12 +25,12 @@ println:
 	## - Side effects: increments %si.
 .Lprint_nybble:
 	cmp $10, %al
-	jge .Lprint_nybble_alpha
+	jge .Lprint_nybble__alpha
 	add $'0, %al
-	jmp .Lprint_nybble_mov
-.Lprint_nybble_alpha:
+	jmp .Lprint_nybble__exit
+.Lprint_nybble__alpha:
 	add $'7, %al
-.Lprint_nybble_mov:
+.Lprint_nybble__exit:
 	movb %al, (%si)
 	inc %si
 	ret

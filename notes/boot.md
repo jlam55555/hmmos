@@ -25,6 +25,30 @@ for executable code at the start of the sector.
 The BIOS will copy the boot sector to memory starting at 0x7C00, so
 the bootloader compilation/linking has to be aware of this.
 
+## Enabling A20 line
+An annotated version of the `check_a20` function:
+
+```
+es=0, ds=0xFFFF
+di=0x0500, si=0x0510
+
+es:di = 0x0000:0x0500 = 0x000500
+ds:si = 0xFFFF:0x0510 = 0x100500
+
+These values are 1MB apart. Importantly, neither of these should
+overlap bootloader code.
+
+Save old values stored at these locations.
+Push them onto the stack.
+
+Overwrite es:di with 0x00.
+Overwrite ds:si with 0xFF.
+
+Check if es:di == 0xFF. If so, this means the A20 line isn't enabled.
+
+(Then cleanup by restoring the old values at es:di and ds:si.)
+```
+
 ## Bootloader steps
 Rough order, may need additional steps. Roughly based on the list from
 [Rolling your own
@@ -46,4 +70,4 @@ bootloader](https://wiki.osdev.org/Rolling_Your_Own_Bootloader).
 - [ ] Setup interrupts
 - [ ] Bootloader utilities
 	- [ ] ELF parsing (for kernel)
-	- [ ] Some basic printing functions
+	- [X] Some basic printing functions

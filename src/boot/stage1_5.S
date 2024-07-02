@@ -16,21 +16,35 @@
 
 stage_1_5:
 	## Dumping registers and testing the print functions.
+	## Not wise to modify %esp so I'm leaving it.
+	mov $.Ldump_regs_msg, %di
+	call println
+
 	mov $0x1234, %ax
 	mov $0x5678, %bx
 	mov $0x9ABC, %cx
 	mov $0xDEF0, %dx
 	mov $0x1234, %si
 	mov $0x5678, %di
-	## Not wise to modify %esp so I'm leavin it
 	mov $0xDEADBEEF, %ebp
-
 	call dump_regs
 
-	## Enable A20 line.
-	## TODO
+	mov $.Lenable_a20_msg, %di
+	call println
+	call enable_a20
 
-	## Enter protected mode.
+	## Enter protected mode (and then perhaps unreal mode to load
+	## the kernel).
+	mov $.Lenable_prot_mode_msg, %di
+	call println
 	## TODO
 
 	call done
+
+	.section .rodata
+.Ldump_regs_msg:
+	.asciz "Current register values:"
+.Lenable_a20_msg:
+	.asciz "Enabling A20 line..."
+.Lenable_prot_mode_msg:
+	.asciz "Entering protected mode..."
