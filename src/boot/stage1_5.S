@@ -33,18 +33,25 @@ stage_1_5:
 	call println
 	call enable_a20
 
-	## Enter protected mode (and then perhaps unreal mode to load
-	## the kernel).
-	mov $.Lenable_prot_mode_msg, %di
+	## Enter unreal mode.
+	mov $.Lenable_unreal_mode_msg, %di
 	call println
+	call enter_unreal_mode
+
+	## Copy kernel (while we're still in unreal mode).
 	## TODO
 
-	call done
+	## Enter 32-bit mode (and never leave)
+	mov $.Lenable_prot_mode_msg, %di
+	call println
+	jmp enter_prot_mode
 
 	.section .rodata
 .Ldump_regs_msg:
 	.asciz "Current register values:"
 .Lenable_a20_msg:
 	.asciz "Enabling A20 line..."
+.Lenable_unreal_mode_msg:
+	.asciz "Entering unreal mode..."
 .Lenable_prot_mode_msg:
 	.asciz "Entering protected mode..."

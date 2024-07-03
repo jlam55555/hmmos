@@ -22,12 +22,25 @@ C_SRCS:=$(wildcard $(SRC_DIR)/**/*.c)
 C_OBJS:=$(patsubst $(SRC_DIR)/%.S,$(OUT_DIR)/%.o,$(AS_SRCS))	\
 	$(patsubst $(SRC_DIR)/%.c,$(OUT_DIR)/%.o,$(C_SRCS))
 
+QEMU_FLAGS:=-m 4G
+
+ifneq ($(DEBUG),)
+	override QEMU_FLAGS+=-no-reboot -no-shutdown
+endif
+
+ifneq ($(SHOWINT),)
+	override QEMU_FLAGS+=-d int,cpu_reset
+endif
+
 all: $(BOOTLOADER)
 
 $(OUT_DIR)/%.o: $(SRC_DIR)/%.S
 	mkdir -p $(dir $@)
 	$(AS) $(ASFLAGS) $^ -o $@
 
+# TODO: support different build variants (e.g., with different
+# optimization levels and with gcc) to make sure things work outside
+# of the default build.
 $(OUT_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $^ -o $@
@@ -38,7 +51,7 @@ $(BOOTLOADER): $(AS_OBJS) $(C_OBJS)
 
 .PHONY: run
 run: $(BOOTLOADER)
-	qemu-system-i386 -drive format=raw,file=$<
+	qemu-system-i386 $(QEMU_FLAGS) -drive format=raw,file=$<
 
 .PHONY: clean
 clean:

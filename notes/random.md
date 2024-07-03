@@ -47,7 +47,7 @@ gdb's remote targets. The commands feel less archaic than GDB's.
 I find that lldb chokes when I try to step one instruction for a `jmp
 .` instruction, while gdb works.
 
-### i8086 (real mode) support
+## i8086 (real mode) support
 Currently GDB's `set architecture i8086` command to disassemble
 real-mode instructions [seems
 broken](https://sourceware.org/bugzilla/show_bug.cgi?id=22869). (I'm
@@ -61,7 +61,7 @@ at the disassembly) or just switch to gdb (if you need the disassembly
 to be correct for stepping). It doesn't seem that LLVM is popular for
 OSDev so I'll just accept this.
 
-### clang version support
+## clang version support
 I originally started out this project on a laptop running arch linux,
 which currently has support for LLVM 17. I tried running this on a
 debian bullseye (11) laptop, which only supports LLVM 11. There were a
@@ -87,3 +87,22 @@ clang [inherently supports
 cross-compiling](https://stackoverflow.com/a/72254698), but maybe a
 need will arise in the future. For now enforcing clang >= 14 is good
 enough for this project.
+
+## QEMU x86 quirks
+Both of the following make my life easier when running in QEMU, but
+make it harder for me to handle the expected case for real hardware.
+
+- *A20 is set on boot*: To be fair, the OSDev wiki states that this is
+  very non-standardized and there are a myriad of ways to
+  enable/disable the A20 line depending on the hardware. In QEMU's
+  case, [it was already set on
+  boot](https://forum.osdev.org/viewtopic.php?f=1&t=26256).
+- *No data segment offset limit checks*: In real mode, I noticed I can
+  write to 0x0000:0xB8000 without having to use unreal
+  mode. Similarly, when in protected mode/unreal mode, I was unable to
+  trigger the segment check (which should cause a
+  [GPF](https://wiki.osdev.org/Exceptions#General_Protection_Fault))
+  even if I manually set the limits low. It seems that QEMU doesn't
+  perform the limit checks ([at least as of
+  2019](https://lists.gnu.org/archive/html/qemu-devel/2019-02/msg06518.html)).
+  I do get GPFs for the code segment though.
