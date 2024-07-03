@@ -17,20 +17,25 @@ SECTIONS
 
 	/* Stage 1.5 bootloader */
 	.text (0x7E00) : {
-		*(.text);
+		*(.text .text.*);
 	}
 
 	.rodata : {
-		*(.rodata);
+		*(.rodata .rodata.*);
 	}
 
 	.data : {
-		*(.data);
+		*(.data .data.*);
+	}
+
+	.bss : {
+		*(COMMON);
+		*(.bss);
 	}
 
 	/* Make sure the disk is large enough for the bootloader. */
-	.end (0x7C00 + 63*0x200 - 1) : {
-		BYTE(0x00);
+	.end (0x7C00 + 63*0x200 - 4) : {
+		QUAD(0xEFCDAB00);
 	}
 
 	/DISCARD/ : {

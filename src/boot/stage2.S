@@ -8,10 +8,21 @@
 	.code32
 	.section .text
 
-	.globl prot_mode_entry
+	.globl pmode_entry
 
-prot_mode_entry:
-	movw $0x0F01, 0xB8000
-.Lloop:
+	## Entering protected mode. Segment registers and %esp should
+	## be correctly set upon entering this function.
+pmode_entry:
+	xor %eax, %eax
+	xor %ebx, %ebx
+	xor %ecx, %ecx
+	xor %ebp, %ebp
+	xor %edi, %edi
+	xor %esi, %esi
+	xor %edx, %edx
+
+	call e820_mm_print
+	call pt_setup
+.Ldone:
 	hlt
-	jmp .Lloop
+	jmp .Ldone

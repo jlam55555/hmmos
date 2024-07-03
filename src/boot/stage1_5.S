@@ -33,17 +33,23 @@ stage_1_5:
 	call println
 	call enable_a20
 
-	## Enter unreal mode.
+	mov $.Ldetect_mem_map_msg, %di
+	call println
+	call detect_mem_map
+
 	mov $.Lenable_unreal_mode_msg, %di
 	call println
 	call enter_unreal_mode
 
-	## Copy kernel (while we're still in unreal mode).
-	## TODO
+	## TODO (intern project): set up graphical mode, with
+	## fonts. Maybe this is for the kernel to do?
+
+	## TODO: Copy kernel (while we're still in unreal mode).
 
 	## Enter 32-bit mode (and never leave)
 	mov $.Lenable_prot_mode_msg, %di
 	call println
+	mov $pmode_entry, %ax
 	jmp enter_prot_mode
 
 	.section .rodata
@@ -55,3 +61,5 @@ stage_1_5:
 	.asciz "Entering unreal mode..."
 .Lenable_prot_mode_msg:
 	.asciz "Entering protected mode..."
+.Ldetect_mem_map_msg:
+	.asciz "Detecting memory map..."

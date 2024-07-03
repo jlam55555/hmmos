@@ -8,7 +8,7 @@ CC:=clang
 
 # 16-bit mode for now. It's better if we switch to C after we enter
 # protected mode so all C code can be 32-bit mode.
-CFLAGS:=-m16 -ffreestanding -O0 -fno-pie
+CFLAGS:=-m32 -ffreestanding -O0 -fno-pie
 LDFLAGS:=--oformat=binary \
 	--build-id=none \
 	-T$(SRC_DIR)/boot/linker.ld

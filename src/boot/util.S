@@ -101,6 +101,7 @@ dump_regs:
 	pop %esp
 	ret
 
+	.section .rodata
 .Lax:	.asciz "%eax=  "
 .Lbx:	.asciz "%ebx=  "
 .Lcx:	.asciz "%ecx=  "

@@ -11,9 +11,11 @@
 	##
 	## Note: Do not enable interrupts until the IDT is set up.
 	##
+	## - Input: %eax (pmode entry function)
 	## - Clobbers: %eax
 enter_prot_mode:
 	cli
+	push %eax
 
 	lgdt .Lgdt_desc
 	mov %cr0, %eax
@@ -21,6 +23,8 @@ enter_prot_mode:
 	mov %eax, %cr0
 	jmp $0x08, $.Lenter_prot_mode__setup
 
+	## .code32 isn't too necessary because these instructions are
+	## valid in 16-bit mode and 32-bit mode, but might as well.
 	.code32
 .Lenter_prot_mode__setup:
 	mov $0x10, %ax
@@ -29,7 +33,8 @@ enter_prot_mode:
 	mov %ax, %fs
 	mov %ax, %gs
 	mov %ax, %ss
-	jmp prot_mode_entry
+	pop %eax
+	jmp %eax
 
 	.code16
 

@@ -133,19 +133,22 @@ Rough order, may need additional steps. Roughly based on the list from
 bootloader](https://wiki.osdev.org/Rolling_Your_Own_Bootloader).
 
 - [X] Set up MBR
-- [ ] Set up basic printing
+- [X] Set up basic printing
 	- [X] BIOS 0x10 function
-	- [ ] Serial port
+	- [X] Basic printing functions
 - [X] Copy rest of bootloader (stage 1.5) to memory
 - [X] Enable A20 line
-- [ ] Enter protected mode
+- [X] Enter protected mode
 	- [X] Load GDTR
 	- [X] Enter unreal mode
-		- [ ] Load kernel into memory
-		- [ ] Setup BIOS graphics mode
 	- [X] Enter protected mode again (for real this time)
+- [ ] Set up paging
+	- [ ] HHDM (0xC0000000 through 0xFFFFFFFF: 1GB low memory linear
+          map)
+	- [ ] Direct map (only needed for the bootstrap process): first
+          1MB of memory
+- [ ] Prepare kernel
+	- [ ] Parse kernel ELF (load directly from partition)
+	- [ ] Load kernel to memory
+	- [ ] Report memory map and other capabilities to kernel
 	- [ ] Jump to kernel
-- [ ] Setup interrupts (well maybe the kernel should do this)
-- [ ] Bootloader utilities
-	- [ ] ELF parsing (for kernel)
-	- [X] Some basic printing functions
