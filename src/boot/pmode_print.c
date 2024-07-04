@@ -2,34 +2,31 @@
 #include "string.h"
 #include <stdint.h>
 
-#define _screen_width 80
-#define _screen_height 25
-
-#define _vid_buf ((char *const)0xB8000)
-#define _vid_buf_width (2 * _screen_width)
+#define SCREEN_WIDTH 80
+#define SCREEN_HEIGHT 25
+#define SCREEN_VGA_BUF ((char *const)0xB8000)
 
 static uint8_t _screen_x = 0;
 static uint8_t _screen_y = 0;
-static char _screen_buf[_screen_width * _screen_height] = {};
+static char _screen_buf[SCREEN_WIDTH * SCREEN_HEIGHT] = {};
 
 /// Advance cursor to next line, scrolling if needed.
 static void _screen_cursor_down() {
   ++_screen_y;
-  if (_screen_y >= _screen_height) {
+  if (_screen_y >= SCREEN_HEIGHT) {
     --_screen_y;
-    for (uint8_t y = 0; y < _screen_height - 1; ++y) {
-      memcpy(&_screen_buf[y * _screen_width],
-             &_screen_buf[(y + 1) * _screen_width], _screen_width);
+    for (uint8_t y = 0; y < SCREEN_HEIGHT - 1; ++y) {
+      memcpy(&_screen_buf[y * SCREEN_WIDTH],
+             &_screen_buf[(y + 1) * SCREEN_WIDTH], SCREEN_WIDTH);
     }
-    memset(&_screen_buf[(_screen_height - 1) * _screen_width], 0,
-           _screen_width);
+    memset(&_screen_buf[(SCREEN_HEIGHT - 1) * SCREEN_WIDTH], 0, SCREEN_WIDTH);
   }
 }
 
 /// Advance cursor forward, wrapping if needed.
 static void _screen_cursor_forward() {
   ++_screen_x;
-  if (_screen_x >= _screen_width) {
+  if (_screen_x >= SCREEN_WIDTH) {
     _screen_cursor_down();
     _screen_x = 0;
   }
@@ -41,14 +38,14 @@ static void _screen_putc(const char c) {
   } else if (c == '\r') {
     _screen_x = 0;
   } else {
-    _screen_buf[_screen_width * _screen_y + _screen_x] = c;
+    _screen_buf[SCREEN_WIDTH * _screen_y + _screen_x] = c;
     _screen_cursor_forward();
   }
 }
 
 static void _screen_render() {
   for (unsigned i = 0; i < sizeof _screen_buf; ++i) {
-    _vid_buf[i << 1] = _screen_buf[i];
+    SCREEN_VGA_BUF[i << 1] = _screen_buf[i];
   }
 }
 
@@ -56,20 +53,17 @@ void pmode_puts(const char *str) {
   while (*str) {
     _screen_putc(*str++);
   }
-
   _screen_render();
 }
 
 static char _screen_int_buf[2 + 2 * 8 + 1] = "0x";
-
-static char __screen_nyb2hex(uint8_t nybble) {
+static char _screen_nyb2hex(uint8_t nybble) {
   return nybble < 10 ? (nybble + '0') : (nybble + 'A' - 10);
 }
 static void _screen_format_byte(uint8_t n, char *buf) {
-  *buf = __screen_nyb2hex(n >> 4);
-  *(buf + 1) = __screen_nyb2hex(n & 0x0F);
+  *buf = _screen_nyb2hex(n >> 4);
+  *(buf + 1) = _screen_nyb2hex(n & 0x0F);
 }
-
 static void _screen_printn(uint64_t n, unsigned sz) {
   n = __builtin_bswap64(n) >> (64 - 8 * sz);
   char *buf = _screen_int_buf + 2;

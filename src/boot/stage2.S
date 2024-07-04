@@ -21,8 +21,18 @@ pmode_entry:
 	xor %esi, %esi
 	xor %edx, %edx
 
-	call e820_mm_print
 	call pt_setup
-.Ldone:
+	test %eax, %eax
+	jz .Lpmode_entry__err
+
+	call e820_mm_print
+
+	## TODO: parse and jump to the kernel.
+	## For now we just spin here.
+.Ljmp_kernel:
 	hlt
-	jmp .Ldone
+	jmp .Ljmp_kernel
+
+.Lpmode_entry__err:
+	hlt
+	jmp .Lpmode_entry__err

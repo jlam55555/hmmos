@@ -6,7 +6,8 @@
 	## This print should only be used in real mode.
 	.globl print
 	.globl done
-.Lmbr_start:
+	.globl mbr_start
+mbr_start:
 	## Clear registers (except %sp). We don't really depend on the
 	## initial values of most of these GPRs (except %sp), so this
 	## isn't too necessary. But might as well.
@@ -29,7 +30,7 @@
 	## Set stack just under the bootloader. We should have plenty
 	## of space there, since the BDA ends at 0x0500 (and the
 	## bootloader starts at 0x7C00).
-	mov $.Lmbr_start, %sp
+	mov $mbr_start, %sp
 
 	## Print hello message (might as well).
 	mov $.Lwelcome_msg, %di
