@@ -34,7 +34,7 @@ enter_prot_mode:
 	mov %ax, %gs
 	mov %ax, %ss
 	pop %eax
-	jmp %eax
+	jmp *%eax
 
 	.code16
 

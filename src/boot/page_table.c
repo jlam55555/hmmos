@@ -1,35 +1,8 @@
+#include "page_table.h"
 #include "pmode_print.h"
-#include <stdbool.h>
+#include "string.h"
+#include <assert.h>
 #include <stddef.h>
-
-#define PG_SZ 4096
-
-enum e820_mm_type {
-  E820_MM_TYPE_USABLE = 1,
-  E820_MM_TYPE_RESERVED,
-  E820_MM_TYPE_ACPI_RECLAIMABLE,
-  E820_MM_TYPE_ACPI_NVS,
-  E820_MM_TYPE_BAD_MEM,
-
-  // Non-standard type, indicates a bootloader type to the kernel.
-  E820_MM_TYPE_BOOTLOADER = 6,
-};
-struct e820_mm_entry {
-  uint64_t base;
-  uint64_t len;
-  // Can't use the enum type since the size is undefined.
-  uint32_t type;
-  uint32_t acpi_extended_attrs;
-};
-/// Defined in mem.S.
-extern const unsigned e820_mm_max_entries;
-extern struct e820_mm_entry e820_mem_map[];
-
-/// Defined in boot.S. Start of text region.
-///
-/// We only use its address, so its okay to type this void (an
-/// incomplete type).
-extern const void mbr_start;
 
 static bool _e820_entry_present(struct e820_mm_entry *const ent) {
   // An all-empty entry indicates the end of an array.
@@ -71,7 +44,7 @@ void *_e820_alloc(unsigned num_pg) {
   // once: loop one megabyte at a time in the first GB until we find a
   // free area of this size.
   uint64_t len = num_pg * PG_SZ;
-  for (uint64_t base = 0x100000; base < 0x40000000; base += 0x100000) {
+  for (uint64_t base = (1 * MB); base < (1 * GB); base += (1 * MB)) {
     // Check that this region completely exists in a usable memory
     // region and doesn't overlap any bad memory regions. We need to
     // check both because the memory regions aren't normalized and may
@@ -122,46 +95,145 @@ bool _e820_augment_bootloader(uint64_t base, uint64_t len) {
   return true;
 }
 
-void _pt_setup_pd(void *pd) {
-  // TODO
+void _pt_zero_pg(void *pg) { memset(pg, 0, PG_SZ); }
+
+/// The `_pt_map_(huge)pg()` assume a standard 2-level (non-PAE)
+/// paging scheme.
+///
+/// - Precondition: PSE is enabled before mapping hugepages.
+void _pt_map_pg(struct page_directory_entry *pd, struct page_table_entry *pt,
+                uint32_t va, uint32_t pa, bool map_global) {
+  assert(PG_ALIGNED(va));
+  assert(PG_ALIGNED(pa));
+
+  const unsigned pd_idx = va >> 22;
+  const unsigned pt_idx = (va >> PG_SZ_BITS) & 0x3FF;
+
+  // Set up page directory if not already set.
+  pd += pd_idx;
+
+  if (!pd->p) {
+    pd->p = 1;
+    pd->r_w = 1;
+    pd->u_s = 0;
+    pd->pwt = 0;
+    pd->pcd = 0;
+    pd->a = 0;
+    pd->ps = 0;
+    pd->addr = (uint32_t)pt >> PG_SZ_BITS;
+  } else {
+    assert(pd->addr == (uint32_t)pt >> PG_SZ_BITS);
+  }
+
+  // Set up page table entry.
+  pt += pt_idx;
+  assert(!pt->p);
+  pt->p = 1;
+  pt->r_w = 1;
+  pt->u_s = 0;
+  pt->pwt = 0;
+  pt->pcd = 0;
+  pt->a = 0;
+  pt->d = 0;
+  pt->pat = 0;
+  pt->g = map_global;
+  pt->addr = pa >> PG_SZ_BITS;
 }
-void _pt_setup_dm(void *pd, void *dm_pt) {
-  // TODO
-}
-void _pt_setup_hhdm(void *pd, void *hhdm_pts) {
-  // TODO
-}
-void _pt_enable(void *pd) {
-  // TODO
+void _pt_map_hugepg(struct page_directory_entry_4mb *pd, uint32_t va,
+                    uint32_t pa, bool map_global) {
+  assert(HUGEPG_ALIGNED(va));
+  assert(HUGEPG_ALIGNED(pa));
+
+  const unsigned pd_idx = va >> 22;
+
+  pd += pd_idx;
+  assert(!pd->p);
+  pd->p = 1;
+  pd->r_w = 1;
+  pd->u_s = 0;
+  pd->pwt = 0;
+  pd->pcd = 0;
+  pd->a = 0;
+  pd->d = 0;
+  pd->ps = 1;
+  pd->g = map_global;
+  pd->pat = 0;
+  pd->addr_ext = 0;
+  pd->rsv0 = 0;
+  pd->addr = pa >> 22;
 }
 
+/// Allocate space for page table mapping:
+/// - 1 page directory (will use 4MB pages for HHDM).
+/// - 1 page table for 1MB direct map (can't use 4MB page since
+///   we don't want to map the null page).
+///
+/// This can probably fit within the text region of the bootloader
+/// (since we have ~32KB) but we may need to allocate more pages in
+/// the future, e.g. if using 3-level (PAE) paging. Let's leave this
+/// dynamically allocated for now.
+///
+/// Also augment E820 memory map with bootloader memory regions while
+/// we're at it.
 bool pt_setup() {
-  // Allocate space for page table mapping:
-  // - 256 page tables for 1GB HHDM.
-  // - 1 page table for 1MB direct map.
-  // - 1 page directory.
-  void *pt_mem = _e820_alloc(258);
+  const unsigned dynamic_alloc_pg = 2;
+  void *const pt_mem = _e820_alloc(dynamic_alloc_pg);
   if (pt_mem == NULL) {
     pmode_puts("failed to alloc page table entries\r\n");
     return false;
   }
 
-  void *page_directory = pt_mem;
-  void *dm_page_table = pt_mem + PG_SZ;
-  void *hhdm_page_tables = pt_mem + 2 * PG_SZ;
-  _pt_setup_pd(page_directory);
-  _pt_setup_dm(page_directory, dm_page_table);
-  _pt_setup_hhdm(page_directory, hhdm_page_tables);
-  _pt_enable(page_directory);
+  void *const pd = pt_mem;
+  void *const dm_pt = pt_mem + PG_SZ;
+  _pt_zero_pg(pd);
+  // Set up 1MB low memory direct map.
+  _pt_zero_pg(dm_pt);
+  for (uint64_t pg = PG_SZ; pg < (1 * MB); pg += PG_SZ) {
+    _pt_map_pg(pd, dm_pt, pg, pg, false);
+  }
+  // Set up 1GB HHDM.
+  for (uint64_t pg = 0; pg < (1 * GB); pg += HUGE_PG_SZ) {
+    _pt_map_hugepg(pd, pg + HM_START, pg, true);
+  }
+  enable_paging(pd);
 
   if ( // Bootloader stack.
-      !_e820_augment_bootloader((uint64_t)&mbr_start - 0x1000, 0x1000) ||
+      !_e820_augment_bootloader((uint64_t)&mbr_start - PG_SZ, PG_SZ) ||
       // Bootloader text region.
       !_e820_augment_bootloader((uint64_t)&mbr_start, 63 * 0x200) ||
       // Bootloader page tables.
-      !_e820_augment_bootloader((uint64_t)pt_mem, 258 * PG_SZ)) {
+      !_e820_augment_bootloader((uint64_t)pt_mem, dynamic_alloc_pg * PG_SZ)) {
     pmode_puts("failed to augment mm with bootloader entries\r\n");
     return false;
   }
   return true;
+}
+
+bool check_cpuid_features() {
+  struct cpuid_features feat;
+  get_cpuid_features(&feat);
+
+  pmode_puts("cpuid features (%edx:%ecx)=");
+  pmode_printq(*(uint64_t *)&feat);
+  pmode_puts("\r\n");
+
+  if (!feat.pae || !feat.pse) {
+    // We depend on PSE (4MB pages) and may depend on PAE later (for
+    // physical addresses above 4GB).
+    pmode_puts("missing required cpuid features (PAE and PSE)\r\n");
+    return false;
+  }
+
+  return true;
+}
+
+/// Check that HHDM matches low memory for first (almost) megabyte.
+void check_paging_setup() {
+  bool direct_map_matches_hhdm =
+      !memcmp((void *)PG_SZ, (void *)HM_START + PG_SZ, 1 * MB - PG_SZ);
+  if (direct_map_matches_hhdm) {
+    pmode_puts("paging is set up correctly\r\n");
+  } else {
+    pmode_puts("paging not set up correctly\r\n");
+  }
 }

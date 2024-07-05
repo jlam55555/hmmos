@@ -142,10 +142,10 @@ bootloader](https://wiki.osdev.org/Rolling_Your_Own_Bootloader).
 	- [X] Load GDTR
 	- [X] Enter unreal mode
 	- [X] Enter protected mode again (for real this time)
-- [ ] Set up paging
-	- [ ] HHDM (0xC0000000 through 0xFFFFFFFF: 1GB low memory linear
+- [X] Set up paging
+	- [X] HHDM (0xC0000000 through 0xFFFFFFFF: 1GB low memory linear
           map)
-	- [ ] Direct map (only needed for the bootstrap process): first
+	- [X] Direct map (only needed for the bootstrap process): first
           1MB of memory
 - [ ] Prepare kernel
 	- [ ] Parse kernel ELF (load directly from partition)

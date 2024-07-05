@@ -97,3 +97,47 @@ Just to get a sense of what takes space in the kernel:
   memory, this means 64MB dedicated to the page frame array.
 - *Kernel stacks*: There will be one one-page page frame per kernel-
   or userspace process.
+
+## Paging extensions
+All of the paging extensions can be queried via the `cpuid`
+instruction.
+
+### x86
+The standard paging involves a two-tier hierarchy. *Page tables*
+comprise 1024 4KB pages, and *page directories* comprise 1024 page
+tables (4MB).
+
+These paging extensions do not increase the virtual address space
+(which cannot be extended past 32 bits). PSE-36 and PAE extend the
+physical address space to 36 bits.
+
+- *Page size extension* (PSE) enables 4MB huge pages in the page
+  directory. These page directory entries point to 4MB pages rather
+  than page tables.
+- *PSE-36* enables 36-bit physical addresses via a modified page table
+  structure. It still uses the two-hierarchy page table structure (and
+  is thus simpler than PAE). However, it only allows huge pages for
+  addresses above 4GB. This was a stopgap measure before PAE was
+  introduced, and PAE is considered a better solution now.
+- *Physical address extension* (PAE) sets up 3-level paging with
+  8-byte page table entries (512 entries per page). The page table
+  addresses 512 pages (2MB), the page directory 512 page tables (1GB),
+  and the new *page directory pointer table* (terrible name, I know)
+  contains 512 page directories (512GB). This theoretically enables up
+  to 12+9+9+9=39 bits of physical address space, but usually only 36
+  bits of physical address space were allowed/implemented, same as
+  PSE-36.
+
+*Page attribute table* (PAT) is another 3-letter acronym starting with
+'P' that relates to paging. I'm not going to go into this.
+
+### x86-64
+The standard 64-bit paging involves a four-tier hierarchy, based on
+PAE. One additional level (the *page map level 4*, or PML4) was
+added. This extends the physical address space to 48 bits (256TB).
+
+However, this physical address space isn't enough even for some
+large-scale servers, so another page table level (*PML5*) was added to
+support up to 57 bits (128PB) of virtual address space. This is (as of
+the time of wrting) a pretty new feature (only supported by Intel Ice
+Lake/AMD Ryzen 7000 and newer).
