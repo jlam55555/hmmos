@@ -127,6 +127,41 @@ We don't need 16-bit descriptors for switching back to real
 mode. Indeed, the whole point of unreal mode is to switch back to real
 mode using cached 32-bit GDT descriptors.
 
+## Bootloading strategy
+In lieu of reading filesystems to get the kernel ELF file (a la GRUB
+stage 1.5/2), a simpler method is to write the kernel to a fixed
+location on the disk (known at installation time) and have the
+bootloader load this fixed location image. LILO does something
+similar.
+
+For now, this very simple method means: write the kernel to a
+"partition" and write the partition details to the MBR. Probably with
+some magic bytes so it's easy to identify.
+
+A very simple script is provided to do this. It takes as input the
+compiled bootloader binary and the kernel binary:
+```
+$ python3 scripts/install_bootloader.py \
+	-b out/boot.bin \
+	-k out/kernel.elf \
+	-o out/disk.bin
+```
+
+The resulting partition details can be read by `fdisk`. If the kernel
+file fits in a single sector, this would look like the following:
+```
+$ /sbin/fdisk -l out/disk.bin
+Disk out/disk.bin: 1 MiB, 1049088 bytes, 2049 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x00000000
+
+Device        Boot Start   End Sectors  Size Id Type
+out/disk.bin1 *     2048  2048       1  512B ff BBT
+```
+
 ## Bootloader steps
 Rough order, may need additional steps. Roughly based on the list from
 [Rolling your own

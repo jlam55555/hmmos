@@ -10,6 +10,11 @@ going to bother linking OSDev wikis since those are implied.
   - also: https://ftp.gnu.org/old-gnu/Manuals/gas-2.9.1/html_node/as_203.html#SEC205
 - Bootloader reset vector: https://stackoverflow.com/a/31296556
 - Ralph Brown's Interrupt List (RBIL): http://www.cs.cmu.edu/~ralf/files.html
+- Grub boot stages: https://www.system-rescue.org/disk-partitioning/Grub-boot-stages/
 
 ## Memory
 - Paging strategy for x86: https://forum.osdev.org/viewtopic.php?p=312121#p312121
+
+## MBR
+- CHS decoding: https://thestarman.pcministry.com/asm/mbr/PartTables.htm#Decoding
+- fdisk CHS decoding: https://superuser.com/a/1733477
