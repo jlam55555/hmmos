@@ -1,5 +1,3 @@
-OUTPUT_FORMAT("elf32-i386");
-ENTRY(_start);
 SECTIONS
 {
 	/* MBR */
@@ -31,11 +29,6 @@ SECTIONS
 	.bss : {
 		*(COMMON);
 		*(.bss);
-	}
-
-	/* Make sure the disk is large enough for the bootloader. */
-	.end (0x7C00 + 63*0x200 - 4) : {
-		QUAD(0xEFCDAB00);
 	}
 
 	/DISCARD/ : {

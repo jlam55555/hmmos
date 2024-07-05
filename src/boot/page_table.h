@@ -179,3 +179,40 @@ extern void mbr_start();
 /// Defined in stage2.S.
 extern void enable_paging(struct page_directory_entry *);
 extern void get_cpuid_features(struct cpuid_features *);
+
+/// Alloc a contiguous region of memory of the given size from usable
+/// memory regions.
+///
+/// The returned physical memory region is guaranteed to be at least
+/// page-aligned (hugepage-aligned if hugepg_align is true).
+///
+/// \return start of the allocated region, or NULL if such a region
+/// was not found
+void *e820_alloc(unsigned len, bool hugepg_align);
+
+/// Augment the E820 memory map with a "bootloader" type section.
+///
+/// \return false if there isn't enough space in the E820 memory map
+/// array, true otherwise.
+bool e820_augment_bootloader(uint64_t base, uint64_t len);
+
+/// Helper function to set up e820 map entries for the bootloader text
+/// and stack regions.
+///
+/// \return true iff success
+bool augment_bootloader_text_stack_sections();
+
+/// Allocate space for page table mapping:
+/// - 1 page directory (will use 4MB pages for HHDM).
+/// - 1 page table for 1MB direct map (can't use 4MB page since
+///   we don't want to map the null page).
+///
+/// This can probably fit within the text region of the bootloader
+/// (since we have ~32KB) but we may need to allocate more pages in
+/// the future, e.g. if using 3-level (PAE) paging. Let's leave this
+/// dynamically allocated for now.
+///
+/// \param kernel_paddr Kernel offset in physical memory.
+///
+/// \return true iff success
+bool pt_setup(void *kernel_paddr);

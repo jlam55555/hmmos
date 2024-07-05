@@ -70,7 +70,9 @@ def main() -> None:
     parser.add_argument(
         "-b", "--bootloader", help="path to bootloader binary", required=True
     )
-    parser.add_argument("-k", "--kernel", help="path to kernel ELF file", required=True)
+    parser.add_argument(
+        "-k", "--kernel", help="path to kernel binary file", required=True
+    )
     parser.add_argument("-o", "--out", help="output file", required=True)
     args = parser.parse_args()
 

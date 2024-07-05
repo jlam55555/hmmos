@@ -83,6 +83,12 @@ space for the kernel, and maintain a completely separate address space
 for userspace, but [this complicates
 things](https://forum.osdev.org/viewtopic.php?p=312122&sid=a6ce91a6afd755945b629cd7678ab6e8#p312122).
 
+Note that the kernel also needs to be loaded at a fixed address in
+high memory. For simplicity I choose this to be a region of hardcoded
+size (starting at `KERNEL_LOAD_ADDR`) at the top of the virtual
+address space. This will eat away from the 1GB HHDM, but the kernel
+size should be much smaller than 1GB.
+
 ## General kernel memory usage
 Just to get a sense of what takes space in the kernel:
 

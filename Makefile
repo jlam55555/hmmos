@@ -14,6 +14,8 @@ LDFLAGS:=--oformat=binary \
 	-T$(SRC_DIR)/boot/linker.ld
 
 BOOTLOADER:=$(OUT_DIR)/boot.bin
+BOOTABLE_DISK:=$(OUT_DIR)/disk.bin
+KERNEL:=$(OUT_DIR)/kernel.bin
 
 # This is pretty standard for C but I'm not sure if it makes much
 # sense for asm files.
@@ -32,7 +34,13 @@ ifneq ($(SHOWINT),)
 	override QEMU_FLAGS+=-d int,cpu_reset
 endif
 
-all: $(BOOTLOADER)
+ifneq ($(KERNEL_LOAD_ADDR),)
+# Make sure to recompile the bootloader and modify the kernel link
+# script accordingly after changing this value.
+	override CFLAGS+=-DKERNEL_LOAD_ADDR=$(KERNEL_LOAD_ADDR)
+endif
+
+all: $(BOOTABLE_DISK)
 
 $(OUT_DIR)/%.o: $(SRC_DIR)/%.S
 	mkdir -p $(dir $@)
@@ -41,6 +49,8 @@ $(OUT_DIR)/%.o: $(SRC_DIR)/%.S
 # TODO: support different build variants (e.g., with different
 # optimization levels and with gcc) to make sure things work outside
 # of the default build.
+#
+# TODO: support automatic header dependencies
 $(OUT_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $^ -o $@
@@ -49,8 +59,16 @@ $(BOOTLOADER): $(AS_OBJS) $(C_OBJS)
 	mkdir -p $(dir $@)
 	$(LD) $(LDFLAGS) $^ -o $@
 
+$(KERNEL):
+	@ # TODO: actually build a kernel file. For now this is just
+	@ # an empty file for the bootloader to detect.
+	echo -n "Eureka!" >$@
+
+$(BOOTABLE_DISK): $(BOOTLOADER) $(KERNEL)
+	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL) -o $@
+
 .PHONY: run
-run: $(BOOTLOADER)
+run: $(BOOTABLE_DISK)
 	qemu-system-i386 $(QEMU_FLAGS) -drive format=raw,file=$<
 
 .PHONY: clean

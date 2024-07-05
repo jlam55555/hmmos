@@ -104,7 +104,7 @@ not for now.
 | --- | --- | --- |
 | 0x0000 | 0x200 | MBR. Loaded into memory by the BIOS at 0x7C00. |
 | 0x0200 | 0x7C00 | Bootloader stage 1.5. Loaded into memory by the MBR at 0x7E00. |
-| ?? | ?? | Kernel ELF file. To be stored at the beginning of a partition or right after the stage 1.5 bootloader. |
+| ?? | ?? | Kernel binary file. Stored at the beginning of a partition. |
 
 ## GDT layout
 We'll use a standard flat model for the GDT. We mostly need 32-bit
@@ -143,7 +143,7 @@ compiled bootloader binary and the kernel binary:
 ```
 $ python3 scripts/install_bootloader.py \
 	-b out/boot.bin \
-	-k out/kernel.elf \
+	-k out/kernel.bin \
 	-o out/disk.bin
 ```
 
@@ -162,6 +162,10 @@ Device        Boot Start   End Sectors  Size Id Type
 out/disk.bin1 *     2048  2048       1  512B ff BBT
 ```
 
+The kernel is expected to be a flat binary file that will be loaded at
+the configurable `KERNEL_LOAD_ADDR`. Later we can parse and load an
+ELF file, but this is simpler to get started.
+
 ## Bootloader steps
 Rough order, may need additional steps. Roughly based on the list from
 [Rolling your own
@@ -178,12 +182,12 @@ bootloader](https://wiki.osdev.org/Rolling_Your_Own_Bootloader).
 	- [X] Enter unreal mode
 	- [X] Enter protected mode again (for real this time)
 - [X] Set up paging
-	- [X] HHDM (0xC0000000 through 0xFFFFFFFF: 1GB low memory linear
-          map)
+	- [X] HHDM (0xC0000000 through `KERNEL_LOAD_ADDR`: ~1GB low memory
+          linear map)
 	- [X] Direct map (only needed for the bootstrap process): first
           1MB of memory
+	- [X] Kernel map (starting at `KERNEL_LOAD_ADDR`)
 - [ ] Prepare kernel
-	- [ ] Parse kernel ELF (load directly from partition)
-	- [ ] Load kernel to memory
+	- [X] Load kernel to memory at fixed load address
+	- [ ] Jump to kernel (build a simple toy kernel)
 	- [ ] Report memory map and other capabilities to kernel
-	- [ ] Jump to kernel
