@@ -1,5 +1,7 @@
 #include "page_table.h"
+#include "boot_protocol.h"
 #include "mbr.h"
+#include "memdefs.h"
 #include "pmode_print.h"
 #include "string.h"
 #include <assert.h>
@@ -184,11 +186,6 @@ bool pt_setup(void *kernel_paddr) {
   }
   enable_paging(pd);
 
-  // TODO: just for testing while the kernel is just a text file
-  pmode_puts("Kernel contents: ");
-  pmode_puts((const char *)KERNEL_LOAD_ADDR);
-  pmode_puts("\r\n");
-
   return e820_augment_bootloader((uint64_t)pt_mem, dynamic_alloc_sz);
 }
 
@@ -228,4 +225,13 @@ void check_paging_setup() {
   } else {
     pmode_puts("paging not set up correctly\r\n");
   }
+}
+
+/// Jump to the kernel! This is not implemented in a regular ASM file
+/// despite being fully ASM since it requires a C macro.
+__attribute__((naked)) void jump_to_kernel() {
+  __asm__ volatile("add %0, %%esp\n\t"
+                   "jmp *%1"
+                   :
+                   : "rm"(HM_START), "rm"(KERNEL_LOAD_ADDR));
 }

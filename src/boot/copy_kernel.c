@@ -1,3 +1,4 @@
+#include "boot_protocol.h"
 #include "mbr.h"
 #include "page_table.h"
 #include "pmode_print.h"

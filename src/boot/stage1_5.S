@@ -44,8 +44,6 @@ stage_1_5:
 	## TODO (intern project): set up graphical mode, with
 	## fonts. Maybe this is for the kernel to do?
 
-	## TODO: Copy kernel (while we're still in unreal mode).
-
 	## Enter 32-bit mode (and never leave)
 	mov $.Lenable_prot_mode_msg, %di
 	call println

@@ -1,31 +1,51 @@
+# Shared Makefile for the bootloader and kernel. They may share some
+# common objects, so it makes some sense to share a Makefile, although
+# some parts may be repetitive.
 SRC_DIR:=src
 OUT_DIR:=out
+
+BOOT_SRC_DIR:=$(SRC_DIR)/boot
+KERNEL_SRC_DIR:=$(SRC_DIR)/kernel
+COMMON_SRC_DIR:=$(SRC_DIR)/common
 
 AS:=as
 ASFLAGS:=--32 --fatal-warnings
 LD:=ld.lld
 CC:=clang
+CFLAGS:=-m32 -ffreestanding -O0 -fno-pie -Werror -I$(COMMON_SRC_DIR)
+QEMU_FLAGS:=-m 4G
 
-# 16-bit mode for now. It's better if we switch to C after we enter
-# protected mode so all C code can be 32-bit mode.
-CFLAGS:=-m32 -ffreestanding -O0 -fno-pie -Werror
-LDFLAGS:=--oformat=binary \
+################################################################################
+# Bootloader-specific config
+################################################################################
+BOOT_LINKER_SCRIPT:=$(BOOT_SRC_DIR)/linker.ld
+BOOT_LDFLAGS:=--oformat=binary \
 	--build-id=none \
-	-T$(SRC_DIR)/boot/linker.ld
+	-T$(BOOT_LINKER_SCRIPT)
 
 BOOTLOADER:=$(OUT_DIR)/boot.bin
 BOOTABLE_DISK:=$(OUT_DIR)/disk.bin
+
+BOOT_SRCS:=$(shell find $(BOOT_SRC_DIR) $(COMMON_SRC_DIR) -name *.[cS])
+_BOOT_OBJS:=$(BOOT_SRCS:$(SRC_DIR)/%.c=$(OUT_DIR)/%.o)
+BOOT_OBJS:=$(_BOOT_OBJS:$(SRC_DIR)/%.S=$(OUT_DIR)/%.o)
+
+################################################################################
+# Kernel-specific config
+################################################################################
+KERNEL_LINKER_SCRIPT:=$(KERNEL_SRC_DIR)/linker.ld
+KERNEL_LDFLAGS:=--oformat=binary \
+	--build-id=none \
+	-T$(KERNEL_LINKER_SCRIPT)
 KERNEL:=$(OUT_DIR)/kernel.bin
 
-# This is pretty standard for C but I'm not sure if it makes much
-# sense for asm files.
-AS_SRCS:=$(wildcard $(SRC_DIR)/**/*.S)
-C_SRCS:=$(wildcard $(SRC_DIR)/**/*.c)
-C_OBJS:=$(patsubst $(SRC_DIR)/%.S,$(OUT_DIR)/%.o,$(AS_SRCS))	\
-	$(patsubst $(SRC_DIR)/%.c,$(OUT_DIR)/%.o,$(C_SRCS))
+KERNEL_SRCS:=$(shell find $(KERNEL_SRC_DIR) $(COMMON_SRC_DIR) -name *.[cS])
+_KERNEL_OBJS:=$(KERNEL_SRCS:$(SRC_DIR)/%.c=$(OUT_DIR)/%.o)
+KERNEL_OBJS:=$(_KERNEL_OBJS:$(SRC_DIR)/%.S=$(OUT_DIR)/%.o)
 
-QEMU_FLAGS:=-m 4G
-
+################################################################################
+# Build options
+################################################################################
 ifneq ($(DEBUG),)
 	override QEMU_FLAGS+=-no-reboot -no-shutdown
 endif
@@ -34,12 +54,15 @@ ifneq ($(SHOWINT),)
 	override QEMU_FLAGS+=-d int,cpu_reset
 endif
 
-ifneq ($(KERNEL_LOAD_ADDR),)
 # Make sure to recompile the bootloader and modify the kernel link
 # script accordingly after changing this value.
+ifneq ($(KERNEL_LOAD_ADDR),)
 	override CFLAGS+=-DKERNEL_LOAD_ADDR=$(KERNEL_LOAD_ADDR)
 endif
 
+################################################################################
+# Build rules
+################################################################################
 all: $(BOOTABLE_DISK)
 
 $(OUT_DIR)/%.o: $(SRC_DIR)/%.S
@@ -55,14 +78,13 @@ $(OUT_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $^ -o $@
 
-$(BOOTLOADER): $(AS_OBJS) $(C_OBJS)
+$(BOOTLOADER): $(BOOT_OBJS) $(BOOT_LINKER_SCRIPT)
 	mkdir -p $(dir $@)
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(LD) $(BOOT_LDFLAGS) $(BOOT_OBJS) -o $@
 
-$(KERNEL):
-	@ # TODO: actually build a kernel file. For now this is just
-	@ # an empty file for the bootloader to detect.
-	echo -n "Eureka!" >$@
+$(KERNEL): $(KERNEL_OBJS) $(KERNEL_LINKER_SCRIPT)
+	mkdir -p $(dir $@)
+	$(LD) $(KERNEL_LDFLAGS) $(KERNEL_OBJS) -o $@
 
 $(BOOTABLE_DISK): $(BOOTLOADER) $(KERNEL)
 	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL) -o $@

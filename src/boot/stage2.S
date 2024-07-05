@@ -55,11 +55,16 @@ pmode_entry:
 
 	call e820_mm_print
 
-	## TODO: jump to the kernel once we have a compiled kernel.
-	## For now we just spin here.
-.Ljmp_kernel:
-	hlt
-	jmp .Ljmp_kernel
+	## Clear registers and jump to kernel! Don't clear %esp but
+	## we'll set it to a HHDM address in jump_to_kernel.
+	xor %eax, %eax
+	xor %ebx, %ebx
+	xor %ecx, %ecx
+	xor %edx, %edx
+	xor %ebp, %ebp
+	xor %edi, %edi
+	xor %esi, %esi
+	jmp jump_to_kernel
 
 .Lpmode_entry__err:
 	hlt
