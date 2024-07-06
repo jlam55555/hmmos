@@ -7,11 +7,6 @@
 #include <assert.h>
 #include <stddef.h>
 
-static bool _e820_entry_present(struct e820_mm_entry *const ent) {
-  // An all-empty entry indicates the end of an array.
-  return ent->base || ent->len || ent->type || ent->acpi_extended_attrs;
-}
-
 /// Simplified printing function. Ignore ACPI attributes for now.
 static void _e820_entry_print(struct e820_mm_entry *const ent) {
   pmode_puts("  base=");
@@ -29,7 +24,7 @@ static void _e820_entry_print(struct e820_mm_entry *const ent) {
 void e820_mm_print() {
   struct e820_mm_entry *ent;
   pmode_puts("E820 memory map:\r\n");
-  for (ent = e820_mem_map; _e820_entry_present(ent); ++ent) {
+  for (ent = e820_mem_map; e820_entry_present(ent); ++ent) {
     _e820_entry_print(ent);
   }
   pmode_puts("Number of entries: ");
@@ -50,7 +45,7 @@ void *e820_alloc(unsigned len, bool hugepg_align) {
     bool is_usable = false;
     bool overlaps_unusable = false;
     struct e820_mm_entry *ent;
-    for (ent = e820_mem_map; _e820_entry_present(ent); ++ent) {
+    for (ent = e820_mem_map; e820_entry_present(ent); ++ent) {
       if (ent->type == E820_MM_TYPE_USABLE) {
         if (base >= ent->base && base + len <= ent->base + ent->len) {
           // Subsumed by a usable memory region.
@@ -74,7 +69,7 @@ void *e820_alloc(unsigned len, bool hugepg_align) {
 
 bool e820_augment_bootloader(uint64_t base, uint64_t len) {
   struct e820_mm_entry *ent;
-  for (ent = e820_mem_map; _e820_entry_present(ent); ++ent) {
+  for (ent = e820_mem_map; e820_entry_present(ent); ++ent) {
   }
 
   if (ent - e820_mem_map + 1 >= e820_mm_max_entries) {

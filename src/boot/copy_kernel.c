@@ -1,6 +1,7 @@
 #include "boot_protocol.h"
 #include "mbr.h"
 #include "page_table.h"
+#include "perf.h"
 #include "pmode_print.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -33,6 +34,34 @@ void read_mbr_partitions() {
   }
 }
 
+/// Scan the kernel for the magic bytes.
+static void _fulfill_boot_protocol_requests(void *kernel_addr,
+                                            size_t kernel_len) {
+  // `struct bp_request_header` has 8-byte alignment so we can search
+  // a little more efficiently.
+  for (void *kernel_end = kernel_addr + kernel_len, *needle = kernel_addr;
+       needle < kernel_end; needle += BP_REQ_ALIGN) {
+    if (likely(*(uint64_t *)needle != BP_REQ_MAGIC)) {
+      continue;
+    }
+
+    struct bp_req_header *req_hdr = needle;
+    pmode_puts("Found CPU request with type ");
+    pmode_printl(req_hdr->req_id);
+    pmode_puts("\r\n");
+
+    switch (req_hdr->req_id) {
+    case BP_REQID_MEMORY_MAP: {
+      struct bp_req_memory_map *req = needle;
+      req->memory_map = e820_mem_map;
+      break;
+    }
+    default:
+      pmode_puts("Invalid req_id, skipping...\r\n");
+    }
+  }
+}
+
 /// Copies the kernel to memory.
 ///
 /// \return The physical address that the kernel was copied to on
@@ -60,6 +89,10 @@ void *copy_kernel() {
       copy_bytes(kernel_paddr, (void *)(part->first_sector_lba * SECTOR_SZ),
                  kernel_len);
       pmode_puts("Copied the kernel to memory.\r\n");
+
+      _fulfill_boot_protocol_requests(kernel_paddr, kernel_len);
+      pmode_puts("Fulfilled kernel boot protocol requests.\r\n");
+
       return kernel_paddr;
     }
   }

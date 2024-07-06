@@ -2,6 +2,7 @@
 /// Some useful definitions used by page_table.c (and maybe the kernel
 /// once we have that).
 
+#include "boot_protocol.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -76,25 +77,6 @@ struct cpuid_features {
 
 _Static_assert(sizeof(struct cpuid_features) == 8,
                "cpuid_features should be 64 bits");
-
-enum e820_mm_type {
-  E820_MM_TYPE_USABLE = 1,
-  E820_MM_TYPE_RESERVED,
-  E820_MM_TYPE_ACPI_RECLAIMABLE,
-  E820_MM_TYPE_ACPI_NVS,
-  E820_MM_TYPE_BAD_MEM,
-
-  // Non-standard type, indicates a bootloader type to the kernel.
-  E820_MM_TYPE_BOOTLOADER = 6,
-};
-
-struct e820_mm_entry {
-  uint64_t base;
-  uint64_t len;
-  // Can't use the enum type since the size is undefined.
-  uint32_t type;
-  uint32_t acpi_extended_attrs;
-};
 
 struct page_directory_entry {
   bool p : 1;
