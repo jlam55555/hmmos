@@ -10,17 +10,37 @@ COMMON_SRC_DIR:=$(SRC_DIR)/common
 
 AS:=as
 ASFLAGS:=--32 --fatal-warnings
-LD:=ld.lld
 CC:=clang
-CFLAGS:=-m32 -ffreestanding -O0 -fno-pie -Werror -I$(COMMON_SRC_DIR)
+CFLAGS:=\
+	-m32 \
+	-ffreestanding \
+	-O0 \
+	-fno-pie \
+	-Werror \
+	-I$(COMMON_SRC_DIR)
 QEMU_FLAGS:=-m 4G
+
+# libgcc contains some useful logic that may be used implicitly by
+# gcc/clang (e.g., __divdi3 for unsigned long long operations on a
+# 32-bit architecture that doesn't support these operations
+# natively). It isn't linked by default if `-ffreestanding` or
+# `-nostdlib` is provided
+#
+# libgcc.a is in a location known to the compiler but not the linker,
+# so we need to query the compiler for it.
+LIBGCC:=$(shell $(CC) $(CFLAGS) -print-libgcc-file-name)
+
+LD:=ld.lld
+LDFLAGS:=--oformat=binary \
+	--build-id=none \
+	-nostdlib \
+	$(LIBGCC)
 
 ################################################################################
 # Bootloader-specific config
 ################################################################################
 BOOT_LINKER_SCRIPT:=$(BOOT_SRC_DIR)/linker.ld
-BOOT_LDFLAGS:=--oformat=binary \
-	--build-id=none \
+BOOT_LDFLAGS:=$(LDFLAGS) \
 	-T$(BOOT_LINKER_SCRIPT)
 
 BOOTLOADER:=$(OUT_DIR)/boot.bin
@@ -34,8 +54,7 @@ BOOT_OBJS:=$(_BOOT_OBJS:$(SRC_DIR)/%.S=$(OUT_DIR)/%.o)
 # Kernel-specific config
 ################################################################################
 KERNEL_LINKER_SCRIPT:=$(KERNEL_SRC_DIR)/linker.ld
-KERNEL_LDFLAGS:=--oformat=binary \
-	--build-id=none \
+KERNEL_LDFLAGS:=$(LDFLAGS) \
 	-T$(KERNEL_LINKER_SCRIPT)
 KERNEL:=$(OUT_DIR)/kernel.bin
 

@@ -64,7 +64,7 @@ enable_a20:
 	jz .Lenable_a20__do_enable
 	## Already enabled, nothing to do here.
 	mov $.La20_already_enabled_msg, %di
-	call println
+	call rmode_println
 	ret
 
 .Lenable_a20__do_enable:
@@ -72,8 +72,8 @@ enable_a20:
 	## easy way to test this... for now simply die if we encounter
 	## this. We can deal with this when we get to it.
 	mov $.La20_disabled_msg, %di
-	call println
-	jmp done
+	call rmode_println
+	jmp rmode_done
 
 	.section .rodata
 .La20_already_enabled_msg:

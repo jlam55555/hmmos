@@ -1,10 +1,21 @@
-	## At this point, we're in protected mode and shouldn't try to
-	## use any of the real-mode utilities.
+	## There's not much significance in the term "stage 2" other
+	## than the fact that this comes after boot.S and
+	## stage1_5.S. I initially thought it sounded like GRUB's
+	## stage 2 but this is much less complicated.
 	##
-	## It is possible to switch back to real mode, but it's easier
-	## to do everything that need be done in real mode first
-	## before switching to pmode so we don't need to carefully
-	## save state.
+	## At this point, we've entered 32-bit protected mode, and
+	## only should switch back to real mode for select BIOS
+	## functions (e.g., copying the kernel from disk or setting
+	## video settings).
+	##
+	## Since we're in 32-bit mode, we have the x86 cdecl calling
+	## convention and can interop with C code.
+	##
+	## The main goals of this stage are to:
+	## - Clean up the E820 memory map loaded in stage 1.5.
+	## - Load the kernel and service its bootloader requests.
+	## - Set up paging.
+	## - Jump to the kernel.
 	.code32
 	.section .text
 

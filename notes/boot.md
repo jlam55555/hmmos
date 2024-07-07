@@ -166,10 +166,12 @@ The kernel is expected to be a flat binary file that will be loaded at
 the configurable `KERNEL_LOAD_ADDR`. Later we can parse and load an
 ELF file, but this is simpler to get started.
 
-## Bootloader steps
+## Bootloader TODO
 Rough order, may need additional steps. Roughly based on the list from
 [Rolling your own
 bootloader](https://wiki.osdev.org/Rolling_Your_Own_Bootloader).
+
+Now all complete!
 
 - [X] Set up MBR
 - [X] Set up basic printing
@@ -189,5 +191,5 @@ bootloader](https://wiki.osdev.org/Rolling_Your_Own_Bootloader).
 	- [X] Kernel map (starting at `KERNEL_LOAD_ADDR`)
 - [ ] Prepare kernel
 	- [X] Load kernel to memory at fixed load address
-	- [ ] Jump to kernel (build a simple toy kernel)
-	- [ ] Report memory map and other capabilities to kernel
+	- [X] Jump to kernel (build a simple toy kernel)
+	- [X] Report memory map and other capabilities to kernel

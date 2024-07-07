@@ -1,21 +1,21 @@
 #include "page_table.h"
 #include "boot_protocol.h"
+#include "console.h"
+#include "libc_minimal.h"
 #include "mbr.h"
 #include "memdefs.h"
-#include "pmode_print.h"
-#include "string.h"
 #include <assert.h>
 #include <stddef.h>
 
 /// Simplified printing function. Ignore ACPI attributes for now.
 static void _e820_entry_print(struct e820_mm_entry *const ent) {
-  pmode_puts("  base=");
-  pmode_printq(ent->base);
-  pmode_puts(" len=");
-  pmode_printq(ent->len);
-  pmode_puts(" type=");
-  pmode_printb(ent->type);
-  pmode_puts("\r\n");
+  console_puts("  base=");
+  console_printq(ent->base);
+  console_puts(" len=");
+  console_printq(ent->len);
+  console_puts(" type=");
+  console_printb(ent->type);
+  console_puts("\r\n");
 }
 
 /// Parse and print the memory map. We could do this in real mode when
@@ -23,13 +23,13 @@ static void _e820_entry_print(struct e820_mm_entry *const ent) {
 /// it now for setting up the page table).
 void e820_mm_print() {
   struct e820_mm_entry *ent;
-  pmode_puts("E820 memory map:\r\n");
+  console_puts("E820 memory map:\r\n");
   for (ent = e820_mem_map; e820_entry_present(ent); ++ent) {
     _e820_entry_print(ent);
   }
-  pmode_puts("Number of entries: ");
-  pmode_printb(ent - e820_mem_map);
-  pmode_puts("\r\n");
+  console_puts("Number of entries: ");
+  console_printb(ent - e820_mem_map);
+  console_puts("\r\n");
 }
 
 void *e820_alloc(unsigned len, bool hugepg_align) {
@@ -37,7 +37,7 @@ void *e820_alloc(unsigned len, bool hugepg_align) {
   // twice: loop one (huge)page at a time in the first GB until we find a
   // free area of this size.
   unsigned incr = hugepg_align ? HUGE_PG_SZ : PG_SZ;
-  for (uint64_t base = incr; base < (1 * GB); base += incr) {
+  for (size_t base = incr; base < (1 * GB); base += incr) {
     // Check that this region completely exists in a usable memory
     // region and doesn't overlap any bad memory regions. We need to
     // check both because the memory regions aren't normalized and may
@@ -74,7 +74,7 @@ bool e820_augment_bootloader(uint64_t base, uint64_t len) {
 
   if (ent - e820_mem_map + 1 >= e820_mm_max_entries) {
     // Last entry must be a null entry.
-    pmode_puts("failed to add bootloader entry to mm: too many entries\r\n");
+    console_puts("failed to add bootloader entry to mm: too many entries\r\n");
     return false;
   }
 
@@ -158,7 +158,7 @@ bool pt_setup(void *kernel_paddr) {
   const unsigned dynamic_alloc_sz = 2 * PG_SZ;
   void *const pt_mem = e820_alloc(dynamic_alloc_sz, false);
   if (pt_mem == NULL) {
-    pmode_puts("failed to alloc page table entries\r\n");
+    console_puts("failed to alloc page table entries\r\n");
     return false;
   }
 
@@ -181,27 +181,27 @@ bool pt_setup(void *kernel_paddr) {
   }
   enable_paging(pd);
 
-  return e820_augment_bootloader((uint64_t)pt_mem, dynamic_alloc_sz);
+  return e820_augment_bootloader((size_t)pt_mem, dynamic_alloc_sz);
 }
 
 bool augment_bootloader_text_stack_sections() {
   // Bootloader stack and text regions, respectively.
-  return e820_augment_bootloader((uint64_t)&mbr_start - PG_SZ, PG_SZ) &&
-         e820_augment_bootloader((uint64_t)&mbr_start, 63 * 0x200);
+  return e820_augment_bootloader((size_t)&mbr_start - PG_SZ, PG_SZ) &&
+         e820_augment_bootloader((size_t)&mbr_start, 63 * 0x200);
 }
 
 bool check_cpuid_features() {
   struct cpuid_features feat;
   get_cpuid_features(&feat);
 
-  pmode_puts("cpuid features (%edx:%ecx)=");
-  pmode_printq(*(uint64_t *)&feat);
-  pmode_puts("\r\n");
+  console_puts("cpuid features (%edx:%ecx)=");
+  console_printq(*(uint64_t *)&feat);
+  console_puts("\r\n");
 
   if (!feat.pae || !feat.pse) {
     // We depend on PSE (4MB pages) and may depend on PAE later (for
     // physical addresses above 4GB).
-    pmode_puts("missing required cpuid features (PAE and PSE)\r\n");
+    console_puts("missing required cpuid features (PAE and PSE)\r\n");
     return false;
   }
 
@@ -212,13 +212,13 @@ bool check_cpuid_features() {
 void check_paging_setup() {
   /// Note: this memcmp is pretty slow, since the basic memcmp
   /// operator we have goes one byte at a time.
-  pmode_puts("Checking that the HHDM matches low memory...\r\n");
+  console_puts("Checking that the HHDM matches low memory...\r\n");
   bool direct_map_matches_hhdm =
       !memcmp((void *)PG_SZ, (void *)HM_START + PG_SZ, 1 * MB - PG_SZ);
   if (direct_map_matches_hhdm) {
-    pmode_puts("paging is (now) set up correctly\r\n");
+    console_puts("paging is (now) set up correctly\r\n");
   } else {
-    pmode_puts("paging not set up correctly\r\n");
+    console_puts("paging not set up correctly\r\n");
   }
 }
 

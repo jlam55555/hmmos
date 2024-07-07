@@ -2,6 +2,9 @@ SECTIONS
 {
 	/* MBR */
 	.text.boot (0x7C00) : {
+		/* MBR entry code */
+		*(.text.boot.entry);
+		/* Other MBR code (e.g., basic print fcn */
 		*(.text.boot);
 	}
 

@@ -53,15 +53,15 @@ detect_mem_map:
 	mov %di, %ax
 	mov $E820_ENTRY_SZ, %bl
 	div %bl
-	call printb		# Print result in %al
+	call rmode_printb	# Print result in %al
 
 	mov $.Ldetect_mem_map_success_str, %di
-	call println
+	call rmode_println
 	jmp .Ldetect_mem_map__exit
 
 .Ldetect_mem_map__err:
 	mov $.Ldetect_mem_map_err_str, %di
-	call println
+	call rmode_println
 
 .Ldetect_mem_map__exit:
 	pop %edx

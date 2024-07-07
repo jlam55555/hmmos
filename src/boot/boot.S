@@ -1,11 +1,14 @@
 	## Bootloader entry point. This needs to fit into the 512-byte
 	## boot sector (MBR). See /notes/boot.md.
+	##
+	## This loads the rest of the bootloader into memory. Then we
+	## jump into stage1_5.S, which sets up protected mode and
+	## jumps into stage2.S. This does some protected-mode setup
+	## and jumps into the kernel.
 	.code16
-	.section .text.boot
+	.section .text.boot.entry
 
-	## This print should only be used in real mode.
-	.globl print
-	.globl done
+	.globl rmode_done
 	.globl mbr_start
 mbr_start:
 	## Clear registers (except %sp). We don't really depend on the
@@ -34,7 +37,7 @@ mbr_start:
 
 	## Print hello message (might as well).
 	mov $.Lwelcome_msg, %di
-	call print
+	call rmode_print
 
 	## Load bootloader stage 1.5 into memory.
 	mov $.Ldisk_address_packet, %si
@@ -49,30 +52,16 @@ mbr_start:
 	## If we run into this, it's debugger time. Since I'm too lazy
 	## to put printing functions here.
 	mov $.Lload_stage_1_5_err_msg, %di
-	call print
-	jmp done
-
-	## Very simple string printing function.
-	## - Input: %di (char*)
-	## - Clobbers: %ax
-print:
-	mov $0x0E, %ah
-.Lprint__loop:
-	mov (%di), %al
-	test %al, %al
-	jz .Lprint__exit
-	int $0x10
-	inc %di
-	jmp .Lprint__loop
-.Lprint__exit:
-	ret
+	call rmode_print
+	jmp rmode_done
 
 	## System exit.
-done:	mov $.Ldone_msg, %di
-	call print
-.Ldone__loop:
+rmode_done:
+	mov $.Lrmode_done_msg, %di
+	call rmode_print
+.Lrmode_done__loop:
 	hlt
-	jmp .Ldone__loop
+	jmp .Lrmode_done__loop
 
 	.section .rodata.boot
 .Ldisk_address_packet:
@@ -86,5 +75,5 @@ done:	mov $.Ldone_msg, %di
 	.asciz "Welcome to HmmOS!\r\n"
 .Lload_stage_1_5_err_msg:
 	.asciz "Error loading stage 1.5 bootloader\r\n"
-.Ldone_msg:
+.Lrmode_done_msg:
 	.asciz "done()\r\n"

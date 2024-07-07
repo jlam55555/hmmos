@@ -9,6 +9,13 @@
 	##
 	## This is not a complicated bootloader so we won't use all
 	## that space, but it's there if needed.
+	##
+	## Currently all this "stage 1.5" bootloader does is to query
+	## some functionality from the BIOS and setup protected mode
+	## (e.g., enabling A20 line). Once we enter protected mode we
+	## jump to stage 2. This terminology is not standard and stage
+	## 2 can probably be merged into "stage 1.5" but let's keep it
+	## separate for now.
 	.code16
 	.section .text
 
@@ -18,7 +25,7 @@ stage_1_5:
 	## Dumping registers and testing the print functions.
 	## Not wise to modify %esp so I'm leaving it.
 	mov $.Ldump_regs_msg, %di
-	call println
+	call rmode_println
 
 	mov $0x1234, %ax
 	mov $0x5678, %bx
@@ -30,15 +37,15 @@ stage_1_5:
 	call dump_regs
 
 	mov $.Lenable_a20_msg, %di
-	call println
+	call rmode_println
 	call enable_a20
 
 	mov $.Ldetect_mem_map_msg, %di
-	call println
+	call rmode_println
 	call detect_mem_map
 
 	mov $.Lenable_unreal_mode_msg, %di
-	call println
+	call rmode_println
 	call enter_unreal_mode
 
 	## TODO (intern project): set up graphical mode, with
@@ -46,7 +53,7 @@ stage_1_5:
 
 	## Enter 32-bit mode (and never leave)
 	mov $.Lenable_prot_mode_msg, %di
-	call println
+	call rmode_println
 	mov $pmode_entry, %ax
 	jmp enter_prot_mode
 

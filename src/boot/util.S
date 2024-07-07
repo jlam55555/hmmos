@@ -26,10 +26,10 @@ get_ip:
 	## - Clobbers: %eax
 .Ldump_reg:
 	push %ax
-	call print
+	call rmode_print
 	pop %ax
-	call printl
-	call println
+	call rmode_printl
+	call rmode_println
 	ret
 
 	## Same as above but for special registers where we can't
@@ -38,10 +38,10 @@ get_ip:
 	## - Clobbers: %ax
 .Ldump_reg_16:
 	push %ax
-	call print
+	call rmode_print
 	pop %ax
-	call printw
-	call println
+	call rmode_printw
+	call rmode_println
 	ret
 
 	## Print GPRs. We don't need to print segment registers in

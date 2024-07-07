@@ -1,4 +1,10 @@
-#include "string.h"
+#include "libc_minimal.h"
+#include "console.h"
+#include <stdint.h>
+
+////////////////////////////////////////////////////////////////////////////////
+// string.h
+////////////////////////////////////////////////////////////////////////////////
 
 void *memcpy(void *dest, const void *src, size_t n) {
   uint8_t *pdest = (uint8_t *)dest;
@@ -49,4 +55,20 @@ int memcmp(const void *s1, const void *s2, size_t n) {
   }
 
   return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// assert.h
+////////////////////////////////////////////////////////////////////////////////
+void __assert_fail(const char *assertion, const char *file, unsigned int line,
+                   const char *function) {
+  // We don't have access to printf in libc_minimal, so use the basic
+  // console_*() functions.
+  console_puts(file);
+  console_printw(line); // Prints in hex; a little awkward.
+  console_puts2(function, "(): assert(", assertion, ") failed\r\n");
+
+  for (;;) {
+    __asm__ volatile("hlt");
+  }
 }
