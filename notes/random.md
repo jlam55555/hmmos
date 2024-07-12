@@ -106,3 +106,81 @@ make it harder for me to handle the expected case for real hardware.
   perform the limit checks ([at least as of
   2019](https://lists.gnu.org/archive/html/qemu-devel/2019-02/msg06518.html)).
   I do get GPFs for the code segment though.
+
+## .clangd configuration
+Clangd configuration is ... not the best. First of all, it's
+confusing. It can be configured via `compile_flags.txt`,
+`compile_commands.json`, and/or `.clangd`.
+
+The way I understand this currently is that clangd starts by looking
+at the `.clangd` file (which can be in any parent directory of the
+file you're compiling). This will then use the `compile_flags.txt`
+file which contains default compilation options, or
+`compile_commands.json` which contains concrete compilation options
+for each target, in order to know which flags to compile with.
+
+The problem with `compile_flags.txt` is that it's too general -- this
+will apply to all files (you can't specify different compile flags for
+C vs. C++ files for example). The problem with `compile_commands.json`
+is that you have to generate it every time you want to use
+it. (Presumably you can automate this, e.g., using
+[`bear`](https://github.com/rizsotto/Bear)).
+
+The [`.clangd` configuration file](https://clangd.llvm.org/config)
+solves most of this problem. You can filter files using the
+`PathMatch:` predicates to filter by C/C++ files. However adding an
+`-Irelative/include/dir` is relative to the compiled file, not to the
+project root, which is
+[inconvenient](https://github.com/clangd/clangd/issues/1038).
+
+## tmux vs. GNU screen
+tl;dr: friendship ended with `screen`. now `tmux` is my best friend.
+
+I had been using `screen` as my terminal multiplexor of choice since I
+learned it from my mentor at Google (who had a similar emacs+screen
+setup). It worked ... alright up until recently, when I discovered
+various reasons why `tmux` seems to "just work" better OOTB. Some
+specific anecdotal instances (and this only from a few days of using
+`tmux` at work):
+
+- I had a very bizarre bug at work where a program would only crash in
+  `screen`. Turns out that it was messing with my maximum stack size
+  -- the return value of `ulimit -s` was different inside and outside
+  `screen`.
+- `screen` is very slow pasting lines. Even a few (not very long)
+  lines can take a few seconds. I thought this was an emacs thing or
+  something to do with long lines until I tried it in `tmux` and it's
+  just ... as fast as you would expect pasting text to be?
+- `tmux` actually has amazing integration with iTerm with its
+  so-called _control mode_. This means the mouse just "works" with
+  click/drag/selections for managing windows and panes. However, this
+  seems to have been [developed by the author of
+  iTerm](https://unix.stackexchange.com/questions/453436/what-is-the-control-mode-in-tmux#comment1146454_525733)
+  and Linux terminal emulator support is nonexistent.
+- `tmux`'s scriptability seems more modern and intuitive. `screen` is
+  also fairly scriptable but it seems to have a more limited set of
+  commands.
+- I've had fewer problems with using emacs in `tmux`. For example,
+  colors were all screwed up in `screen` due to a
+  `COLORTERM=truecolor` envvar, and comment background/foreground
+  colors were swapped. Also, I had problems transmitting
+  `M-<arrowkeys>` in `screen` but had no issue in `tmux`.
+- `tmux` and `screen` sessions and windows are a little different. In
+  `screen`, you can attach to the same session multiple times, and
+  each instance of the session can be looking at different windows
+  (tabs). In `tmux`, you can do this by creating new "grouped" session
+  that shares the same windows. I.e., windows can be moved around or
+  shared between sessions in `tmux`, which is pretty cool and seems
+  more flexible.
+- `tmux` and `screen` panes also are a bit different. In `screen` the
+  panes are attached to a session; each pane displays one window of
+  the session. (Multiple panes can display the same window). In `tmux`
+  each window contains a set of one or more panes. It's also easy to
+  navigate between panes using the `find-window` function.
+- `tmux` also has the idea of servers and clients, although I haven't
+  figured out how that works yet.
+
+Luckily, the switch was pretty seamless. Both `tmux` and `screen` use
+commands with an emacs-like prefix-key. I remap this to `C-o` since
+that doesn't conflict with my usual emacs keybindings (as `screen`'s
+`C-a` and `tmux`'s `C-b` both do).

@@ -18,3 +18,7 @@ going to bother linking OSDev wikis since those are implied.
 ## MBR
 - CHS decoding: https://thestarman.pcministry.com/asm/mbr/PartTables.htm#Decoding
 - fdisk CHS decoding: https://superuser.com/a/1733477
+
+## Build system
+- Advanced auto dependency generation: https://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
+  - also: https://stackoverflow.com/a/39003791

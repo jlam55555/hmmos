@@ -4,6 +4,11 @@
 /// TODO: Some of these are architecture-specific (and should probably
 /// be moved to an arch/ subdir).
 
+#if defined(__cplusplus) && !defined(__clang__)
+// _Static_assert isn't defined in g++.
+#define _Static_assert static_assert
+#endif
+
 #define KB 0x400U
 #define MB (KB * KB)
 #define GB (KB * MB)

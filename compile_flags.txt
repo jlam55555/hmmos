@@ -1,5 +1,0 @@
--m32
--ffreestanding
--O0
--fno-pie
--Isrc/common

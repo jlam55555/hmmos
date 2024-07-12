@@ -12,6 +12,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /// Write a single character to the console buffer.
 void console_putchar(char c);
 
@@ -33,3 +37,7 @@ void console_printb(const uint8_t n);
 void console_printw(const uint16_t n);
 void console_printl(const uint32_t n);
 void console_printq(const uint64_t n);
+
+#ifdef __cplusplus
+}
+#endif

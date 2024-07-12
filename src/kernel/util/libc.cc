@@ -106,13 +106,13 @@ static size_t _parse_format_spec(const char *s, struct format_spec *fs) {
   fs->length = FS_NORMAL;
   if (*it == 'l') {
     while (fs->length < FS_LONG_LONG && *it == 'l') {
-      ++fs->length;
+      ++reinterpret_cast<int &>(fs->length);
       ++it;
     }
   } else if (*it == 'h') {
     fs->length = FS_SHORT;
     while (fs->length < FS_SHORT_SHORT && *it == 'h') {
-      ++fs->length;
+      ++reinterpret_cast<int &>(fs->length);
       ++it;
     }
   }

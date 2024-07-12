@@ -1,16 +1,37 @@
 #include "boot_protocol.h"
-#include "libc.h"
+#include "util/libc.h"
+#include <concepts>
 #include <limits.h>
 
 static volatile const BP_REQ(MEMORY_MAP, _mem_map_req);
 
-static uint64_t _fac(unsigned n) {
+namespace {
+// Trying out random C++ features.
+
+template <unsigned n> constexpr uint64_t fac() {
   uint64_t res = 1;
-  while (n) {
-    res *= n--;
+  unsigned m = n;
+  while (m) {
+    res *= m--;
   }
   return res;
 }
+
+template <typename T>
+concept IsBicycle = requires(T t) {
+  { t.year } -> std::same_as<unsigned &>;
+};
+
+class A {};
+class B {
+public:
+  unsigned year;
+};
+
+static_assert(!IsBicycle<A>, "A is not a bicycle");
+static_assert(IsBicycle<B>, "B is a bicycle");
+
+} // namespace
 
 __attribute__((section(".text.entry"))) void _entry() {
   printf("We're in the kernel now!\r\n");
@@ -22,7 +43,7 @@ __attribute__((section(".text.entry"))) void _entry() {
          ent - _mem_map_req.memory_map);
 
   /// Random computation.
-  printf("fac(15)=%llu\r\n", _fac(15));
+  printf("fac(15)=%llu\r\n", fac<15>());
   printf("LLONG_MIN=%lld\r\n", LLONG_MIN);
 
   for (;;) {

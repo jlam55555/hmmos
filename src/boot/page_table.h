@@ -105,7 +105,7 @@ struct page_directory_entry_4mb {
   bool pat : 1;
   // High bits of page address (e.g., for PSE-36). We're not going to
   // support that here, so this should always be zero.
-  uint8_t addr_ext : 8;
+  uint16_t addr_ext : 8;
   uint8_t rsv0 : 1;
   uint32_t addr : 10;
 } __attribute__((packed));

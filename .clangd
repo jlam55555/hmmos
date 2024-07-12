@@ -1,0 +1,24 @@
+# -*- mode: yaml -*-
+# Add common C/C++ flags. Annoyingly, -I is relative to the file being
+# compiled rather than the project root, so this is a bit heuristic.
+CompileFlags:
+    Add:
+      - -m32
+      - -ffreestanding
+      - -O0
+      - -fno-pie
+      - -I../../src/common
+      - -I../../../src/common
+      - -I../../../../src/common
+---
+# src/boot and src/common only contain C files.
+If:
+    PathMatch: src/(boot|common)/.*\.(h|c)
+CompileFlags:
+    Add: [-xc, -std=c17]
+---
+# src/kernel only contains C++ files.
+If:
+    PathMatch: src/kernel/.*\.(h|cc)
+CompileFlags:
+    Add: [-xc++, -std=c++2a, -fno-rtti]
