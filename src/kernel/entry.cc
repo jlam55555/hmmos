@@ -1,4 +1,5 @@
 #include "boot_protocol.h"
+#include "drivers/serial.h"
 #include "util/libc.h"
 #include <concepts>
 #include <limits.h>
@@ -45,6 +46,12 @@ __attribute__((section(".text.entry"))) void _entry() {
   /// Random computation.
   printf("fac(15)=%llu\r\n", fac<15>());
   printf("LLONG_MIN=%lld\r\n", LLONG_MIN);
+
+  /// Print to serial.
+  const char *str = "Cereal hello world!\r\n";
+  while (*str) {
+    serial::get().write(*str++);
+  }
 
   for (;;) {
     __asm__("hlt");

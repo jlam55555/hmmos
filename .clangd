@@ -21,4 +21,13 @@ CompileFlags:
 If:
     PathMatch: src/kernel/.*\.(h|cc)
 CompileFlags:
-    Add: [-xc++, -std=c++2a, -fno-rtti]
+    Add:
+      - -xc++
+      - -std=c++2a
+      - -fno-rtti
+      - -I../../src/kernel
+      - -I../../../src/kernel
+      - -I../../../../src/kernel
+      - -I../../src/kernel/arch/x86
+      - -I../../../src/kernel/arch/x86
+      - -I../../../../src/kernel/arch/x86

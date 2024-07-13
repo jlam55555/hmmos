@@ -8,6 +8,8 @@ BOOT_SRC_DIR:=$(SRC_DIR)/boot
 KERNEL_SRC_DIR:=$(SRC_DIR)/kernel
 COMMON_SRC_DIR:=$(SRC_DIR)/common
 
+ARCH:=x86
+
 AS:=as
 ASFLAGS:=--32 --fatal-warnings
 CC:=clang
@@ -22,8 +24,12 @@ _CFLAGS:=\
 	-MP \
 	-I$(COMMON_SRC_DIR)
 CFLAGS:=$(_CFLAGS) -std=c17
-CXXFLAGS:=$(_CFLAGS) -std=c++2a -fno-rtti
-QEMU_FLAGS:=-m 4G
+CXXFLAGS:=$(_CFLAGS) \
+	-std=c++2a \
+	-fno-rtti \
+	-I$(KERNEL_SRC_DIR) \
+	-I$(KERNEL_SRC_DIR)/arch/$(ARCH)
+QEMU_FLAGS:=-m 4G -serial stdio
 
 # libgcc contains some useful logic that may be used implicitly by
 # gcc/clang (e.g., __divdi3 for unsigned long long operations on a
