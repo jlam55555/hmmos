@@ -3,13 +3,13 @@ SECTIONS
 	/* MBR */
 	.text.boot (0x7C00) : {
 		/* MBR entry code */
-		out/boot/boot.o(.text)
+		out*/boot/boot.o(.text)
 		/* Other MBR code (e.g., basic print fcn) */
 		*(.text.boot)
 	}
 
 	.rodata.boot : {
-		out/boot/boot.o(.rodata)
+		out*/boot/boot.o(.rodata)
 	}
 
 	.sig (0x7DFE) : {
