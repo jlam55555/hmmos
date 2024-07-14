@@ -9,6 +9,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+extern "C" {
+namespace nonstd {
+
 ////////////////////////////////////////////////////////////////////////////////
 // ctype.h
 ////////////////////////////////////////////////////////////////////////////////
@@ -17,9 +20,29 @@ bool isprint(char c);
 ////////////////////////////////////////////////////////////////////////////////
 // string.h
 ////////////////////////////////////////////////////////////////////////////////
-size_t strlen(const char *s);
-int strcmp(const char *s1, const char *s2);
-int strncmp(const char *s1, const char *s2, size_t n);
+
+// Defined here so they can be constexpr (used in nonstd::string_view).
+constexpr size_t strlen(const char *s) {
+  const char *it = s;
+  while (*it) {
+    ++it;
+  }
+  return it - s;
+}
+constexpr int strcmp(const char *s1, const char *s2) {
+  while (*s1 && *s2 && *s1 == *s2) {
+    ++s1;
+    ++s2;
+  }
+  return *s1 - *s2;
+}
+constexpr int strncmp(const char *s1, const char *s2, size_t n) {
+  while (*s1 && *s2 && *s1 == *s2 && --n) {
+    ++s1;
+    ++s2;
+  }
+  return n ? *s1 - *s2 : 0;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // stdio.h
@@ -32,3 +55,6 @@ size_t snprintf(char *s, size_t n, const char *fmt, ...)
 size_t vprintf(const char *fmt, va_list);
 size_t vsprintf(char *s, const char *fmt, va_list);
 size_t vsnprintf(char *s, size_t n, const char *fmt, va_list);
+
+} // namespace nonstd
+}

@@ -1,6 +1,6 @@
 #include "boot_protocol.h"
 #include "drivers/serial.h"
-#include "util/libc.h"
+#include "nonstd/libc.h"
 #include <concepts>
 #include <limits.h>
 
@@ -35,17 +35,17 @@ static_assert(IsBicycle<B>, "B is a bicycle");
 } // namespace
 
 __attribute__((section(".text.entry"))) void _entry() {
-  printf("We're in the kernel now!\r\n");
+  nonstd::printf("We're in the kernel now!\r\n");
 
   struct e820_mm_entry *ent;
   for (ent = _mem_map_req.memory_map; e820_entry_present(ent); ++ent) {
   }
-  printf("Found %u entries in the memory map.\r\n",
-         ent - _mem_map_req.memory_map);
+  nonstd::printf("Found %u entries in the memory map.\r\n",
+                 ent - _mem_map_req.memory_map);
 
   /// Random computation.
-  printf("fac(15)=%llu\r\n", fac<15>());
-  printf("LLONG_MIN=%lld\r\n", LLONG_MIN);
+  nonstd::printf("fac(15)=%llu\r\n", fac<15>());
+  nonstd::printf("LLONG_MIN=%lld\r\n", LLONG_MIN);
 
   /// Print to serial.
   const char *str = "Cereal hello world!\r\n";

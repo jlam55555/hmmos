@@ -52,8 +52,10 @@ pmode_entry:
 	test %eax, %eax
 	jz .Lpmode_entry__err
 
-	## Check paging before ...
+	## Check paging before (this is expected to fail) ...
 	call check_paging_setup
+	test %eax, %eax
+	jnz .Lpmode_entry__err
 
 	call pt_setup
 	test %eax, %eax
@@ -61,8 +63,10 @@ pmode_entry:
 	## Cleanup input parameter.
 	pop %eax
 
-	## ... and after.
+	## ... and after (this is expected to succeed).
 	call check_paging_setup
+	test %eax, %eax
+	jz .Lpmode_entry__err
 
 	call e820_mm_print
 
@@ -78,8 +82,11 @@ pmode_entry:
 	jmp jump_to_kernel
 
 .Lpmode_entry__err:
+	push $.Lpmode_entry__err__str
+	call console_puts
+.Lpmode_entry__err__loop:
 	hlt
-	jmp .Lpmode_entry__err
+	jmp .Lpmode_entry__err__loop
 
 	## `extern void get_cpuid_features(struct cpuid_features*);`
 	## Returns CPUID feature information as a 64-bit value.
@@ -222,3 +229,7 @@ copy_bytes:
 	.align 512
 .Lcopy_bytes__buf:
 	.fill 512
+
+	.section .rodata
+.Lpmode_entry__err__str:
+	.asciz "encountered error in stage2"

@@ -6,7 +6,7 @@
 	## jumps into stage2.S. This does some protected-mode setup
 	## and jumps into the kernel.
 	.code16
-	.section .text.boot.entry
+	.section .text
 
 	.globl rmode_done
 	.globl mbr_start
@@ -63,7 +63,7 @@ rmode_done:
 	hlt
 	jmp .Lrmode_done__loop
 
-	.section .rodata.boot
+	.section .rodata
 .Ldisk_address_packet:
 	## Hardcoded to copy the 1.5 bootloader.
 	.byte 0x10		# size

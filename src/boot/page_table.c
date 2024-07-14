@@ -209,23 +209,23 @@ bool check_cpuid_features() {
 }
 
 /// Check that HHDM matches low memory for first (almost) megabyte.
-void check_paging_setup() {
+bool check_paging_setup() {
   /// Note: this memcmp is pretty slow, since the basic memcmp
   /// operator we have goes one byte at a time.
+  ///
+  /// So let's limit this to the first few KBs instead of the full
+  /// 1MB-PG_SZ.
   console_puts("Checking that the HHDM matches low memory...\r\n");
-  bool direct_map_matches_hhdm =
-      !memcmp((void *)PG_SZ, (void *)HM_START + PG_SZ, 1 * MB - PG_SZ);
-  if (direct_map_matches_hhdm) {
-    console_puts("paging is (now) set up correctly\r\n");
-  } else {
-    console_puts("paging not set up correctly\r\n");
-  }
+  return !memcmp((void *)PG_SZ, (void *)HM_START + PG_SZ, 32 * KB);
 }
 
 /// Jump to the kernel! This is not implemented in a regular ASM file
 /// despite being fully ASM since it requires a C macro.
 __attribute__((naked)) void jump_to_kernel() {
+  // The `push $0` is so that if we try to return from the kernel
+  // entrypoint we'll get a null dereference error.
   __asm__ volatile("add %0, %%esp\n\t"
+                   "push $0\n\t"
                    "jmp *%1"
                    :
                    : "rm"(HM_START), "rm"(KERNEL_LOAD_ADDR));

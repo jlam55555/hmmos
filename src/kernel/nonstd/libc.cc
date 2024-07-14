@@ -1,5 +1,8 @@
 #include "libc.h"
 #include "console.h"
+#include "drivers/serial.h"
+
+namespace nonstd {
 
 /// Since there are many definitions in this file, let's keep them in
 /// the same order as the declarations in the header file for some
@@ -13,29 +16,9 @@ bool isprint(char c) { return c >= 32; }
 ////////////////////////////////////////////////////////////////////////////////
 // string.h
 ////////////////////////////////////////////////////////////////////////////////
-size_t strlen(const char *s) {
-  const char *it = 0;
-  while (*it) {
-    ++it;
-  }
-  return it - s;
-}
 
-int strcmp(const char *s1, const char *s2) {
-  while (*s1 && *s2 && *s1 == *s2) {
-    ++s1;
-    ++s2;
-  }
-  return *s1 - *s2;
-}
-
-int strncmp(const char *s1, const char *s2, size_t n) {
-  while (*s1 && *s2 && *s1 == *s2 && --n) {
-    ++s1;
-    ++s2;
-  }
-  return n ? *s1 - *s2 : 0;
-}
+// nothing here for now; the string functions I need are all constexpr
+// and thus inline (and thus in the header).
 
 ////////////////////////////////////////////////////////////////////////////////
 // stdio.h
@@ -232,9 +215,7 @@ static inline void _term_writer(char c, __attribute__((unused)) char *_buf,
     return;
   }
   console_putchar(c);
-
-  // TODO: also write to serial port (either here in _term_writer or
-  // in a different writer).
+  serial::get().write(c);
 }
 
 /// This returns the number of characters that would be printed
@@ -377,3 +358,5 @@ size_t printf(const char *fmt, ...) {
   va_end(va);
   return rv;
 }
+
+} // namespace nonstd

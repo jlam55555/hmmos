@@ -34,7 +34,12 @@ InstalledDir: /usr/bin
 Build the bootloader and run it in QEMU. Make sure to have `qemu` and
 GNU `make` installed.
 ```
+$ # Run the kernel
 $ make run
+$
+$ # Run tests
+$ make run TEST=all
+$ make run TEST=<testselection>
 ```
 
 ## Misc.
