@@ -84,12 +84,14 @@ override QEMU_FLAGS+=-display none -serial stdio
 else
 RUN_TARGET=$(BOOTABLE_DISK)
 # QEMU will write to the console. Exit with `C-a x`.
-override QEMU_FLAGS+=-nographic
+# override QEMU_FLAGS+=-nographic
 endif
 
 ifneq ($(DEBUG),)
-override QEMU_FLAGS+=-no-reboot -no-shutdown
+# Turn on -no-reboot and -no-shutdown as needed.
+override QEMU_FLAGS+=-no-reboot
 override OUT_DIR:=$(OUT_DIR).debug
+override CXXFLAGS+=-DDEBUG
 endif
 
 ifneq ($(SHOWINT),)

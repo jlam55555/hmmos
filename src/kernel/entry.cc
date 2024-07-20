@@ -1,8 +1,8 @@
 #include "boot_protocol.h"
 #include "drivers/serial.h"
 #include "nonstd/libc.h"
+#include <climits>
 #include <concepts>
-#include <limits.h>
 
 static volatile const BP_REQ(MEMORY_MAP, _mem_map_req);
 
