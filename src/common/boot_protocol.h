@@ -52,9 +52,13 @@ struct e820_mm_entry {
   // Can't use the enum type since the size is undefined.
   uint32_t type;
   uint32_t acpi_extended_attrs;
+
+#ifdef __cplusplus
+  bool operator<=>(const e820_mm_entry &) const = default;
+#endif
 };
 
-static inline bool e820_entry_present(struct e820_mm_entry *const ent) {
+static inline bool e820_entry_present(const struct e820_mm_entry *ent) {
   // An all-empty entry indicates the end of an array.
   return ent->base || ent->len || ent->type || ent->acpi_extended_attrs;
 }

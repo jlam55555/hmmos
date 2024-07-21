@@ -85,17 +85,24 @@ else
 RUN_TARGET=$(BOOTABLE_DISK)
 # QEMU will write to the console. Exit with `C-a x`.
 # override QEMU_FLAGS+=-nographic
+override QEMU_FLAGS+=-serial stdio
 endif
 
 ifneq ($(DEBUG),)
-# Turn on -no-reboot and -no-shutdown as needed.
+# TODO: Investigate if we can use -g even if we're not using proper
+# ELF files.
 override QEMU_FLAGS+=-no-reboot
 override OUT_DIR:=$(OUT_DIR).debug
 override CXXFLAGS+=-DDEBUG
+
+# Interactive mode with gdb (DEBUG=i).
+ifeq ($(DEBUG),i)
+override QEMU_FLAGS+=-S -s -no-shutdown
+endif
 endif
 
 ifneq ($(SHOWINT),)
-override QEMU_FLAGS+=-d int,cpu_reset
+override QEMU_FLAGS+=-d int,cpu_reset -no-reboot
 endif
 
 # Make sure to recompile the bootloader and modify the kernel link

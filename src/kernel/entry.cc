@@ -1,5 +1,6 @@
 #include "boot_protocol.h"
 #include "drivers/serial.h"
+#include "mm/page_frame_allocator.h"
 #include "nonstd/libc.h"
 #include <climits>
 #include <concepts>
@@ -37,11 +38,14 @@ static_assert(IsBicycle<B>, "B is a bicycle");
 __attribute__((section(".text.entry"))) void _entry() {
   nonstd::printf("We're in the kernel now!\r\n");
 
+  // C++-ify the memory map.
   struct e820_mm_entry *ent;
   for (ent = _mem_map_req.memory_map; e820_entry_present(ent); ++ent) {
   }
-  nonstd::printf("Found %u entries in the memory map.\r\n",
-                 ent - _mem_map_req.memory_map);
+  std::span<e820_mm_entry> mem_map{
+      _mem_map_req.memory_map,
+      static_cast<size_t>(ent - _mem_map_req.memory_map)};
+  nonstd::printf("Found %u entries in the memory map.\r\n", mem_map.size());
 
   /// Random computation.
   nonstd::printf("fac(15)=%llu\r\n", fac<15>());
@@ -53,6 +57,17 @@ __attribute__((section(".text.entry"))) void _entry() {
     serial::get().write(*str++);
   }
 
+  /// Initialize page frame array.
+  nonstd::printf("Initializing PFT...\r\n");
+  mem::phys::PageFrameTable pft(mem_map);
+  nonstd::printf("Total mem=%llx Usable mem=%llx\r\n", pft.total_mem_bytes,
+                 pft.usable_mem_bytes);
+
+  /// Initialize page frame allocator.
+  nonstd::printf("Initializing PFA...\r\n");
+  mem::phys::SimplePFA simple_allocator{pft, 0, pft.mem_limit()};
+
+  nonstd::printf("Done.\r\n");
   for (;;) {
     __asm__("hlt");
   }

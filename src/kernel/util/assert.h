@@ -6,7 +6,10 @@
 
 /// This is to make `assert()` more similar to the DEBUG_ASSERT and
 /// TEST_ASSERT macros.
-#define ASSERT assert
+///
+/// The extra pair of parens is due to `assert` failing to accept an
+/// argument with commas.
+#define ASSERT(...) assert((__VA_ARGS__))
 
 /// Compile-out debug macro in non-debug builds.
 #ifdef DEBUG

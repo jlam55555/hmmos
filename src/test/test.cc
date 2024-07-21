@@ -2,8 +2,8 @@
 #include "nonstd/libc.h"
 #include "nonstd/string_view.h"
 
-extern const test::TestInfo __start_rodata_test_info;
-extern const test::TestInfo __stop_rodata_test_info;
+extern const test::detail::TestInfo __start_rodata_test_info;
+extern const test::detail::TestInfo __stop_rodata_test_info;
 
 namespace test {
 
@@ -41,7 +41,7 @@ bool detail::matches(nonstd::string_view test_name,
   return test_name.contains(test_selection);
 }
 
-bool run(const TestInfo *test) {
+bool run(const detail::TestInfo *test) {
   bool res = true;
   test->fn(res);
   nonstd::printf("TEST RESULT %s: %d\r\n", test->name, res);
@@ -52,7 +52,7 @@ void run_tests(const char *test_selection) {
   nonstd::printf("TEST SELECTION=%s\r\n", test_selection);
 
   unsigned tests_run = 0, tests_passed = 0;
-  for (const TestInfo *test_info = &__start_rodata_test_info;
+  for (const detail::TestInfo *test_info = &__start_rodata_test_info;
        test_info != &__stop_rodata_test_info; ++test_info) {
     if (detail::matches(test_info->name, test_selection)) {
       ++tests_run;

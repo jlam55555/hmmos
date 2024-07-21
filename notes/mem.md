@@ -147,3 +147,53 @@ large-scale servers, so another page table level (*PML5*) was added to
 support up to 57 bits (128PB) of virtual address space. This is (as of
 the time of wrting) a pretty new feature (only supported by Intel Ice
 Lake/AMD Ryzen 7000 and newer).
+
+## Kernel memory management
+
+### Physical memory management
+There are two levels of physical memory allocation: page frames and
+smaller chunks.
+
+Firstly, we need a `page frame table`, which is an array of `page
+frame descriptors`s. There exists one page frame descriptor for each
+page frame (4KB physical page) in RAM. This stores metadata about the
+page frame and easily is the kernel's largest data structure (in Linux
+this has an overhead of 1/64 of the total installed RAM).
+
+After the page frame table is initialized, we need a `page frame
+allocator`. This should provide a very simple interface:
+```
+void *alloc_page_frames(int num_page_frames);
+void free_page_frames(void *start, int num_page_frames);
+```
+There are [multiple common approaches to
+this](https://wiki.osdev.org/Page_Frame_Allocation), from being as
+simple as a linear scan over an auxiliary bitmap, using a stack data
+structure to keep track of freepages for fast allocation/freeing, and
+using multiple bitmaps ("buddy allocator") for fast allocation of
+different sizes of contiguous memory.
+
+Once we have the ability to allocate kernel pages, there should be a
+mechanism to allocate smaller pieces of memory to allow for
+`kmalloc()`/`kfree()`-like functionality. This probably means some
+sort of slab allocator (e.g., Linux has different slab allocator
+implementations called SLAB/SLUB/SLOB).
+
+### Virtual memory management
+This is mostly relevant for userspace, since we'll be using the linear
+HHDM for kernel purposes. (For now, it's simplest if we use this
+3GB/1GB as a hard division of userspace/kernel code, but later we can
+be more lenient and allow userspace to allocate from the low 1GB if
+needed.)
+
+Virtual memory will be managed via `demand paging` (i.e. lazily). Upon
+a `mmap()` request, the new `virtual memory area` (VMA) will be added
+to the processes' VMA list. The actual page(s) will be mapped in upon
+a page fault, which will first check that the memory is valid (in the
+VMA) before allocating a physical page and performing the virtual
+memory mapping.
+
+Upon a userspace process exit, all physical pages mapped to that
+process will be freed. The virtual mappings will automatically get
+discarded once the process's page mapping is discarded (this should
+also be included in the set of physical pages mapped to that process).

@@ -34,6 +34,11 @@ SECTIONS
 		*(.bss)
 	}
 
+	/* See https://stackoverflow.com/a/77339871 */
+	.fake : {
+		. = . + SIZEOF(.bss);
+	}
+
 	/DISCARD/ : {
 		*(.eh_frame)
 		*(.comment)

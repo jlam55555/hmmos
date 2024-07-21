@@ -34,6 +34,27 @@
 
 namespace test {
 
+/// For use with TEST*_WITH_FIXTURE().
+///
+/// Usage instructions:
+/// - Fixtures should (publically) subclass from this and define a
+///   setup() method. It should _not_ override the run(bool&) method.
+/// - Any state set up by the fixture should exist as public or
+///   protected member variables, so they can be accessed by the test
+///   function (which will run in a subclass).
+///
+class TestFixture {
+public:
+  virtual void setup() = 0;
+  virtual void run(bool &) = 0;
+};
+
+/// Run tests that match the test_selection criteria. For use by the
+/// test-runner kernel entry point.
+void run_tests(const char *test_selection);
+
+namespace detail {
+
 /// Test descriptor.
 struct TestInfo {
   const char *name;
@@ -42,12 +63,6 @@ struct TestInfo {
   void (*fn)(bool &success);
 } __attribute__((packed));
 
-/// Run tests that match the test_selection criteria. For use by the
-/// test-runner kernel entry point.
-void run_tests(const char *test_selection);
-
-namespace detail {
-
 /// Test selection logic. Only exposed for unit testing.
 bool matches(nonstd::string_view test_name, nonstd::string_view test_selection);
 
@@ -55,19 +70,43 @@ bool matches(nonstd::string_view test_name, nonstd::string_view test_selection);
 
 } // namespace test
 
-/// Helper function for TEST*(). Don't use directly.
+/// Helper functions for TEST*(). Don't use directly.
 #define _DEFINE_TEST(TEST_NS, TEST_NAME_SYM, TEST_NAME_STR)                    \
   namespace TEST_NS::test {                                                    \
   void TEST_NAME_SYM(bool &); /* fwd decl */                                   \
   }                                                                            \
   namespace {                                                                  \
-  __attribute__((section("rodata_test_info"),                                  \
-                 used)) volatile test::TestInfo test_info_##TEST_NAME_SYM{     \
+  __attribute__((                                                              \
+      section("rodata_test_info"),                                             \
+      used)) volatile test::detail::TestInfo test_info_##TEST_NAME_SYM{        \
       .name = #TEST_NS "::" #TEST_NAME_STR,                                    \
       .fn = &TEST_NS::test::TEST_NAME_SYM,                                     \
   };                                                                           \
   }                                                                            \
   void TEST_NS::test::TEST_NAME_SYM(bool &_test_passed)
+
+#define _DEFINE_TEST_WITH_FIXTURE(TEST_NS, TEST_NAME_SYM, TEST_NAME_STR,       \
+                                  FIXTURE)                                     \
+  namespace TEST_NS::test {                                                    \
+  class Fixture##TEST_NAME_SYM final : public FIXTURE {                        \
+    static_assert(std::derived_from<FIXTURE, ::test::TestFixture>);            \
+    void run(bool &) final;                                                    \
+  };                                                                           \
+  void TEST_NAME_SYM(bool &res) {                                              \
+    ::test::TestFixture &&fixture = Fixture##TEST_NAME_SYM{};                  \
+    fixture.setup();                                                           \
+    fixture.run(res);                                                          \
+  }                                                                            \
+  }                                                                            \
+  namespace {                                                                  \
+  __attribute__((                                                              \
+      section("rodata_test_info"),                                             \
+      used)) volatile test::detail::TestInfo test_info_##TEST_NAME_SYM{        \
+      .name = #TEST_NS "::" #TEST_NAME_STR,                                    \
+      .fn = &TEST_NS::test::TEST_NAME_SYM,                                     \
+  };                                                                           \
+  }                                                                            \
+  void TEST_NS::test::Fixture##TEST_NAME_SYM::run(bool &_test_passed)
 
 /// Define a test. A namespace must be provided, and this macro must
 /// be placed in the global namespace.
@@ -82,6 +121,12 @@ bool matches(nonstd::string_view test_name, nonstd::string_view test_selection);
 /// the test name.
 #define TEST_CLASS(TEST_NS, CLASS_NAME, TEST_NAME)                             \
   _DEFINE_TEST(TEST_NS, _##TEST_NAME, CLASS_NAME::TEST_NAME)
+
+#define TEST_WITH_FIXTURE(TEST_NS, TEST_NAME, FIXTURE)                         \
+  _DEFINE_TEST_WITH_FIXTURE(TEST_NS, _##TEST_NAME, TEST_NAME, FIXTURE)
+#define TEST_CLASS_WITH_FIXTURE(TEST_NS, CLASS_NAME, TEST_NAME, FIXTURE)       \
+  _DEFINE_TEST_WITH_FIXTURE(TEST_NS, _##TEST_NAME, CLASS_NAME::TEST_NAME,      \
+                            FIXTURE)
 
 /// TODO: make this work even in nested functions -- we'll need
 /// something like setjmp/longjmp for this non-local goto. For now

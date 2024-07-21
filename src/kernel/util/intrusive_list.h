@@ -57,16 +57,16 @@ namespace util {
 ///     assert(node2.MLPNList1::size() == 2);
 ///     assert(node2.MLPNList2::size() == 1);
 ///
-/// N.B.: In C++, I was tempted to approach this with pointer-to-data
-/// members since that's truer to the original `offsetof()` spirit of
-/// tackling this problem; however it's hacky to get the data member's
-/// offset in a constexpr way. Moreover, the syntax is more
-/// obscure. Instead, this implementation uses inheritance so we don't
-/// have to fuddle with offsets. Boosts's [intrusive lists]
-/// (https://www.boost.org/doc/libs/1_78_0/doc/html/intrusive/list.html)
-/// seems to be doing something like that. One benefit that has over
-/// this approach is that it's easier to position the list head in the
-/// node object.
+///
+/// For comparison, see folly/boost's IntrusiveListHook/IntrusiveList
+/// implementation. This uses pointer-to-data-members and requires an
+/// explicit declaration of the list type rather than this approach,
+/// which uses inheritance. The benefit of that approach is it's not
+/// much more verbose, and allows the "list hook" (similar to a
+/// `struct list_head`) to be in an arbitrary location in the object
+/// rather than in the header. It's possible we'll need this down the
+/// road if we care about struct layouts, but this should be
+/// sufficient for the basic lists we need.
 ///
 template <typename Parent, typename Tag = void> class IntrusiveListHead {
   using ListHead = IntrusiveListHead<Parent, Tag>;

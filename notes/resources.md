@@ -14,6 +14,7 @@ going to bother linking OSDev wikis since those are implied.
 
 ## Memory
 - Paging strategy for x86: https://forum.osdev.org/viewtopic.php?p=312121#p312121
+- _Understanding the Linux Virtual Memory Manager_ by Mel Gorman
 
 ## MBR
 - CHS decoding: https://thestarman.pcministry.com/asm/mbr/PartTables.htm#Decoding

@@ -346,14 +346,14 @@ __attribute__((nothrow)) int sprintf(char *s, const char *fmt, ...) {
   return rv;
 }
 
-__attribute__((nothrow)) int vprintf(const char *fmt, va_list va) {
+int vprintf(const char *fmt, va_list va) {
   char *buf = NULL;
   size_t rv = _vsnprintf(_term_writer, buf, (size_t)-1, fmt, va);
   console_flush();
   return rv;
 }
 
-__attribute__((nothrow)) int printf(const char *fmt, ...) {
+int printf(const char *fmt, ...) {
   va_list va;
   va_start(va, fmt);
   size_t rv = vprintf(fmt, va);

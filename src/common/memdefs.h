@@ -15,7 +15,7 @@
 
 #define PG_SZ (4 * KB)
 #define PG_SZ_BITS 12
-#define PG_PER_PT 0x1000U
+#define PG_PER_PT 1024
 #define HUGE_PG_SZ (PG_SZ * PG_PER_PT)
 
 #define PG_ALIGNED(addr) !(addr & (PG_SZ - 1))
