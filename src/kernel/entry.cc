@@ -1,5 +1,6 @@
 #include "boot_protocol.h"
 #include "drivers/serial.h"
+#include "idt.h"
 #include "mm/page_frame_allocator.h"
 #include "nonstd/libc.h"
 #include <climits>
@@ -57,15 +58,16 @@ __attribute__((section(".text.entry"))) void _entry() {
     serial::get().write(*str++);
   }
 
-  /// Initialize page frame array.
   nonstd::printf("Initializing PFT...\r\n");
   mem::phys::PageFrameTable pft(mem_map);
   nonstd::printf("Total mem=%llx Usable mem=%llx\r\n", pft.total_mem_bytes,
                  pft.usable_mem_bytes);
 
-  /// Initialize page frame allocator.
   nonstd::printf("Initializing PFA...\r\n");
   mem::phys::SimplePFA simple_allocator{pft, 0, pft.mem_limit()};
+
+  nonstd::printf("Enabling interrupts...\r\n");
+  arch::idt::init();
 
   nonstd::printf("Done.\r\n");
   for (;;) {

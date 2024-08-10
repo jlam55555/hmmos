@@ -22,10 +22,10 @@ In no definitive order. Some of these can be copied from
 	- [ ] clang-tidy and clang-format configuration
 - [ ] basics
 	- [X] printf library
-	- [ ] (circular) linked lists like Linux's LIST_HEAD
-- [ ] interrupts
+	- [X] (circular) linked lists like Linux's LIST_HEAD
+- [X] interrupts
 - [ ] memory allocation
-	- [ ] page frame allocator
+	- [X] page frame allocator
 	- [ ] slub/slab allocator
 	- [ ] virtual memory allocator
 - [ ] scheduling
