@@ -75,7 +75,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a>Second attempt at writing an OS, this time a little more from scratch now that I have a slightly better idea of what the bootloader does.</p>
 <p>Focusing on x86 first, will maybe update this to be for x86_64 later.</p>
-<h1><a class="anchor" id="autotoc_md52"></a>
+<h1><a class="anchor" id="autotoc_md58"></a>
 Setup</h1>
 <p>This project is mainly built with clang/LLVM toolchains in mind. This includes <code>clang</code>, <code>lld</code>, <code>clangd</code>, and <code>clang-format</code>. You'll need at least version 14.</p>
 <p>GNU <code>binutils</code> is needed where LLVM is lacking (i.e. <code>as</code> for GNU AT&amp;T asm syntax + <code>objdump</code> and friends).</p>
@@ -92,7 +92,7 @@ Setup</h1>
 <div class="line">Target: x86_64-pc-linux-gnu</div>
 <div class="line">Thread model: posix</div>
 <div class="line">InstalledDir: /usr/bin</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md53"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md59"></a>
 Getting started</h1>
 <p>Build the bootloader and run it in QEMU. Make sure to have <code>qemu</code> and GNU <code>make</code> installed, and <code>doxygen</code> if you want to generate documentation. </p><div class="fragment"><div class="line">$ # Run the kernel</div>
 <div class="line">$ make run OPT=1</div>
@@ -103,7 +103,7 @@ Getting started</h1>
 <div class="line">$</div>
 <div class="line">$ # Generate documentation</div>
 <div class="line">$ make docs</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md54"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md60"></a>
 Misc.</h1>
 <p>Name courtesy of @Victoooooor. </p>
 </div></div><!-- PageDoc -->

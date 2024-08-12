@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['classvar_0',['classVar',['../classpyexample_1_1PyClass.html#abd17aff54e5b0ca194020c796c733546',1,'pyexample::PyClass']]]
+  ['total_5fmem_5fbytes_0',['total_mem_bytes',['../classmem_1_1phys_1_1PageFrameTable.html#a39b5ed0739e6b4c0673281151e4a8d27',1,'mem::phys::PageFrameTable']]]
 ];

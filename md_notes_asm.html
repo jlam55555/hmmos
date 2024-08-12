@@ -74,7 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Reminders for myself because I keep forgetting.</p>
-<h1><a class="anchor" id="autotoc_md1"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 cdecl x86 calling conventions</h1>
 <ul>
 <li>Function arguments are passed on the stack in reverse order. This means the <code>(esp)</code> is the return address, the first argument is <code>4(esp)</code>, the second is <code>8(esp)</code>, and so on (unless you push <code>ebp</code>, then use these offsets from <code>ebp</code> instead).</li>
@@ -82,7 +82,7 @@ cdecl x86 calling conventions</h1>
 <li>Struct return values work by passing a hidden pointer argument. I try to avoid this if possible.</li>
 <li><code>eax</code>, <code>ecx</code>, and <code>edx</code> are caller-saved, the rest (<code>ebx</code>, <code>esp</code>, <code>ebp</code>, <code>edi</code>, <code>esi</code>) are callee-saved.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Logically equivalent operations</h1>
 <ul>
 <li><code>push N</code>: <code>sub $4, esp; mov N, (esp)</code></li>
@@ -92,7 +92,7 @@ Logically equivalent operations</h1>
 <li><code>enter N</code>: <code>push ebp; mov esp, ebp; sub N, esp</code></li>
 <li><code>leave</code>: <code>mov ebp, esp; pop ebp</code></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Addressing modes</h1>
 <p>Addressing modes in x86 can be summarized by <a href="https://en.wikipedia.org/wiki/X86#Addressing_modes">this Wikipedia diagram</a>.</p>
 <p>The syntax is fairly different between Intel/NASM and AT&amp;T/GAS syntax. E.g., <code>[es:ebp + 4]</code> in the former is <code>es:4(ebp)</code> in the latter. </p>

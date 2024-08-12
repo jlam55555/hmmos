@@ -113,7 +113,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">For use with TEST*_WITH_FIXTURE().  <a href="classtest_1_1TestFixture.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtest_1_1detail_1_1TestInfo.html">test::detail::TestInfo</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classTest.html" title="This is a test class.">Test</a> descriptor.  <a href="structtest_1_1detail_1_1TestInfo.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test descriptor.  <a href="structtest_1_1detail_1_1TestInfo.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -148,7 +148,7 @@ struct <a class="el" href="structtest_1_1detail_1_1TestInfo.html">test::detail::
 <tr class="separator:afd918848c96e40a36da169e6b608709f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d3ad2c5121402ae3287f76cc845feed"><td class="memItemLeft" align="right" valign="top"><a id="a1d3ad2c5121402ae3287f76cc845feed" name="a1d3ad2c5121402ae3287f76cc845feed"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>test::detail::matches</b> (<a class="el" href="classnonstd_1_1string__view.html">nonstd::string_view</a> test_name, <a class="el" href="classnonstd_1_1string__view.html">nonstd::string_view</a> test_selection)</td></tr>
-<tr class="memdesc:a1d3ad2c5121402ae3287f76cc845feed"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classTest.html" title="This is a test class.">Test</a> selection logic. Only exposed for unit testing. <br /></td></tr>
+<tr class="memdesc:a1d3ad2c5121402ae3287f76cc845feed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test selection logic. Only exposed for unit testing. <br /></td></tr>
 <tr class="separator:a1d3ad2c5121402ae3287f76cc845feed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -165,9 +165,9 @@ void(*&#160;</td><td class="memItemRight" valign="bottom"><b>fn</b> )(bool &amp;
 <p>To define a new test, use the DEFINE_TEST macro: </p><pre class="fragment">DEFINE_TEST(foo::bar, testBaz) {
     TEST_ASSERT(1 == 2);
 }
-</pre><p> <a class="el" href="classTest.html" title="This is a test class.">Test</a> descriptors are placed in their own special rodata section for automatic discovery.</p>
+</pre><p> Test descriptors are placed in their own special rodata section for automatic discovery.</p>
 <p>Tests are not built into the main kernel, but rather into a separate test-runner kernel (which basically contains all the kernel files except the entrypoint + test files + a custom test runner entrypoint). Run this test-runner kernel using: </p><pre class="fragment">make run TEST=&lt;selection_criteria&gt;
-</pre><p> <a class="el" href="classTest.html" title="This is a test class.">Test</a> selection follows a very simple pattern matcher:</p>
+</pre><p> Test selection follows a very simple pattern matcher:</p>
 <ul>
 <li>"all" matches all tests</li>
 <li>"&lt;search&gt;" matches strings containing &lt;search&gt;</li>
@@ -312,7 +312,7 @@ void(*&#160;</td><td class="memItemRight" valign="bottom"><b>fn</b> )(bool &amp;
 </div><div class="memdoc">
 
 <p>Define a test. </p>
-<p><a class="el" href="classA.html">A</a> namespace must be provided, and this macro must be placed in the global namespace.</p>
+<p>A namespace must be provided, and this macro must be placed in the global namespace.</p>
 <p>Note that tests are defined in (a sub-namespace of) TEST_NS, so all symbols from TEST_NS are automatically available to the test function. </p>
 
 </div>

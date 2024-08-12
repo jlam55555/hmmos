@@ -1,22 +1,11 @@
 var searchData=
 [
-  ['c_0',['C',['../classC.html',1,'']]],
-  ['c1_1',['C1',['../classC1.html',1,'']]],
-  ['c2_2',['C2',['../classC2.html',1,'']]],
-  ['c3_3',['C3',['../classC3.html',1,'']]],
-  ['c4_4',['C4',['../classC4.html',1,'']]],
-  ['c5_5',['C5',['../classC5.html',1,'']]],
-  ['car_6',['Car',['../structCar.html',1,'Car'],['../manual_8c.html#a00b00bef7a37e8519a62cb3671105c4b',1,'Car():&#160;manual.c']]],
-  ['classvar_7',['classVar',['../classpyexample_1_1PyClass.html#abd17aff54e5b0ca194020c796c733546',1,'pyexample::PyClass']]],
-  ['clear_8',['clear',['../classutil_1_1IntrusiveListHead.html#afb40db6ff52d8e64babe6627a6cb34ae',1,'util::IntrusiveListHead']]],
-  ['close_9',['close',['../structcmd_8h.html#ae152484c890a24e4d9b4980e7b965be0',1,'structcmd.h']]],
-  ['console_2eh_10',['console.h',['../console_8h.html',1,'']]],
-  ['console_5fflush_11',['console_flush',['../console_8h.html#af78d78b74d7a667208a636196951abfb',1,'console.c']]],
-  ['console_5fputchar_12',['console_putchar',['../console_8h.html#ac156aa97dae8b45e5aea8f6534d38946',1,'console.c']]],
-  ['console_5fputs_13',['console_puts',['../console_8h.html#a871a10ba7d8015c42d4888874d3c6d07',1,'console.c']]],
-  ['console_5fputs2_14',['console_puts2',['../console_8h.html#a8a66a08a58e59e1f2faee141a582db73',1,'console.c']]],
-  ['coord_15',['Coord',['../restypedef_8cpp.html#a013489fb99c6a5b012db8ec66544a507',1,'restypedef.cpp']]],
-  ['coordstruct_16',['CoordStruct',['../structCoordStruct.html',1,'']]],
-  ['cpuid_5ffeatures_17',['cpuid_features',['../structcpuid__features.html',1,'']]],
-  ['crt_2eh_18',['crt.h',['../crt_8h.html',1,'']]]
+  ['clear_0',['clear',['../classutil_1_1IntrusiveListHead.html#afb40db6ff52d8e64babe6627a6cb34ae',1,'util::IntrusiveListHead']]],
+  ['console_2eh_1',['console.h',['../console_8h.html',1,'']]],
+  ['console_5fflush_2',['console_flush',['../console_8h.html#af78d78b74d7a667208a636196951abfb',1,'console.c']]],
+  ['console_5fputchar_3',['console_putchar',['../console_8h.html#ac156aa97dae8b45e5aea8f6534d38946',1,'console.c']]],
+  ['console_5fputs_4',['console_puts',['../console_8h.html#a871a10ba7d8015c42d4888874d3c6d07',1,'console.c']]],
+  ['console_5fputs2_5',['console_puts2',['../console_8h.html#a8a66a08a58e59e1f2faee141a582db73',1,'console.c']]],
+  ['cpuid_5ffeatures_6',['cpuid_features',['../structcpuid__features.html',1,'']]],
+  ['crt_2eh_7',['crt.h',['../crt_8h.html',1,'']]]
 ];
