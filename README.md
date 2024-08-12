@@ -32,7 +32,7 @@ InstalledDir: /usr/bin
 
 ## Getting started
 Build the bootloader and run it in QEMU. Make sure to have `qemu` and
-GNU `make` installed.
+GNU `make` installed, and `doxygen` if you want to generate documentation.
 ```
 $ # Run the kernel
 $ make run OPT=1
@@ -40,7 +40,10 @@ $
 $ # Run tests
 $ make run TEST=all
 $ make run TEST=<testselection>
+$
+$ # Generate documentation
+$ make docs
 ```
 
 ## Misc.
-Name courtesy of @Victoooooor.
+Name courtesy of \@Victoooooor.

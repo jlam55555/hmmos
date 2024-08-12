@@ -1,6 +1,9 @@
 #pragma once
-/// C wrappers around common asm functions. See asm.S for
-/// implementations.
+
+/// \file
+/// \brief C wrappers around common asm functions.
+///
+/// See asm.S for implementations.
 ///
 /// Operand order is similar to Intel syntax (dest, src). This is
 /// similar to the convention used by the C stdlib (think memcpy) and

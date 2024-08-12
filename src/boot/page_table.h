@@ -1,6 +1,7 @@
 #pragma once
-/// Some useful definitions used by page_table.c (and maybe the kernel
-/// once we have that).
+
+/// \file
+/// \brief Some useful definitions used by page_table.c
 
 #include "boot_protocol.h"
 #include <stdbool.h>

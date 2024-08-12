@@ -1,7 +1,8 @@
 #pragma once
 
-/// Simple implementation of C++20/23-ish string_view. Features are
-/// implemented as needed.
+/// \file
+/// \brief Simple implementation of C++20/23-ish string_view. Features
+/// are implemented as needed.
 
 #include "nonstd/libc.h"
 #include "perf.h"
@@ -9,6 +10,8 @@
 
 namespace nonstd {
 
+/// \brief Nonstd version of std::string_view.
+///
 class string_view {
 public:
   constexpr string_view(const char *s) : _data(s), _len(strlen(s)) {}
@@ -44,6 +47,9 @@ public:
     }
     return npos;
   }
+
+  /// \brief Returns a substring of the original string_view.
+  ///
   /// This is different behavior than the standard, since this doesn't
   /// throw if out of bounds. Instead, it silently crops to the
   /// bounds. Clearly will also have unwanted behavior if `start` is a

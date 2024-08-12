@@ -1,5 +1,8 @@
 #pragma once
 
+/// \file
+/// \brief Page frame descriptors and page frame table
+///
 /// There will be a page frame descriptor (PFD) for each physical 4KB
 /// page, for the entirety of the physical linear address space. This
 /// includes any gaps in usable memory (so that mapping linear
@@ -22,8 +25,9 @@
 
 namespace mem::phys {
 
-/// Metadata for a single page frame in the linear address range. For
-/// now, make this 64B, same as in the Linux kernel.
+/// \brief Metadata for a single page frame in the linear address range.
+///
+/// For now, make this 64B, same as in the Linux kernel.
 class PageFrameDescriptor {
 public:
   bool allocated : 1 = false;
@@ -42,9 +46,12 @@ public:
 
 static_assert(sizeof(PageFrameDescriptor) == 64);
 
-/// An array containing one page frame descriptor for each physical
-/// 4KB page. This is independent of the physical memory allocator.
 class PageFrameAllocator;
+
+/// \brief An array containing one page frame descriptor for each
+/// physical 4KB page.
+///
+/// This is independent of the physical memory allocator.
 class PageFrameTable {
 public:
   /// Normalize the E820 memory map. We're going to make the
@@ -66,7 +73,8 @@ public:
 
   NON_MOVABLE(PageFrameTable);
 
-  /// Get PFD from offset.
+  /// \brief Get PFD from offset.
+  ///
   PageFrameDescriptor &get_pfd(uint64_t pf_offset) {
     size_t pfd_idx = pf_offset >> PG_SZ_BITS;
     // Technically this should be a strict comparison, but pfd_idx ==
@@ -75,20 +83,23 @@ public:
     return pft[pfd_idx];
   }
 
-  /// Get offset from PFD.
+  /// \brief Get offset from PFD.
+  ///
   uint64_t get_pf_offset(PageFrameDescriptor &pfd) {
     DEBUG_ASSERT(&pfd >= pft.data() && &pfd < pft.data() + pft.size());
     return &pfd - pft.data();
   }
 
-  /// Return the end of physical memory. Used to initialize allocators
-  /// that are responsible for the entire physical memory space.
+  /// \brief Return the end of physical memory.
+  ///
+  /// Used to initialize allocators that are responsible for the
+  /// entire physical memory space.
   uint64_t mem_limit() const {
     return usable_regions.back().base + usable_regions.back().len;
   }
 
-  // Total number of bytes in the memory map (i.e., not
-  // including memory holes nor bootloader memory).
+  /// \brief Total number of bytes in the memory map (i.e., not
+  /// including memory holes nor bootloader memory).
   const uint64_t total_mem_bytes;
 
 protected:
@@ -99,7 +110,7 @@ protected:
   std::span<const e820_mm_entry> get_usable_regions() { return usable_regions; }
 
 private:
-  /// Helper functions to construct const members.
+  // Helper functions to construct const members.
   uint64_t compute_total_mem(std::span<e820_mm_entry> mm) const;
   uint64_t compute_usable_mem() const;
   std::span<e820_mm_entry> normalize_mm(std::span<e820_mm_entry> mm) const;
@@ -118,16 +129,20 @@ private:
   void unregister_allocator(PageFrameAllocator &allocator);
   util::IntrusiveListHead<PageFrameAllocator> allocators;
 
-  /// List of usable memory regions. These are guaranteed to be
-  /// 4KB-aligned, non-overlapping, and sorted. To be used by the
-  /// allocator.
+  /// \brief List of usable memory regions.
+  ///
+  /// These are guaranteed to be 4KB-aligned, non-overlapping, and
+  /// sorted. To be used by the allocator.
   const std::span<e820_mm_entry> usable_regions;
 
-  /// Backing store for the PFT.
+  /// \brief Backing store for the PFT.
+  ///
   const std::span<PageFrameDescriptor> pft;
 
 public:
-  // Total number of usable bytes. This is at the end because it needs to be
+  /// \brief Total number of usable bytes.
+  ///
+  // This is at the end because it needs to be
   // initialized after the page frame table is allocated.
   const uint64_t usable_mem_bytes;
 };

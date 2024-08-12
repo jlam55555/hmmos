@@ -1,9 +1,12 @@
 #pragma once
 #include <cassert>
 
-/// Runtime assertion macros. Note that `static_assert` will remain as
-/// it is.
+/// \file
+/// \brief Runtime assertion macros. Note that `static_assert` will
+/// remain as it is.
 
+/// \brief Run-time assertion.
+///
 /// This is to make `assert()` more similar to the DEBUG_ASSERT and
 /// TEST_ASSERT macros.
 ///
@@ -11,7 +14,8 @@
 /// argument with commas.
 #define ASSERT(...) assert((__VA_ARGS__))
 
-/// Compile-out debug macro in non-debug builds.
+/// \brief Compile-out debug macro in non-debug builds.
+///
 #ifdef DEBUG
 #define DEBUG_ASSERT assert
 #else

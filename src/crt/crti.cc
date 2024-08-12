@@ -9,10 +9,10 @@ __attribute__((section(".fini_array"))) funcptr __start_fini_array[0];
 
 } // namespace detail
 
-/// Additional runtime support functions go here. These don't have to
-/// be linked first like the __start_* declarations above, but we put
-/// them here so we don't need extra object files and build rules for
-/// CRT support.
+// Additional runtime support functions go here. These don't have to
+// be linked first like the __start_* declarations above, but we put
+// them here so we don't need extra object files and build rules for
+// CRT support.
 
 void run_global_ctors() {
   for (detail::funcptr *ctor = detail::__start_init_array;

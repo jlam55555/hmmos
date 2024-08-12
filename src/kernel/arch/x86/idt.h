@@ -1,12 +1,16 @@
 #pragma once
 
-/// Interrupt Descriptor Table (IDT). Note that these structs are
-/// different than the 64-bit version.
+/// \file
+/// \brief Interrupt Descriptor Table (IDT).
+///
+/// Note that these structs are different than the 64-bit version.
 
 #include <cstdint>
 
 namespace arch::idt {
 
+/// \brief A single interrupt vector descriptor.
+///
 struct IDTEntry {
   uint16_t isr_lo;
   uint16_t cs;
@@ -18,6 +22,8 @@ struct IDTEntry {
   uint16_t isr_hi;
 } __attribute__((packed));
 
+/// \brief IDT descriptor
+///
 struct IDTR {
   uint16_t limit;
   uint32_t base;

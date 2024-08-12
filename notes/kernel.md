@@ -18,7 +18,7 @@ In no definitive order. Some of these can be copied from
 - [ ] quality of life
 	- [X] C++ basic runtime support (e.g., global ctors)
 	- [X] unit testing utility
-	- [ ] doxygen
+	- [X] doxygen
 	- [ ] benchmarking utility
 	- [ ] clang-tidy and clang-format configuration
 - [ ] basics

@@ -1,7 +1,8 @@
 #pragma once
 
-/// Useful reusable algorithms and bit-twiddling. Not much here, will
-/// add things as needed.
+/// \file
+/// \brief Useful reusable algorithms and bit-twiddling. Not much
+/// here, will add things as needed.
 ///
 /// This is not intended to be for algorithms from the <algorithm>
 /// header -- if we need custom implementations they should go in the
@@ -28,7 +29,8 @@ constexpr bool aligned_pow2(uint64_t n) requires(pow2(divisor)) {
   return !(n & (divisor - 1));
 }
 
-/// Test if two ranges overlap. Ranges are specified using (start, end).
+/// \brief Test if two ranges overlap. Ranges are specified using
+/// (start, end).
 template <typename T>
 constexpr bool range_overlaps(T base1, T end1, T base2, T end2,
                               bool inclusive = true) {
@@ -39,14 +41,16 @@ constexpr bool range_overlaps(T base1, T end1, T base2, T end2,
   }
 }
 
-/// Test if two ranges overlap. Ranges are specified using (start, len).
+/// \brief Test if two ranges overlap. Ranges are specified using
+/// (start, len).
 template <typename T>
 constexpr bool range_overlaps2(T base1, T len1, T base2, T len2,
                                bool inclusive = true) {
   return range_overlaps(base1, base1 + len1, base2, base2 + len2, inclusive);
 }
 
-/// Test if the first range subsumes the second range.
+/// \brief Test if the first range subsumes the second range.
+///
 template <typename T>
 constexpr bool range_subsumes(T base1, T end1, T base2, T end2,
                               bool inclusive = true) {

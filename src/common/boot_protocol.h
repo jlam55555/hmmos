@@ -1,9 +1,12 @@
 #pragma once
-/// The runtime interface between the bootloader and kernel. The
-/// bootloader can share data with the kernel (e.g., physical memory
-/// map) and the kernel can request bootloader functionality (e.g.,
-/// video mode) via this interface. Design heavily inspired by the
-/// Limine boot protocol.
+
+/// \file
+/// \brief The runtime interface between the bootloader and kernel.
+///
+/// The bootloader can share data with the kernel (e.g., physical
+/// memory map) and the kernel can request bootloader functionality
+/// (e.g., video mode) via this interface. Design heavily inspired by
+/// the Limine boot protocol.
 ///
 /// See the BP_REQ() macro for the kernel-level interface for
 /// declaring kernel requests.
@@ -13,6 +16,8 @@
 #include <stdint.h>
 
 #ifndef KERNEL_LOAD_ADDR
+/// \brief Virtual address to load kernel text
+///
 /// Save 32MB at the top of the virtual address space for the kernel
 /// load address. This also dictates the maximum size of the kernel
 /// binary, so this will need to be overridden (and the linker script
@@ -63,11 +68,13 @@ static inline bool e820_entry_present(const struct e820_mm_entry *ent) {
   return ent->base || ent->len || ent->type || ent->acpi_extended_attrs;
 }
 
-/// Randomly generated.
+/// \brief Randomly generated. Used to identify bootloader requests in
+/// the kernel binary.
+///
 #define BP_REQ_MAGIC 0xF7438B7CA1676C21ULL
 
-/// The bootloader will scan for any requests. This must be aligned to
-/// make the search faster for the bootloader.
+/// \brief The bootloader will scan for any requests. This must be
+/// aligned to make the search faster for the bootloader.
 #define BP_REQ_ALIGN 8
 
 enum bp_req_id {
@@ -90,10 +97,12 @@ struct bp_req_memory_map {
   struct e820_mm_entry *memory_map;
 } __attribute__((packed, aligned(BP_REQ_ALIGN)));
 
-/// Kernel interface for defining a bootloader request. This needs to be
-/// a global variable and not optimized out of the binary.
+/// \brief Kernel interface for defining a bootloader request.
+
+/// The request object needs to be a global variable and not optimized
+/// out of the binary.
 ///
-/// Sample usage:
+/// Example:
 /// ```
 /// static volatile const BP_REQ(MEMORY_MAP, _mem_map_req);
 /// ```

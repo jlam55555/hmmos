@@ -1,5 +1,8 @@
 #pragma once
 
+/// \file
+/// \brief Allocator for (4KB) physical page frames.
+///
 /// Page frame allocators provide a simple `alloc()` and `free()`
 /// interface for physical pages. Each PFA is responsible for some
 /// contiguous range of memory -- it will determine which pages are
@@ -14,7 +17,8 @@
 
 namespace mem::phys {
 
-/// Abstract base class for page frame allocators.
+/// \brief Abstract base class for page frame allocators.
+///
 class PageFrameAllocator : public util::IntrusiveListHead<PageFrameAllocator> {
 public:
   /// Construct an allocator which is responsible for the page frames
@@ -53,9 +57,11 @@ private:
   unsigned total_pgs;
 };
 
-/// Allocator that doesn't use any auxiliary memory. This keeps track
-/// of used pages via the PFT and uses a simple round-robin linear
-/// scan to find free memory regions.
+/// \brief Simple round-robin allocator that doesn't use auxiliary
+/// memory
+///
+/// This keeps track of used pages via the PFT and uses a simple
+/// round-robin linear scan to find free memory regions.
 ///
 /// N.B. The needle does _not_ get incremented after allocation. This
 /// means that in the case of an alloc-free-alloc pattern, the second

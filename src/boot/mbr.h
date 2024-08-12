@@ -1,5 +1,8 @@
 #pragma once
 
+/// \file
+/// \brief Master Boot Record definitions
+
 #include "page_table.h"
 #include <assert.h>
 #include <stdint.h>

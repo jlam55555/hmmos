@@ -1,5 +1,8 @@
 #pragma once
 
+/// \file
+/// \brief Utility functions/macros for C++ objects.
+
 /// If an object manages some resource, and copying doesn't produce an
 /// equivalent result.
 #define NON_COPYABLE(Class)                                                    \

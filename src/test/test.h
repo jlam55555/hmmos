@@ -1,6 +1,11 @@
 #pragma once
 
-/// Simple C++-oriented test runner. Based off the laos test runner.
+#include "nonstd/string_view.h"
+#include "perf.h"
+
+/// \file
+/// \brief Simple C++-oriented test runner. Based off the laos test runner.
+///
 /// To define a new test, use the DEFINE_TEST macro:
 ///
 ///     DEFINE_TEST(foo::bar, testBaz) {
@@ -29,12 +34,9 @@
 /// prefix/suffix operator on multiple subpatterns, because I'm lazy
 /// and this is good enough for basic test selection.
 
-#include "nonstd/string_view.h"
-#include "perf.h"
-
 namespace test {
 
-/// For use with TEST*_WITH_FIXTURE().
+/// \brief For use with TEST*_WITH_FIXTURE().
 ///
 /// Usage instructions:
 /// - Fixtures should (publically) subclass from this and define a
@@ -49,13 +51,14 @@ public:
   virtual void run(bool &) = 0;
 };
 
-/// Run tests that match the test_selection criteria. For use by the
-/// test-runner kernel entry point.
+/// \brief Run tests that match the test_selection criteria. For use
+/// by the test-runner kernel entry point.
 void run_tests(const char *test_selection);
 
 namespace detail {
 
-/// Test descriptor.
+/// \brief Test descriptor.
+///
 struct TestInfo {
   const char *name;
   // This takes a bool& argument rather than returning a bool so that
@@ -63,14 +66,15 @@ struct TestInfo {
   void (*fn)(bool &success);
 } __attribute__((packed));
 
-/// Test selection logic. Only exposed for unit testing.
+/// \brief Test selection logic. Only exposed for unit testing.
+///
 bool matches(nonstd::string_view test_name, nonstd::string_view test_selection);
 
 } // namespace detail
 
 } // namespace test
 
-/// Helper functions for TEST*(). Don't use directly.
+// Helper functions for TEST*(). Don't use directly.
 #define _DEFINE_TEST(TEST_NS, TEST_NAME_SYM, TEST_NAME_STR)                    \
   namespace TEST_NS::test {                                                    \
   void TEST_NAME_SYM(bool &); /* fwd decl */                                   \
@@ -108,17 +112,20 @@ bool matches(nonstd::string_view test_name, nonstd::string_view test_selection);
   }                                                                            \
   void TEST_NS::test::Fixture##TEST_NAME_SYM::run(bool &_test_passed)
 
-/// Define a test. A namespace must be provided, and this macro must
-/// be placed in the global namespace.
+/// \brief Define a test.
+///
+/// A namespace must be provided, and this macro must be placed in the
+/// global namespace.
 ///
 /// Note that tests are defined in (a sub-namespace of) TEST_NS, so
 /// all symbols from TEST_NS are automatically available to the test
 /// function.
 #define TEST(TEST_NS, TEST_NAME) _DEFINE_TEST(TEST_NS, _##TEST_NAME, TEST_NAME)
 
-/// Define a test for a class. Similar to DEFINE_TEST, where the test
-/// will be placed in TEST_NS, except that CLASS_NAME will be added to
-/// the test name.
+/// \brief Define a test for a class.
+///
+/// Similar to DEFINE_TEST, where the test will be placed in TEST_NS,
+/// except that CLASS_NAME will be added to the test name.
 #define TEST_CLASS(TEST_NS, CLASS_NAME, TEST_NAME)                             \
   _DEFINE_TEST(TEST_NS, _##TEST_NAME, CLASS_NAME::TEST_NAME)
 
@@ -128,6 +135,8 @@ bool matches(nonstd::string_view test_name, nonstd::string_view test_selection);
   _DEFINE_TEST_WITH_FIXTURE(TEST_NS, _##TEST_NAME, CLASS_NAME::TEST_NAME,      \
                             FIXTURE)
 
+/// \brief Run an assertion within a test.
+///
 /// TODO: make this work even in nested functions -- we'll need
 /// something like setjmp/longjmp for this non-local goto. For now
 /// we're restricted to assertions only in the top-level test

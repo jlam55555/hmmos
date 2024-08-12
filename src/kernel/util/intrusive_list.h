@@ -1,14 +1,20 @@
 #pragma once
 
+/// \file
+/// \brief Circular intrusive list implementation, inspired by Linux's
+/// LIST_HEAD
+
 #include "util/assert.h"
 #include <cstddef>
 #include <iterator>
 
 namespace util {
 
-/// A C++ version of the common linked list data structure (see `man 3
-/// list`). In its well-known form, macros and `offsetof()` are used
-/// to for initialization and iteration.
+/// \brief A C++ version of the common linked list data structure (see
+/// `man 3 list`).
+///
+/// In its well-known form, macros and `offsetof()` are used to for
+/// initialization and iteration.
 ///
 /// Like the macro version, this is an intrusive, circular,
 /// doubly-linked list. Unlike the macro version, this only supports
@@ -116,22 +122,26 @@ public:
   Iterator begin() { return &next(); }
   Iterator end() { return this; }
 
-  /// Construct an empty list. This is either for a sentinel node that
-  /// doesn't contain any elements, or for a non-sentinel node that
-  /// has not been added to any lists.
+  /// \brief Construct an empty list.
+  ///
+  /// This is either for a sentinel node that doesn't contain any
+  /// elements, or for a non-sentinel node that has not been added to
+  /// any lists.
   IntrusiveListHead() = default;
 
-  /// Construct an IntrusiveListNode from an iterator range of
-  /// `Parent` objects. The returned `IntrusiveListHead` will be the
-  /// sentinel node.
+  /// \brief Construct an IntrusiveListNode from an iterator range of
+  /// `Parent` objects.
   ///
   /// See comment about stable addresses for `insert_back()`.
+  ///
+  /// \return the sentinel node
   template <std::forward_iterator It>
   IntrusiveListHead(const It &begin, const It &end) {
     insert_back(begin, end);
   }
 
-  /// Append elements from a different range of `Parent` objects.
+  /// \brief Append elements from a different range of `Parent`
+  /// objects.
   ///
   /// Addresses of iterator elements are assumed to be stable and
   /// outlive the lifetime of any elements in the intrusive list.
@@ -142,17 +152,19 @@ public:
     }
   }
 
-  /// Get the next or previous node. See note above `parent()` about
-  /// dereferencing a parent.
+  // Get the next or previous node. See note above `parent()` about
+  // dereferencing a parent.
   Parent &next() { return *_next; }
   const Parent &next() const { return *_next; }
   Parent &prev() { return *_prev; }
   const Parent &prev() const { return *_prev; }
 
-  /// Get element at n-th index. Due to the nature of the sentinel
-  /// node, indices are 1-indexed. Negative indices start from the
-  /// back of the array. 0 indicates the current node, although that's
-  /// probably not if you're calling this from the sentinel node.
+  /// \brief Get element at n-th index.
+  ///
+  /// Due to the nature of the sentinel node, indices are
+  /// 1-indexed. Negative indices start from the back of the array. 0
+  /// indicates the current node, although that's probably not if
+  /// you're calling this from the sentinel node.
   ///
   /// Note that there is no check for the sentinel node, which is
   /// treated as any other node in the linked list.
@@ -173,13 +185,16 @@ public:
     return rval->parent();
   }
 
-  /// Returns true if `size() == 0`.
+  /// \brief Check if circular list has no elements other than the
+  /// sentinel.
+  ///
+  /// \return true if `size() == 0`.
   bool empty() const {
     DEBUG_ASSERT(!((&next() == &parent()) ^ (&prev() == &parent())));
     return &next() == &parent();
   }
 
-  /// Remove the current node from the linked list.
+  /// \brief Remove the current node from the linked list.
   ///
   /// \return an iterator for the following element
   Iterator erase() {

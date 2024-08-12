@@ -207,7 +207,10 @@ $(BOOTABLE_DISK): $(BOOTLOADER) $(KERNEL)
 $(BOOTABLE_DISK_TEST): $(BOOTLOADER) $(KERNEL_TEST)
 	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL_TEST) -o $@
 
-.PHONY: run clean cleanall
+.PHONY: docs run clean cleanall
+docs:
+	doxygen
+
 run: $(RUN_TARGET)
 	$(TEST_INPUT) qemu-system-i386 $(QEMU_FLAGS) -drive format=raw,file=$<
 
@@ -217,7 +220,7 @@ run: $(RUN_TARGET)
 clean:
 	rm -rf $(OUT_DIR)
 cleanall:
-	rm -rf out*
+	rm -rf out* docs
 
 # Automatic header dependencies.
 DEPS:=$(BOOT_OBJS:.o=.d) $(KERNEL_OBJS:.o=.d) $(KERNEL_TEST_OBJS:.o=.d)

@@ -1,7 +1,10 @@
 #pragma once
 
-/// Implementation of a small part of the C standard library, for
-/// kernel use. Not intended to be standards-compliant.
+/// \file
+/// \brief Implementation of a small part of the C standard library, for
+/// kernel use.
+///
+/// Not intended to be standards-compliant.
 
 #include "libc_minimal.h"
 #include <stdarg.h>

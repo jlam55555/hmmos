@@ -1,12 +1,12 @@
 #pragma once
 
-/// C/C++ runtime support. This is separated out into its own
+/// \file
+/// \brief C/C++ runtime support.
+///
+/// This is separated out into its own
 /// directory since the order of crt{i,n}.o when linking is important.
 ///
-/// TODO: runtime support for dynamic memory allocation, etc.
-///
 /// Runtime feature support:
-///
 /// ----------------------------------------------------------------------------
 /// Virtual functions
 /// ----------------------------------------------------------------------------

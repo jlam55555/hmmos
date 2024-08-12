@@ -1,6 +1,7 @@
 #pragma once
 
-/// Virtual memory definitions.
+/// \file
+/// \brief Virtual memory definitions.
 
 #include "boot_protocol.h"
 #include "memdefs.h"

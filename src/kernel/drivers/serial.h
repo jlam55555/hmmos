@@ -1,7 +1,10 @@
 #pragma once
 
-/// Very simple serial driver. Read/write character-by-character using
-/// `serial::get().read()` or `serial::get().write(c)`.
+/// \file
+/// \brief Very simple serial driver.
+///
+/// Read/write character-by-character using `serial::get().read()` or
+/// `serial::get().write(c)`.
 
 #include "asm.h"
 #include "perf.h"
@@ -25,11 +28,13 @@ enum class Base : uint16_t {
 
 /// Factory function to construct a Serial.
 ///
-/// This needs to be fwd-declared for the friend declaration.
+// This needs to be fwd-declared for the friend declaration.
 template <Base com = Base::com1> auto get();
 
-/// A very simple abstraction of a serial device. This is templated by
-/// base port address so that the port computations can be constexpr.
+/// \brief A very simple abstraction of a serial device.
+///
+/// This is templated by base port address so that the port
+/// computations can be constexpr.
 ///
 /// Although if we really cared about performance then `read()` and
 /// `write()` would be in pure asm and would be defined in the header

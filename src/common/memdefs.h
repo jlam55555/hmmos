@@ -1,8 +1,7 @@
 #pragma once
-/// Useful definitions related to memory sizing.
-///
-/// TODO: Some of these are architecture-specific (and should probably
-/// be moved to an arch/ subdir).
+
+/// \file
+/// \brief Useful definitions related to memory sizing.
 
 #if defined(__cplusplus) && !defined(__clang__)
 // _Static_assert isn't defined in g++.
