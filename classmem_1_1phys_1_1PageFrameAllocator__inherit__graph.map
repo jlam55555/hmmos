@@ -1,0 +1,5 @@
+<map id="mem::phys::PageFrameAllocator" name="mem::phys::PageFrameAllocator">
+<area shape="rect" id="node1" title="Abstract base class for page frame allocators." alt="" coords="5,93,239,119"/>
+<area shape="rect" id="node3" href="$classmem_1_1phys_1_1SimplePFA.html" title="Simple round&#45;robin allocator that doesn&#39;t use auxiliary memory." alt="" coords="37,167,207,192"/>
+<area shape="rect" id="node2" href="$classutil_1_1IntrusiveListHead.html" title=" " alt="" coords="31,5,213,45"/>
+</map>

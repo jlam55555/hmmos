@@ -1,0 +1,11 @@
+<map id="src/kernel/nonstd/string_view.h" name="src/kernel/nonstd/string_view.h">
+<area shape="rect" id="node1" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="255,5,429,45"/>
+<area shape="rect" id="node2" href="$libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="184,93,289,119"/>
+<area shape="rect" id="node8" href="$perf_8h.html" title="Utilities for performance optimization." alt="" coords="313,93,371,119"/>
+<area shape="rect" id="node9" title=" " alt="" coords="396,93,467,119"/>
+<area shape="rect" id="node3" href="$libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="5,167,124,192"/>
+<area shape="rect" id="node4" title=" " alt="" coords="75,240,150,265"/>
+<area shape="rect" id="node5" title=" " alt="" coords="199,167,274,192"/>
+<area shape="rect" id="node6" title=" " alt="" coords="298,167,381,192"/>
+<area shape="rect" id="node7" title=" " alt="" coords="405,167,476,192"/>
+</map>

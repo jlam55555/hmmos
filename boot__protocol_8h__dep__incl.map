@@ -1,0 +1,8 @@
+<map id="src/common/boot_protocol.h" name="src/common/boot_protocol.h">
+<area shape="rect" id="node1" title="The runtime interface between the bootloader and kernel." alt="" coords="165,5,371,31"/>
+<area shape="rect" id="node2" href="$page__table_8h.html" title="Some useful definitions used by page_table.c." alt="" coords="5,86,168,111"/>
+<area shape="rect" id="node4" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="193,79,343,119"/>
+<area shape="rect" id="node6" href="$virt_8h.html" title="Virtual memory definitions." alt="" coords="367,86,521,111"/>
+<area shape="rect" id="node3" href="$mbr_8h.html" title="Master Boot Record definitions." alt="" coords="29,174,144,199"/>
+<area shape="rect" id="node5" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="193,167,343,207"/>
+</map>

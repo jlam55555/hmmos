@@ -1,0 +1,10 @@
+<map id="src/boot/mbr.h" name="src/boot/mbr.h">
+<area shape="rect" id="node1" title="Master Boot Record definitions." alt="" coords="99,5,214,31"/>
+<area shape="rect" id="node2" href="$page__table_8h.html" title="Some useful definitions used by page_table.c." alt="" coords="103,79,210,104"/>
+<area shape="rect" id="node6" title=" " alt="" coords="5,225,76,251"/>
+<area shape="rect" id="node7" href="$assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="262,79,337,104"/>
+<area shape="rect" id="node3" href="$boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="95,152,218,177"/>
+<area shape="rect" id="node5" title=" " alt="" coords="221,225,303,251"/>
+<area shape="rect" id="node4" href="$memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="101,225,197,251"/>
+<area shape="rect" id="node8" title=" " alt="" coords="293,152,362,177"/>
+</map>

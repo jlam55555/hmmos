@@ -1,0 +1,9 @@
+<map id="src/kernel/mm/virt.h" name="src/kernel/mm/virt.h">
+<area shape="rect" id="node1" title="Virtual memory definitions." alt="" coords="146,5,299,31"/>
+<area shape="rect" id="node2" href="$boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="101,79,224,104"/>
+<area shape="rect" id="node3" href="$memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="5,152,101,177"/>
+<area shape="rect" id="node6" title=" " alt="" coords="249,79,319,104"/>
+<area shape="rect" id="node7" title=" " alt="" coords="344,79,419,104"/>
+<area shape="rect" id="node4" title=" " alt="" coords="125,152,208,177"/>
+<area shape="rect" id="node5" title=" " alt="" coords="233,152,303,177"/>
+</map>

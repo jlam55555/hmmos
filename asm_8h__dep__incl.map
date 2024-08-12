@@ -1,0 +1,6 @@
+<map id="src/kernel/arch/x86/asm.h" name="src/kernel/arch/x86/asm.h">
+<area shape="rect" id="node1" title="C wrappers around common asm functions." alt="" coords="159,5,304,45"/>
+<area shape="rect" id="node2" href="$acpi_8h.html" title="Very simple ACPI shutdown code from OSDev." alt="" coords="5,93,140,133"/>
+<area shape="rect" id="node3" href="$pic_8h.html" title="Programmable Interrupt Chip (PIC)" alt="" coords="164,93,299,133"/>
+<area shape="rect" id="node4" href="$serial_8h.html" title="Very simple serial driver." alt="" coords="323,93,457,133"/>
+</map>

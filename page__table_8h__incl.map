@@ -1,0 +1,7 @@
+<map id="src/boot/page_table.h" name="src/boot/page_table.h">
+<area shape="rect" id="node1" title="Some useful definitions used by page_table.c." alt="" coords="79,5,241,31"/>
+<area shape="rect" id="node2" href="$boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="99,79,221,104"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,152,88,177"/>
+<area shape="rect" id="node5" title=" " alt="" coords="233,152,303,177"/>
+<area shape="rect" id="node3" href="$memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="112,152,208,177"/>
+</map>

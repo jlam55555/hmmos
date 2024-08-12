@@ -1,0 +1,7 @@
+<map id="mem::phys::SimplePFA" name="mem::phys::SimplePFA">
+<area shape="rect" id="node1" title="Simple round&#45;robin allocator that doesn&#39;t use auxiliary memory." alt="" coords="617,70,788,95"/>
+<area shape="rect" id="node2" href="$classmem_1_1phys_1_1PageFrameAllocator.html" title="Abstract base class for page frame allocators." alt="" coords="335,70,568,95"/>
+<area shape="rect" id="node3" href="$classutil_1_1IntrusiveListHead.html" title=" " alt="" coords="35,5,218,45"/>
+<area shape="rect" id="node4" href="$classmem_1_1phys_1_1PageFrameTable.html" title="An array containing one page frame descriptor for each physical 4KB page." alt="" coords="22,70,231,95"/>
+<area shape="rect" id="node5" href="$classmem_1_1phys_1_1PageFrameDescriptor.html" title="Metadata for a single page frame in the linear address range." alt="" coords="5,130,248,155"/>
+</map>

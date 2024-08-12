@@ -1,0 +1,6 @@
+<map id="src/common/perf.h" name="src/common/perf.h">
+<area shape="rect" id="node1" title="Utilities for performance optimization." alt="" coords="180,5,323,31"/>
+<area shape="rect" id="node2" href="$serial_8h.html" title="Very simple serial driver." alt="" coords="5,79,140,119"/>
+<area shape="rect" id="node3" href="$string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="164,79,339,119"/>
+<area shape="rect" id="node4" href="$test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="259,167,369,192"/>
+</map>
