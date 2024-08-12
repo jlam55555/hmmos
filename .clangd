@@ -23,7 +23,7 @@ CompileFlags:
 ---
 # src/kernel and src/test only contains C++ files.
 If:
-    PathMatch: src/(kernel|test)/.*\.(h|cc)
+    PathMatch: src/(kernel|test|crt)/.*\.(h|cc)
 CompileFlags:
     Add:
       - -xc++

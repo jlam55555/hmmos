@@ -148,6 +148,10 @@ BOOT_OBJS:=$(_BOOT_OBJS:$(SRC_DIR)/%.S=$(OUT_DIR)/%.o)
 ################################################################################
 # Kernel-specific config
 ################################################################################
+# C++ runtime support for the kernel (specifically global ctors/dtors).
+CRTI_OBJ=$(OUT_DIR)/crt/crti.o
+CRTN_OBJ=$(OUT_DIR)/crt/crtn.o
+
 KERNEL_LINKER_SCRIPT:=$(KERNEL_SRC_DIR)/linker.ld
 KERNEL_LDFLAGS:=$(LDFLAGS) \
 	-T$(KERNEL_LINKER_SCRIPT)
@@ -158,14 +162,16 @@ KERNEL_SRCS:=$(shell \
 	find $(KERNEL_SRC_DIR) $(COMMON_SRC_DIR) -name *.[cS] -o -name *.cc)
 _KERNEL_OBJS:=$(KERNEL_SRCS:$(SRC_DIR)/%.cc=$(OUT_DIR)/%.o)
 __KERNEL_OBJS:=$(_KERNEL_OBJS:$(SRC_DIR)/%.c=$(OUT_DIR)/%.o)
-KERNEL_OBJS:=$(__KERNEL_OBJS:$(SRC_DIR)/%.S=$(OUT_DIR)/%.o)
+___KERNEL_OBJS:=$(__KERNEL_OBJS:$(SRC_DIR)/%.S=$(OUT_DIR)/%.o)
+KERNEL_OBJS:=$(CRTI_OBJ) $(___KERNEL_OBJS) $(CRTN_OBJ)
 
 KERNEL_TEST_SRCS:=\
 	$(filter-out %/entry.cc,$(KERNEL_SRCS)) \
 	$(shell find $(KERNEL_TEST_SRC_DIR) -name *.[cS] -o -name *.cc)
 _KERNEL_TEST_OBJS:=$(KERNEL_TEST_SRCS:$(SRC_DIR)/%.cc=$(OUT_DIR)/%.o)
 __KERNEL_TEST_OBJS:=$(_KERNEL_TEST_OBJS:$(SRC_DIR)/%.c=$(OUT_DIR)/%.o)
-KERNEL_TEST_OBJS:=$(__KERNEL_TEST_OBJS:$(SRC_DIR)/%.S=$(OUT_DIR)/%.o)
+___KERNEL_TEST_OBJS:=$(__KERNEL_TEST_OBJS:$(SRC_DIR)/%.S=$(OUT_DIR)/%.o)
+KERNEL_TEST_OBJS:=$(CRTI_OBJ) $(___KERNEL_TEST_OBJS) $(CRTN_OBJ)
 
 ################################################################################
 # Build rules

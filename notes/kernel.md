@@ -16,8 +16,9 @@ In no definitive order. Some of these can be copied from
 [laos](https://github.com/jlam55555/laos).
 
 - [ ] quality of life
-	- [X] C++
+	- [X] C++ basic runtime support (e.g., global ctors)
 	- [X] unit testing utility
+	- [ ] doxygen
 	- [ ] benchmarking utility
 	- [ ] clang-tidy and clang-format configuration
 - [ ] basics

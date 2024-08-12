@@ -35,7 +35,7 @@ Build the bootloader and run it in QEMU. Make sure to have `qemu` and
 GNU `make` installed.
 ```
 $ # Run the kernel
-$ make run
+$ make run OPT=1
 $
 $ # Run tests
 $ make run TEST=all

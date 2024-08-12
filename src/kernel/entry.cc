@@ -1,3 +1,4 @@
+#include "../crt/crt.h"
 #include "boot_protocol.h"
 #include "drivers/serial.h"
 #include "idt.h"
@@ -37,6 +38,8 @@ static_assert(IsBicycle<B>, "B is a bicycle");
 } // namespace
 
 __attribute__((section(".text.entry"))) void _entry() {
+  crt::run_global_ctors();
+
   nonstd::printf("We're in the kernel now!\r\n");
 
   // C++-ify the memory map.
@@ -73,4 +76,7 @@ __attribute__((section(".text.entry"))) void _entry() {
   for (;;) {
     __asm__("hlt");
   }
+
+  // We'll never reach here.
+  crt::run_global_dtors();
 }

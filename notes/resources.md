@@ -23,3 +23,6 @@ going to bother linking OSDev wikis since those are implied.
 ## Build system
 - Advanced auto dependency generation: https://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
   - also: https://stackoverflow.com/a/39003791
+
+## C/C++ runtime
+- Mini FAQ about the misc libc/gcc crt files: https://dev.gentoo.org/~vapier/crt.txt
