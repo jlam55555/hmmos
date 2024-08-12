@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>HmmOS: Main Page</title>
+<title>HmmOS: HmmOS</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -69,10 +69,44 @@ $(function() {
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">HmmOS Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">HmmOS </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_README"></a>Second attempt at writing an OS, this time a little more from scratch now that I have a slightly better idea of what the bootloader does.</p>
+<p>Focusing on x86 first, will maybe update this to be for x86_64 later.</p>
+<h1><a class="anchor" id="autotoc_md52"></a>
+Setup</h1>
+<p>This project is mainly built with clang/LLVM toolchains in mind. This includes <code>clang</code>, <code>lld</code>, <code>clangd</code>, and <code>clang-format</code>. You'll need at least version 14.</p>
+<p>GNU <code>binutils</code> is needed where LLVM is lacking (i.e. <code>as</code> for GNU AT&amp;T asm syntax + <code>objdump</code> and friends).</p>
+<p>This will be tested with <code>qemu</code>, but any (x86) emulator should be fine.</p>
+<p>Versions: </p><div class="fragment"><div class="line">$ as --version</div>
+<div class="line">GNU assembler (GNU Binutils for Debian) 2.40</div>
+<div class="line">Copyright (C) 2023 Free Software Foundation, Inc.</div>
+<div class="line">This program is free software; you may redistribute it under the terms of</div>
+<div class="line">the GNU General Public License version 3 or later.</div>
+<div class="line">This program has absolutely no warranty.</div>
+<div class="line">This assembler was configured for a target of `x86_64-linux-gnu&#39;.</div>
+<div class="line">$ clang --version</div>
+<div class="line">Debian clang version 14.0.6</div>
+<div class="line">Target: x86_64-pc-linux-gnu</div>
+<div class="line">Thread model: posix</div>
+<div class="line">InstalledDir: /usr/bin</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md53"></a>
+Getting started</h1>
+<p>Build the bootloader and run it in QEMU. Make sure to have <code>qemu</code> and GNU <code>make</code> installed, and <code>doxygen</code> if you want to generate documentation. </p><div class="fragment"><div class="line">$ # Run the kernel</div>
+<div class="line">$ make run OPT=1</div>
+<div class="line">$</div>
+<div class="line">$ # Run tests</div>
+<div class="line">$ make run TEST=all</div>
+<div class="line">$ make run TEST=&lt;testselection&gt;</div>
+<div class="line">$</div>
+<div class="line">$ # Generate documentation</div>
+<div class="line">$ make docs</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md54"></a>
+Misc.</h1>
+<p>Name courtesy of @Victoooooor. </p>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

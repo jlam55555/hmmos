@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['range_5foverlaps_0',['range_overlaps',['../algorithm_8h.html#ab927f5abc4ee239a59ef76ad2ea2d457',1,'util::algorithm']]],
-  ['range_5foverlaps2_1',['range_overlaps2',['../algorithm_8h.html#a8ca43081adf63ba901e115af6f4667db',1,'util::algorithm']]],
-  ['range_5fsubsumes_2',['range_subsumes',['../algorithm_8h.html#a8e24809d6020a1c146dd02e01456a7c1',1,'util::algorithm']]],
-  ['registerframe_3',['RegisterFrame',['../structRegisterFrame.html',1,'']]],
-  ['run_5fglobal_5fctors_4',['run_global_ctors',['../crt_8h.html#a65a6c466ebaf18e0d365d5e5adad81ad',1,'crt']]]
+  ['object_0',['Object',['../structObject.html',1,'Object'],['../manual_8c.html#ab1287b6141419421dc5c14b9f7756b0a',1,'Object():&#160;manual.c']]],
+  ['objref_1',['objRef',['../structObject.html#a71225073d06a793b9a6ea9263ed37b12',1,'Object']]],
+  ['objunref_2',['objUnref',['../structObject.html#a924ee0cecc906d148022b3f0d6325cfb',1,'Object']]],
+  ['objutil_2eh_3',['objutil.h',['../objutil_8h.html',1,'']]],
+  ['open_4',['open',['../structcmd_8h.html#a2c4414339f388561554c2deab11a1a07',1,'structcmd.h']]],
+  ['overall_20kernel_20implementation_20notes_5',['overall kernel implementation notes',['../md_notes_kernel.html',1,'']]],
+  ['overload_5ftest_6',['Overload_Test',['../classOverload__Test.html',1,'']]]
 ];

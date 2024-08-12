@@ -121,20 +121,20 @@ funcptr&#160;</td><td class="memItemRight" valign="bottom"><b>crt::detail::__sto
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>C/C++ runtime support. </p>
 <p>This is separated out into its own directory since the order of crt{i,n}.o when linking is important.</p>
-<h2><a class="anchor" id="autotoc_md0"></a>
+<h2><a class="anchor" id="autotoc_md55"></a>
 Runtime feature support:</h2>
-<h2><a class="anchor" id="autotoc_md1"></a>
+<h2><a class="anchor" id="autotoc_md56"></a>
 Virtual functions</h2>
-<p>A trivial implementation of __cxa_pure_virtual() is provided. This function is needed for using virtual functions (but will never be called unless a virtual function call can't be made.</p>
+<p><a class="el" href="classA.html">A</a> trivial implementation of __cxa_pure_virtual() is provided. This function is needed for using virtual functions (but will never be called unless a virtual function call can't be made.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md3"></a>
+ <h2><a class="anchor" id="autotoc_md58"></a>
 Global ctors/dtors</h2>
 <p>GCC/clang both compile constructor and destructor thunks into special sections called <code>.init_array</code> and <code>.fini_array</code>, respectively. We need to manually run all ctor code at startup and all dtor code at shutdown (although this may not be necessary, as we're already shutting down).</p>
 <p>Constructor thunks include global object constructors, and functions declared with attribute "constructor". Destructor thunks only include functions declared with attribute "destructor" &ndash; global object destructors are called via the __cxa_atexit() mechanism.</p>
 <p>The way we do this is by getting the start and end of these sections. ld doesn't create <code>__{start,stop}_{init,fini}_array</code> symbols since the section names aren't valid identifiers (they start with a dot), so we have to manually insert symbols at the start and end of these sections. We do this in <code>crti.o</code> and <code>crtn.o</code>, which are the first and last objects fed to the linker, respectively.</p>
 <p>Note that this is the newer way of specifying global ctors/dtors; this supercedes the .ctor/.cdtor/.init/.fini sections (which is what OSDev still currently describes for x86). GCC/clang use this newer .init_array/.fini_array method.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md5"></a>
+ <h2><a class="anchor" id="autotoc_md60"></a>
 __cxa_atexit()/__cxa_finalize()</h2>
 <p>These are required for global object destructors. For simplicity this uses a static-sized array, which can be bumped manually when needed.</p>
 <p>The implementation is mostly ripped off of OSDev. </p>

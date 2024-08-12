@@ -82,7 +82,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>A C++ version of the common linked list data structure (see <code>man 3 list</code>).  
+<p><a class="el" href="classA.html">A</a> C++ version of the common linked list data structure (see <code>man 3 list</code>).  
  <a href="classutil_1_1IntrusiveListHead.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="intrusive__list_8h_source.html">intrusive_list.h</a>&gt;</code></p>
@@ -153,8 +153,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr
 <tr class="separator:afb40db6ff52d8e64babe6627a6cb34ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;typename Parent, typename Tag = void&gt;<br />
-class util::IntrusiveListHead&lt; Parent, Tag &gt;</div><p>A C++ version of the common linked list data structure (see <code>man 3 list</code>). </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename Parent, typename <a class="el" href="classTag.html">Tag</a> = void&gt;<br />
+class util::IntrusiveListHead&lt; Parent, Tag &gt;</div><p><a class="el" href="classA.html">A</a> C++ version of the common linked list data structure (see <code>man 3 list</code>). </p>
 <p>In its well-known form, macros and <code>offsetof()</code> are used to for initialization and iteration.</p>
 <p>Like the macro version, this is an intrusive, circular, doubly-linked list. Unlike the macro version, this only supports homogeneous nodes &ndash; you can't interpret the <code><a class="el" href="classutil_1_1IntrusiveListHead.html" title="A C++ version of the common linked list data structure (see man 3 list).">IntrusiveListHead</a></code> as being a member of different parent nodes. However, we shouldn't really be doing that anyways.</p>
 <p><code><a class="el" href="classutil_1_1IntrusiveListHead.html" title="A C++ version of the common linked list data structure (see man 3 list).">IntrusiveListHead</a></code>s <b>assume they are data members of the parent node</b>. Constructing an <code><a class="el" href="classutil_1_1IntrusiveListHead.html" title="A C++ version of the common linked list data structure (see man 3 list).">IntrusiveListHead</a></code> explicitly (i.e., not as a base class of <code>Parent</code>) is allowed but only should be used to construct sentinel nodes, and care should be taken to not downcast these to objects of type <code>Parent</code>.</p>
@@ -194,13 +194,13 @@ assert(node2.MLPNList2::size() == 1);
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Parent , typename Tag  = void&gt; </div>
+template&lt;typename Parent , typename <a class="el" href="classTag.html">Tag</a>  = void&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, Tag &gt;::IntrusiveListHead </td>
+          <td class="memname"><a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, <a class="el" href="classTag.html">Tag</a> &gt;::IntrusiveListHead </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -224,7 +224,7 @@ template&lt;typename Parent , typename Tag  = void&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Parent , typename Tag  = void&gt; </div>
+template&lt;typename Parent , typename <a class="el" href="classTag.html">Tag</a>  = void&gt; </div>
 <div class="memtemplate">
 template&lt;std::forward_iterator It&gt; </div>
 <table class="mlabels">
@@ -232,7 +232,7 @@ template&lt;std::forward_iterator It&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, Tag &gt;::IntrusiveListHead </td>
+          <td class="memname"><a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, <a class="el" href="classTag.html">Tag</a> &gt;::IntrusiveListHead </td>
           <td>(</td>
           <td class="paramtype">const It &amp;&#160;</td>
           <td class="paramname"><em>begin</em>, </td>
@@ -269,13 +269,13 @@ template&lt;std::forward_iterator It&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Parent , typename Tag  = void&gt; </div>
+template&lt;typename Parent , typename <a class="el" href="classTag.html">Tag</a>  = void&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Parent &amp; <a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, Tag &gt;::at </td>
+          <td class="memname">Parent &amp; <a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, <a class="el" href="classTag.html">Tag</a> &gt;::at </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>n</em></td><td>)</td>
@@ -301,13 +301,13 @@ template&lt;typename Parent , typename Tag  = void&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Parent , typename Tag  = void&gt; </div>
+template&lt;typename Parent , typename <a class="el" href="classTag.html">Tag</a>  = void&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, Tag &gt;::empty </td>
+          <td class="memname">bool <a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, <a class="el" href="classTag.html">Tag</a> &gt;::empty </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -331,13 +331,13 @@ template&lt;typename Parent , typename Tag  = void&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Parent , typename Tag  = void&gt; </div>
+template&lt;typename Parent , typename <a class="el" href="classTag.html">Tag</a>  = void&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structutil_1_1IntrusiveListHead_1_1Iterator.html">Iterator</a> <a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, Tag &gt;::erase </td>
+          <td class="memname"><a class="el" href="structutil_1_1IntrusiveListHead_1_1Iterator.html">Iterator</a> <a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, <a class="el" href="classTag.html">Tag</a> &gt;::erase </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -361,7 +361,7 @@ template&lt;typename Parent , typename Tag  = void&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Parent , typename Tag  = void&gt; </div>
+template&lt;typename Parent , typename <a class="el" href="classTag.html">Tag</a>  = void&gt; </div>
 <div class="memtemplate">
 template&lt;std::forward_iterator It&gt; </div>
 <table class="mlabels">
@@ -369,7 +369,7 @@ template&lt;std::forward_iterator It&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, Tag &gt;::insert_back </td>
+          <td class="memname">void <a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, <a class="el" href="classTag.html">Tag</a> &gt;::insert_back </td>
           <td>(</td>
           <td class="paramtype">const It &amp;&#160;</td>
           <td class="paramname"><em>begin</em>, </td>

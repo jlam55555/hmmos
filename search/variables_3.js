@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['unusable_0',['unusable',['../classmem_1_1phys_1_1PageFrameDescriptor.html#ab660cd994d569701423c7df53df0aecc',1,'mem::phys::PageFrameDescriptor::unusable()'],['../page__frame__table_8h.html#a2815e7e544fa19a4986d8f599b5e2d79',1,'unusable():&#160;page_frame_table.h']]],
-  ['usable_5fmem_5fbytes_1',['usable_mem_bytes',['../classmem_1_1phys_1_1PageFrameTable.html#aa92b474ed55f584c77e67df2e37acc37',1,'mem::phys::PageFrameTable']]]
+  ['din_5f0_0',['din_0',['../classmux__using__with.html#a9fc14b65611c7124d4cab27b963f3011',1,'mux_using_with']]],
+  ['din_5f1_1',['din_1',['../classmux__using__with.html#aaedccad88ca9b207c86a561342fcbaa1',1,'mux_using_with']]]
 ];

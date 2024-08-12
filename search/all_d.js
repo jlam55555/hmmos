@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['non_5fcopyable_0',['NON_COPYABLE',['../objutil_8h.html#a922193d9f82c8176c2de6ee31444edfb',1,'objutil.h']]],
-  ['non_5fmovable_1',['NON_MOVABLE',['../objutil_8h.html#ada6c5ab7ef08f2616a1c8eba171c390e',1,'objutil.h']]]
+  ['libc_2eh_0',['libc.h',['../libc_8h.html',1,'']]],
+  ['libc_5fminimal_2eh_1',['libc_minimal.h',['../libc__minimal_8h.html',1,'']]]
 ];
