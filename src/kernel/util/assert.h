@@ -1,4 +1,5 @@
 #pragma once
+#include "perf.h"
 #include <cassert>
 
 /// \file
@@ -12,7 +13,7 @@
 ///
 /// The extra pair of parens is due to `assert` failing to accept an
 /// argument with commas.
-#define ASSERT(...) assert((__VA_ARGS__))
+#define ASSERT(...) assert(likely(__VA_ARGS__))
 
 /// \brief Compile-out debug macro in non-debug builds.
 ///
