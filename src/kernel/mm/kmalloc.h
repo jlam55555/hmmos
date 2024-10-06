@@ -33,3 +33,4 @@ void kfree(void *data) noexcept;
 void *operator new(size_t sz);
 void *operator new(size_t sz, const std::nothrow_t &tag) noexcept;
 void operator delete(void *ptr) noexcept;
+void operator delete(void *ptr, size_t sz) noexcept;

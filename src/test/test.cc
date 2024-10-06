@@ -1,9 +1,11 @@
 #include "test.h"
 #include "nonstd/libc.h"
 #include "nonstd/string_view.h"
+#include <algorithm>
 
-extern const test::detail::TestInfo __start_rodata_test_info;
-extern const test::detail::TestInfo __stop_rodata_test_info;
+// NOCOMMIT: these should be const
+extern test::detail::TestInfo __start_data_test_info;
+extern test::detail::TestInfo __stop_data_test_info;
 
 namespace test {
 
@@ -51,9 +53,17 @@ bool run(const detail::TestInfo *test) {
 void run_tests(const char *test_selection) {
   nonstd::printf("TEST SELECTION=%s\r\n", test_selection);
 
+  std::sort(&__start_data_test_info, &__stop_data_test_info,
+            [](const auto &test1, const auto &test2) {
+              // note: unsafe strcmp. should convert to
+              // nonstd::string_view and implement comparison
+              // operator there.
+              return nonstd::strcmp(test1.name, test2.name) < 0;
+            });
+
   unsigned tests_run = 0, tests_passed = 0;
-  for (const detail::TestInfo *test_info = &__start_rodata_test_info;
-       test_info != &__stop_rodata_test_info; ++test_info) {
+  for (const detail::TestInfo *test_info = &__start_data_test_info;
+       test_info != &__stop_data_test_info; ++test_info) {
     if (detail::matches(test_info->name, test_selection)) {
       ++tests_run;
       tests_passed += run(test_info);

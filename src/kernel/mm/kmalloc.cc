@@ -51,3 +51,4 @@ void *operator new(size_t sz, const std::nothrow_t &tag) noexcept {
   return mem::kmalloc(sz);
 }
 void operator delete(void *ptr) noexcept { return mem::kfree(ptr); }
+void operator delete(void *ptr, size_t sz) noexcept { ::operator delete(ptr); }

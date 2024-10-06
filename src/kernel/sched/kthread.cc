@@ -7,11 +7,12 @@
 #include "timer.h"
 #include "util/algorithm.h"
 #include "util/assert.h"
+#include <cstddef>
 
 namespace {
 
 /// Thread ID counter.
-unsigned _tid = 0;
+sched::ThreadID _tid = 0;
 
 } // namespace
 
@@ -20,23 +21,26 @@ namespace sched {
 KernelThread::KernelThread(Scheduler &_scheduler, void *_stack)
     : stack{_stack}, scheduler(_scheduler), tid(_tid++) {}
 
-void Scheduler::bootstrap() {
+ThreadID Scheduler::bootstrap() {
   // Can't call `bootstrap()` on an already-running scheduler.
   ASSERT(running == nullptr);
   running = new KernelThread(*this);
   ASSERT(running != nullptr);
 
-  // TODO: add dummy runnable task so that something is always
-  // schedulable
+  // Maybe create dummy runnable task here so that something is always
+  // schedulable. For now we assume that there is always a schedulable
+  // thread, and `schedule()` will crash and burn if there isn't.
+
+  return running->tid;
 }
 
-void Scheduler::new_thread(void (*thunk)()) {
+ThreadID Scheduler::new_thread(void (*thunk)()) {
   // Allocate a new stack, and set it up so that it looks like we've
   // just called into `switch_task()` with the return address being
   // the beginning of `f()`.
 
-  // TODO: use the PFA directly rather than malloc, since this should
-  // be page-aligned.
+  // Note: the kernel heap implementation ensures that this is
+  // page-aligned.
   void *stk = ::operator new(PG_SZ);
   ASSERT(stk != nullptr);
 
@@ -49,7 +53,7 @@ void Scheduler::new_thread(void (*thunk)()) {
   // Add thread to the end of the round-robin space.
   runnable.push_back(*thread);
 
-  // TODO: Call `schedule()` here?
+  return thread->tid;
 }
 
 const KernelThread *Scheduler::choose_task() const {
@@ -69,7 +73,7 @@ const KernelThread *Scheduler::choose_task() const {
   return nullptr;
 }
 
-void Scheduler::schedule() {
+void Scheduler::schedule(bool switch_stack) {
   ASSERT(running);
 
   KernelThread *new_task = const_cast<KernelThread *>(choose_task());
@@ -87,15 +91,16 @@ void Scheduler::schedule() {
   // Do all the bookkeeping here, before we switch stacks. We can't do
   // this after switching stacks or else we'll be updating the
   // bookkeeping from the `new_task's` last context switch.
-  //
-  // TODO: separate this out into a separate function for unit
-  // testing. or just don't call `switch_stack` in unit testing.
   running = new_task;
   new_task->erase();
   runnable.push_back(*current_task);
   context_switch_start = arch::time::rdtsc();
 
-  arch::sched::switch_stack(&current_task->stack, new_task->stack);
+  // Unit tests aren't multithreaded, don't actually switch stacks but
+  // do the rest of the bookkeeping.
+  if (likely(switch_stack)) {
+    arch::sched::switch_stack(&current_task->stack, new_task->stack);
+  }
 
   // We've swapped stacks now.
   post_context_switch_bookkeeping();
@@ -161,11 +166,11 @@ void Scheduler::delete_task(KernelThread *thread) {
 
   thread->erase();
 
+  // TODO: use std::byte* in more places rather than void*
   auto *stack_pg =
-      (void *)util::algorithm::floor_pow2<PG_SZ>((size_t)thread->stack);
-  mem::kfree(stack_pg);
-
-  mem::kfree(thread);
+      (std::byte *)util::algorithm::floor_pow2<PG_SZ>((size_t)thread->stack);
+  delete stack_pg;
+  delete thread;
 }
 
 extern "C" {

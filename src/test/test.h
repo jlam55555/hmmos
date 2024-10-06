@@ -12,7 +12,7 @@
 ///         TEST_ASSERT(1 == 2);
 ///     }
 ///
-/// Test descriptors are placed in their own special rodata section
+/// Test descriptors are placed in their own special data section
 /// for automatic discovery.
 ///
 /// Tests are not built into the main kernel, but rather into a
@@ -81,7 +81,7 @@ bool matches(nonstd::string_view test_name, nonstd::string_view test_selection);
   }                                                                            \
   namespace {                                                                  \
   __attribute__((                                                              \
-      section("rodata_test_info"),                                             \
+      section("data_test_info"),                                               \
       used)) volatile test::detail::TestInfo test_info_##TEST_NAME_SYM{        \
       .name = #TEST_NS "::" #TEST_NAME_STR,                                    \
       .fn = &TEST_NS::test::TEST_NAME_SYM,                                     \
@@ -104,7 +104,7 @@ bool matches(nonstd::string_view test_name, nonstd::string_view test_selection);
   }                                                                            \
   namespace {                                                                  \
   __attribute__((                                                              \
-      section("rodata_test_info"),                                             \
+      section("data_test_info"),                                               \
       used)) volatile test::detail::TestInfo test_info_##TEST_NAME_SYM{        \
       .name = #TEST_NS "::" #TEST_NAME_STR,                                    \
       .fn = &TEST_NS::test::TEST_NAME_SYM,                                     \

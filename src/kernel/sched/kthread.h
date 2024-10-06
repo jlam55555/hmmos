@@ -14,16 +14,8 @@
 namespace sched {
 
 class Scheduler;
-struct KernelThread : public util::IntrusiveListHead<KernelThread> {
-  KernelThread(Scheduler &, void *stack = nullptr);
-
-  void *stack;
-  Scheduler &scheduler;
-  bool runnable = true;
-
-  /// Thread ID; will be automatically assigned.
-  unsigned tid;
-};
+class TestScheduler;
+class KernelThread;
 
 extern "C" {
 /// This is a free function with C linkage as it is called via asm
@@ -36,21 +28,53 @@ extern "C" {
 void on_thread_start(KernelThread *, void (*thunk)());
 }
 
+using ThreadID = unsigned;
+static constexpr ThreadID bad_thread = -1;
+
+/// \brief Internal representation of a kernel thread.
+///
+/// This is an internal data structure; threads can be identified by
+/// TID. This only need be defined in the header for the intrusive
+/// list head in Scheduler; External clients do not have any way to
+/// construct/get access to a valid KernelThread object via the \ref
+/// Scheduler interface..
+class KernelThread final : public util::IntrusiveListHead<KernelThread> {
+private:
+  KernelThread(Scheduler &, void *stack = nullptr);
+
+  void *stack;
+  Scheduler &scheduler;
+  bool runnable = true;
+
+  /// Thread ID; will be automatically assigned.
+  ///
+  /// Assume this is unique; we don't expect to exceed 4 billion new
+  /// threads over the lifetime of the OS.
+  ThreadID tid;
+
+  friend class Scheduler;
+  friend void on_thread_start(KernelThread *, void (*)());
+  friend class TestScheduler;
+};
+
 class Scheduler {
 public:
   /// Enter the scheduler. This should be called in live but doesn't
   /// need to be called when unit-testing scheduler functionality.
-  void bootstrap();
+  ThreadID bootstrap();
 
   /// \brief Select the next runnable process in round-robin order, and
   /// actually switch stacks.
   ///
+  /// \param switch_stack Should only be set to false in a unit test,
+  /// where we don't actually have multithreading.
+  ///
   /// This will throw if there are no schedulable tasks remaining.
-  void schedule();
+  void schedule(bool switch_stack = true);
 
   /// Create a new thread that will start execution at the given
   /// thunk.
-  void new_thread(void (*thunk)());
+  ThreadID new_thread(void (*thunk)());
 
   /// Print scheduler stats, for debugging purposes.
   void print_stats() const;
@@ -71,6 +95,9 @@ public:
   void destroy_thread(KernelThread *thread = nullptr);
 
 private:
+  // For unit testing
+  friend class TestScheduler;
+
   KernelThread *running = nullptr;
   util::IntrusiveListHead<KernelThread> runnable;
   util::IntrusiveListHead<KernelThread> blocked;
