@@ -20,7 +20,6 @@ __attribute__((constructor)) void foo() { a = 2; }
 
 } // namespace
 
-// NOCOMMIT: this is broken and I don't really want to fix it.
 TEST(nonstd::cpp, global_ctor) {
   TEST_ASSERT(a == 2);
   TEST_ASSERT(b == 3);

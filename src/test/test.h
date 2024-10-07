@@ -64,6 +64,11 @@ struct TestInfo {
   // This takes a bool& argument rather than returning a bool so that
   // test doesn't have to explicitly return true.
   void (*fn)(bool &success);
+
+  // Sort tests by name.
+  auto operator<=>(const TestInfo &rhs) const {
+    return nonstd::string_view{name} <=> rhs.name;
+  }
 } __attribute__((packed));
 
 /// \brief Test selection logic. Only exposed for unit testing.

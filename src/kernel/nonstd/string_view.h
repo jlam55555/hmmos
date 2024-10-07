@@ -6,6 +6,7 @@
 
 #include "nonstd/libc.h"
 #include "perf.h"
+#include <algorithm>
 #include <cstddef>
 
 namespace nonstd {
@@ -21,8 +22,17 @@ public:
   constexpr size_t length() const { return _len; }
   constexpr size_t size() const { return _len; }
 
-  friend constexpr bool operator==(string_view lhs, string_view rhs) {
-    return lhs._len == rhs._len && !strncmp(lhs.data(), rhs.data(), lhs._len);
+  constexpr bool operator==(const string_view &rhs) const {
+    return _len == rhs._len && !strncmp(_data, rhs._data, _len);
+  }
+
+  constexpr auto operator<=>(const string_view &rhs) const {
+    const size_t cmp_len = std::min(_len, rhs._len);
+    const auto res = nonstd::strncmp(_data, rhs._data, cmp_len);
+    if (res != 0) {
+      return res <=> 0;
+    }
+    return _len <=> rhs._len;
   }
 
   static constexpr size_t npos = -1;
