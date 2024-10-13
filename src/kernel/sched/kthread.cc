@@ -131,7 +131,7 @@ void Scheduler::post_context_switch_bookkeeping() {
   }
 }
 
-void Scheduler::destroy_thread(KernelThread *thread) {
+void Scheduler::destroy_thread(KernelThread *thread, bool switch_stack) {
   if (thread == nullptr) {
     thread = running;
   }
@@ -156,7 +156,7 @@ void Scheduler::destroy_thread(KernelThread *thread) {
     ASSERT(pending_deletion == nullptr);
     pending_deletion = thread;
 
-    schedule();
+    schedule(switch_stack);
   }
 }
 

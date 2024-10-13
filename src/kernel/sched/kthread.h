@@ -66,11 +66,8 @@ public:
   /// \brief Select the next runnable process in round-robin order, and
   /// actually switch stacks.
   ///
-  /// \param switch_stack Should only be set to false in a unit test,
-  /// where we don't actually have multithreading.
-  ///
   /// This will throw if there are no schedulable tasks remaining.
-  void schedule(bool switch_stack = true);
+  void schedule() { return schedule(/*switch_stack=*/true); }
 
   /// Create a new thread that will start execution at the given
   /// thunk.
@@ -92,7 +89,9 @@ public:
   ///
   /// \param thread the thread to destroy, or nullptr to destroy the
   /// currently-running thread.
-  void destroy_thread(KernelThread *thread = nullptr);
+  void destroy_thread(KernelThread *thread = nullptr) {
+    return destroy_thread(thread, /*switch_stack=*/true);
+  }
 
 private:
   // For unit testing
@@ -103,6 +102,12 @@ private:
   util::IntrusiveListHead<KernelThread> blocked;
 
   KernelThread *pending_deletion = nullptr;
+
+  /// \brief Private implementation for unit testing.
+  /// \sa schedule()
+  /// \param switch_stack Should only be set to false in a unit test,
+  /// where we don't actually have multithreading.
+  void schedule(bool switch_stack);
 
   /// \brief Returns a runnable task to schedule next.
   ///
@@ -127,11 +132,14 @@ private:
   /// - Periodically print scheduler stats.
   void post_context_switch_bookkeeping();
 
+  /// \sa schedule()
+  void destroy_thread(KernelThread *thread, bool switch_stack);
+
   /// \brief Delete a thread that's not in use.
   ///
   /// This is the internal logic to free all the necessary data
-  /// structures; external clients should call `destroy_thread()` to
-  /// safely delete a task.
+  /// structures for a thread that isn't currently-scheduled; external
+  /// clients should call `destroy_thread()` to safely delete a task.
   void delete_task(KernelThread *thread);
 
   /// \brief Number of calls to `schedule()`.
