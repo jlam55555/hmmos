@@ -1,11 +1,18 @@
 #pragma once
 
 /// \file
-/// \brief Kernel thread implementation
+/// \brief Kernel thread and thread scheduler implementation
 ///
-/// Each kernel thread gets a 4KB stack.
+/// The general interface for the scheduler is:
+/// - `Scheduler::bootstrap()`: register the current thread in the
+///   scheduler.
+/// - `Scheduler::new_thread(thunk)`: add a new task that will start
+///   executing `thunk`. This will be given a 4KB stack.
+/// - `Scheduler::destroy_thread()`: destroy the current running
+///   thread, and schedule away.
+/// - `Scheduler::schedule()`: context-switch to the next runnable
+///   task in a round-robin manner.
 ///
-/// TODO: more description
 /// TODO: pre-emptive scheduling (timer interrupt) and synchronization
 /// primitives
 

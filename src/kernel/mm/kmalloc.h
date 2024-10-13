@@ -8,7 +8,6 @@
 /// sequential allocator w/ vmalloc, so the entire arena is contiguous
 /// and can be freed at once) as a very simple allocator model.
 ///
-/// TODO: rename this file to nonstd/new.h
 
 #include <new>
 #include <stddef.h>
