@@ -1,9 +1,12 @@
 #include "../crt/crt.h"
 #include "boot_protocol.h"
+#include "drivers/acpi.h"
 #include "drivers/serial.h"
 #include "idt.h"
+#include "mm/kmalloc.h"
 #include "mm/page_frame_allocator.h"
 #include "nonstd/libc.h"
+#include "sched/kthread.h"
 #include <climits>
 #include <concepts>
 
@@ -34,6 +37,16 @@ public:
 
 static_assert(!IsBicycle<A>, "A is not a bicycle");
 static_assert(IsBicycle<B>, "B is a bicycle");
+
+sched::Scheduler *scheduler = nullptr;
+void foo() {
+  for (;;) {
+    // Cooperative scheduling.
+    nonstd::printf("In thread foo!\r\n");
+    __asm__("hlt");
+    scheduler->schedule();
+  }
+}
 
 } // namespace
 
@@ -69,14 +82,33 @@ __attribute__((section(".text.entry"))) void _entry() {
   nonstd::printf("Initializing PFA...\r\n");
   mem::phys::SimplePFA simple_allocator{pft, 0, pft.mem_limit()};
 
+  mem::set_pfa(&simple_allocator); // for simple kmalloc
+
   nonstd::printf("Enabling interrupts...\r\n");
   arch::idt::init();
 
+  nonstd::printf("Initializing scheduler...\r\n");
+  sched::Scheduler scheduler;
+  ::scheduler = &scheduler;
+  scheduler.bootstrap();
+
+  // TODO: idle task
+  scheduler.new_thread(&foo);
+
   nonstd::printf("Done.\r\n");
+
+  // We should never get here if we call `destroy_thread()` above.
+  // scheduler.destroy_thread();
+  // nonstd::printf("Unreachable");
+
+  // This should round-robin between main and foo.
   for (;;) {
+    nonstd::printf("In thread main!\r\n");
     __asm__("hlt");
+    scheduler.schedule();
   }
 
-  // We'll never reach here.
+  // We'll never reach here unless you modify the above loop.
   crt::run_global_dtors();
+  acpi::shutdown();
 }

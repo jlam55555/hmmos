@@ -22,9 +22,14 @@ SECTIONS
 	.bss : {
 		*(COMMON)
 		*(.bss)
+
+		/* Force .bss region in flat binary file for ld.
+		https://f.osdev.org/viewtopic.php?p=101868 */
+		LONG(0)
 	}
 
-	/* See https://stackoverflow.com/a/77339871 */
+	/* Force .bss region in flat binary file for lld.
+	See https://stackoverflow.com/a/77339871 */
 	.fake : {
 		. = . + SIZEOF(.bss);
 	}

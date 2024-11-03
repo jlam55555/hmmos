@@ -69,6 +69,30 @@ TEST_CLASS(nonstd, string_view, substr) {
   static_assert("hello"_sv.substr(-1, string_view::npos) == "hello"_sv);
 }
 
+TEST_CLASS(nonstd, string_view, cmp) {
+  static_assert("abcd"_sv == "abcd"_sv);
+  static_assert("abcd"_sv <= "abcd"_sv);
+  static_assert("abcd"_sv >= "abcd"_sv);
+  static_assert(!("abcd"_sv < "abcd"_sv));
+  static_assert(!("abcd"_sv > "abcd"_sv));
+
+  static_assert("abcd"_sv != "abdc"_sv);
+
+  static_assert("abcd"_sv < "abcde"_sv);
+  static_assert("abcd"_sv <= "abcde"_sv);
+  static_assert(!("abcd"_sv >= "abcde"_sv));
+  static_assert("abcd"_sv != "abcde"_sv);
+
+  static_assert("abcde"_sv > "abcd"_sv);
+  static_assert("abcde"_sv >= "abcd"_sv);
+
+  static_assert("abcd"_sv < "efgh"_sv);
+  static_assert("abcd"_sv <= "efgh"_sv);
+
+  static_assert("efgh"_sv > "abcd"_sv);
+  static_assert("efgh"_sv >= "abcd"_sv);
+}
+
 TEST_CLASS(nonstd, string_view, non_constexpr) {
   char const *str1 = "hello";
   char const str2[] = "world!";

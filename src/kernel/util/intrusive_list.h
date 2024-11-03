@@ -78,49 +78,52 @@ template <typename Parent, typename Tag = void> class IntrusiveListHead {
   using ListHead = IntrusiveListHead<Parent, Tag>;
 
 public:
-  struct Iterator {
-    using value_type = Parent;
+  template <bool Const> struct IterImpl {
+    using value_type = std::conditional_t<Const, const Parent, Parent>;
     using difference_type = std::ptrdiff_t;
+    using ListHeadT = std::conditional_t<Const, const ListHead *, ListHead *>;
 
-    Iterator() = default;
+    IterImpl() = default;
 
-    Parent &operator*() const {
-      // Not really sure why this has to be (or is allowed to be)
-      // const, but that's required by std::indirectly_readable.
-      return it->parent();
-    }
-    Parent *operator->() const { return &it->parent(); }
+    value_type &operator*() const { return it->parent(); }
+    value_type *operator->() const { return &it->parent(); }
 
-    Iterator &operator++() {
+    IterImpl &operator++() {
       it = &it->next();
       return *this;
     }
-    Iterator operator++(int) {
-      Iterator rval = this;
+    IterImpl operator++(int) {
+      IterImpl rval = *this;
       it = &it->next();
       return rval;
     }
-    Iterator &operator--() {
+    IterImpl &operator--() {
       it = &it->prev();
       return *this;
     }
-    Iterator operator--(int) {
-      Iterator rval = this;
+    IterImpl operator--(int) {
+      IterImpl rval = *this;
       it = &it->prev();
       return rval;
     }
 
-    bool operator<=>(const Iterator &) const = default;
+    bool operator<=>(const IterImpl &) const = default;
 
   private:
     friend ListHead;
-    Iterator(ListHead *_it) : it{_it} {}
-    ListHead *it = nullptr;
+    IterImpl(ListHeadT _it) : it{_it} {}
+    ListHeadT it = nullptr;
   };
+
+  using Iterator = IterImpl</*const=*/false>;
+  using ConstIterator = IterImpl</*const=*/true>;
   static_assert(std::bidirectional_iterator<Iterator>);
+  static_assert(std::bidirectional_iterator<ConstIterator>);
 
   Iterator begin() { return &next(); }
   Iterator end() { return this; }
+  ConstIterator begin() const { return &next(); }
+  ConstIterator end() const { return this; }
 
   /// \brief Construct an empty list.
   ///

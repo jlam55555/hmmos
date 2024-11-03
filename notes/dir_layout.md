@@ -16,4 +16,5 @@
         - **drivers**: support for particular HW devices
 		- **mm**: physical and virtual memory management
 		- **nonstd**: imitating standard library code
+		- **sched**: kernel thread scheduling and synchronization
 		- **util**: miscellaneous utility functions
