@@ -1,0 +1,9 @@
+<map id="src/kernel/sched/kthread.h" name="src/kernel/sched/kthread.h">
+<area shape="rect" id="node1" title="Kernel thread and thread scheduler implementation." alt="" coords="91,5,285,31"/>
+<area shape="rect" id="node2" href="$intrusive__list_8h.html" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="117,79,259,104"/>
+<area shape="rect" id="node3" href="$assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="29,152,128,177"/>
+<area shape="rect" id="node6" title=" " alt="" coords="153,152,223,177"/>
+<area shape="rect" id="node7" title=" " alt="" coords="247,152,318,177"/>
+<area shape="rect" id="node4" href="$perf_8h.html" title="Utilities for performance optimization." alt="" coords="5,225,64,251"/>
+<area shape="rect" id="node5" title=" " alt="" coords="88,225,157,251"/>
+</map>

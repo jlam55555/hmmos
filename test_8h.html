@@ -92,11 +92,12 @@ Include dependency graph for test.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="test_8h__incl.png" border="0" usemap="#asrc_2test_2test_8h" alt=""/></div>
 <map name="asrc_2test_2test_8h" id="asrc_2test_2test_8h">
-<area shape="rect" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="344,5,455,31"/>
-<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="264,79,420,104"/>
-<area shape="rect" href="perf_8h.html" title="Utilities for performance optimization." alt="" coords="422,152,481,177"/>
+<area shape="rect" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="132,5,243,31"/>
+<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="168,79,324,104"/>
+<area shape="rect" href="perf_8h.html" title="Utilities for performance optimization." alt="" coords="101,152,159,177"/>
 <area shape="rect" href="libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="184,152,289,177"/>
-<area shape="rect" title=" " alt="" coords="313,152,384,177"/>
+<area shape="rect" title=" " alt="" coords="314,152,399,177"/>
+<area shape="rect" title=" " alt="" coords="424,152,495,177"/>
 <area shape="rect" href="libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="5,225,124,251"/>
 <area shape="rect" title=" " alt="" coords="75,299,150,324"/>
 <area shape="rect" title=" " alt="" coords="199,225,274,251"/>
@@ -146,6 +147,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>test::run_tests</b> (
 <tr class="memitem:afd918848c96e40a36da169e6b608709f"><td class="memItemLeft" align="right" valign="top"><a id="afd918848c96e40a36da169e6b608709f" name="afd918848c96e40a36da169e6b608709f"></a>
 struct <a class="el" href="structtest_1_1detail_1_1TestInfo.html">test::detail::TestInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>test::detail::__attribute__</b> ((packed))</td></tr>
 <tr class="separator:afd918848c96e40a36da169e6b608709f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84db105818cb9151b381d43242a32874"><td class="memItemLeft" align="right" valign="top"><a id="a84db105818cb9151b381d43242a32874" name="a84db105818cb9151b381d43242a32874"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;=&gt;</b> (const TestInfo &amp;rhs) const</td></tr>
+<tr class="separator:a84db105818cb9151b381d43242a32874"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d3ad2c5121402ae3287f76cc845feed"><td class="memItemLeft" align="right" valign="top"><a id="a1d3ad2c5121402ae3287f76cc845feed" name="a1d3ad2c5121402ae3287f76cc845feed"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>test::detail::matches</b> (<a class="el" href="classnonstd_1_1string__view.html">nonstd::string_view</a> test_name, <a class="el" href="classnonstd_1_1string__view.html">nonstd::string_view</a> test_selection)</td></tr>
 <tr class="memdesc:a1d3ad2c5121402ae3287f76cc845feed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test selection logic. Only exposed for unit testing. <br /></td></tr>
@@ -165,7 +169,7 @@ void(*&#160;</td><td class="memItemRight" valign="bottom"><b>fn</b> )(bool &amp;
 <p>To define a new test, use the DEFINE_TEST macro: </p><pre class="fragment">DEFINE_TEST(foo::bar, testBaz) {
     TEST_ASSERT(1 == 2);
 }
-</pre><p> Test descriptors are placed in their own special rodata section for automatic discovery.</p>
+</pre><p> Test descriptors are placed in their own special data section for automatic discovery.</p>
 <p>Tests are not built into the main kernel, but rather into a separate test-runner kernel (which basically contains all the kernel files except the entrypoint + test files + a custom test runner entrypoint). Run this test-runner kernel using: </p><pre class="fragment">make run TEST=&lt;selection_criteria&gt;
 </pre><p> Test selection follows a very simple pattern matcher:</p>
 <ul>
@@ -213,7 +217,7 @@ void(*&#160;</td><td class="memItemRight" valign="bottom"><b>fn</b> )(bool &amp;
 <div class="line">  }                                                                            \</div>
 <div class="line">  <span class="keyword">namespace </span>{                                                                  \</div>
 <div class="line">  __attribute__((                                                              \</div>
-<div class="line">      section(<span class="stringliteral">&quot;rodata_test_info&quot;</span>),                                             \</div>
+<div class="line">      section(<span class="stringliteral">&quot;data_test_info&quot;</span>),                                               \</div>
 <div class="line">      used)) <span class="keyword">volatile</span> <a class="code hl_struct" href="structtest_1_1detail_1_1TestInfo.html">test::detail::TestInfo</a> test_info_##TEST_NAME_SYM{        \</div>
 <div class="line">      .name = #TEST_NS <span class="stringliteral">&quot;::&quot;</span> #TEST_NAME_STR,                                    \</div>
 <div class="line">      .fn = &amp;TEST_NS::test::TEST_NAME_SYM,                                     \</div>
@@ -274,7 +278,7 @@ void(*&#160;</td><td class="memItemRight" valign="bottom"><b>fn</b> )(bool &amp;
 <div class="line">  }                                                                            \</div>
 <div class="line">  <span class="keyword">namespace </span>{                                                                  \</div>
 <div class="line">  __attribute__((                                                              \</div>
-<div class="line">      section(<span class="stringliteral">&quot;rodata_test_info&quot;</span>),                                             \</div>
+<div class="line">      section(<span class="stringliteral">&quot;data_test_info&quot;</span>),                                               \</div>
 <div class="line">      used)) <span class="keyword">volatile</span> <a class="code hl_struct" href="structtest_1_1detail_1_1TestInfo.html">test::detail::TestInfo</a> test_info_##TEST_NAME_SYM{        \</div>
 <div class="line">      .name = #TEST_NS <span class="stringliteral">&quot;::&quot;</span> #TEST_NAME_STR,                                    \</div>
 <div class="line">      .fn = &amp;TEST_NS::test::TEST_NAME_SYM,                                     \</div>

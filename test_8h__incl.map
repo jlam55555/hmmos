@@ -1,9 +1,10 @@
 <map id="src/test/test.h" name="src/test/test.h">
-<area shape="rect" id="node1" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="344,5,455,31"/>
-<area shape="rect" id="node2" href="$string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="264,79,420,104"/>
-<area shape="rect" id="node9" href="$perf_8h.html" title="Utilities for performance optimization." alt="" coords="422,152,481,177"/>
+<area shape="rect" id="node1" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="132,5,243,31"/>
+<area shape="rect" id="node2" href="$string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="168,79,324,104"/>
+<area shape="rect" id="node9" href="$perf_8h.html" title="Utilities for performance optimization." alt="" coords="101,152,159,177"/>
 <area shape="rect" id="node3" href="$libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="184,152,289,177"/>
-<area shape="rect" id="node10" title=" " alt="" coords="313,152,384,177"/>
+<area shape="rect" id="node10" title=" " alt="" coords="314,152,399,177"/>
+<area shape="rect" id="node11" title=" " alt="" coords="424,152,495,177"/>
 <area shape="rect" id="node4" href="$libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="5,225,124,251"/>
 <area shape="rect" id="node5" title=" " alt="" coords="75,299,150,324"/>
 <area shape="rect" id="node6" title=" " alt="" coords="199,225,274,251"/>

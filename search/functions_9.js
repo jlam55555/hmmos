@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['size_0',['size',['../classutil_1_1IntrusiveListHead.html#a4294a44adc540a19bbaa5bb27f7ad4c9',1,'util::IntrusiveListHead']]],
-  ['substr_1',['substr',['../classnonstd_1_1string__view.html#a9c1c6df8d9dff2b75281e2cd527d63da',1,'nonstd::string_view']]]
+  ['new_5fthread_0',['new_thread',['../classsched_1_1Scheduler.html#a10ff373026e4255fe40ddc8a61ed0503',1,'sched::Scheduler']]]
 ];

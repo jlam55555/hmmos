@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['range_5foverlaps_0',['range_overlaps',['../algorithm_8h.html#ab927f5abc4ee239a59ef76ad2ea2d457',1,'util::algorithm']]],
-  ['range_5foverlaps2_1',['range_overlaps2',['../algorithm_8h.html#a8ca43081adf63ba901e115af6f4667db',1,'util::algorithm']]],
-  ['range_5fsubsumes_2',['range_subsumes',['../algorithm_8h.html#a8e24809d6020a1c146dd02e01456a7c1',1,'util::algorithm']]],
-  ['run_5fglobal_5fctors_3',['run_global_ctors',['../crt_8h.html#a65a6c466ebaf18e0d365d5e5adad81ad',1,'crt']]]
+  ['matches_0',['matches',['../test_8h.html#a1d3ad2c5121402ae3287f76cc845feed',1,'test::detail']]],
+  ['mbr_5fstart_1',['mbr_start',['../page__table_8h.html#a089222c5e969faed37631ac0c1681f8e',1,'page_table.h']]],
+  ['mem_5flimit_2',['mem_limit',['../classmem_1_1phys_1_1PageFrameTable.html#a2c2e1744eb0943183f5198f619a8e23a',1,'mem::phys::PageFrameTable']]]
 ];

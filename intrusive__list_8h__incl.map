@@ -1,7 +1,8 @@
 <map id="src/kernel/util/intrusive_list.h" name="src/kernel/util/intrusive_list.h">
-<area shape="rect" id="node1" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="79,5,249,45"/>
-<area shape="rect" id="node2" href="$assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="5,93,104,119"/>
-<area shape="rect" id="node4" title=" " alt="" coords="129,93,199,119"/>
-<area shape="rect" id="node5" title=" " alt="" coords="223,93,294,119"/>
-<area shape="rect" id="node3" title=" " alt="" coords="20,167,89,192"/>
+<area shape="rect" id="node1" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="103,5,273,45"/>
+<area shape="rect" id="node2" href="$assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="29,93,128,119"/>
+<area shape="rect" id="node5" title=" " alt="" coords="153,93,223,119"/>
+<area shape="rect" id="node6" title=" " alt="" coords="247,93,318,119"/>
+<area shape="rect" id="node3" href="$perf_8h.html" title="Utilities for performance optimization." alt="" coords="5,167,64,192"/>
+<area shape="rect" id="node4" title=" " alt="" coords="88,167,157,192"/>
 </map>

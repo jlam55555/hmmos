@@ -1,6 +1,12 @@
 <map id="src/common/perf.h" name="src/common/perf.h">
-<area shape="rect" id="node1" title="Utilities for performance optimization." alt="" coords="180,5,323,31"/>
-<area shape="rect" id="node2" href="$serial_8h.html" title="Very simple serial driver." alt="" coords="5,79,140,119"/>
-<area shape="rect" id="node3" href="$string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="164,79,339,119"/>
-<area shape="rect" id="node4" href="$test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="259,167,369,192"/>
+<area shape="rect" id="node1" title="Utilities for performance optimization." alt="" coords="172,5,315,31"/>
+<area shape="rect" id="node2" href="$serial_8h.html" title="Very simple serial driver." alt="" coords="193,167,328,207"/>
+<area shape="rect" id="node3" href="$string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="5,79,180,119"/>
+<area shape="rect" id="node4" href="$test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="52,174,163,199"/>
+<area shape="rect" id="node5" href="$assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="355,86,521,111"/>
+<area shape="rect" id="node6" href="$mbr_8h.html" title="Master Boot Record definitions." alt="" coords="547,174,662,199"/>
+<area shape="rect" id="node7" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="591,255,741,295"/>
+<area shape="rect" id="node9" href="$intrusive__list_8h.html" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="353,167,523,207"/>
+<area shape="rect" id="node8" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="591,343,741,383"/>
+<area shape="rect" id="node10" href="$kthread_8h.html" title="Kernel thread and thread scheduler implementation." alt="" coords="341,262,535,287"/>
 </map>

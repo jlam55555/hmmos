@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['get_0',['get',['../serial_8h.html#ac4f14f8d89eb024761bd229e8cc828c8',1,'serial']]],
-  ['get_5fpf_5foffset_1',['get_pf_offset',['../classmem_1_1phys_1_1PageFrameTable.html#a4e44c15d23b0037f363f4e932215b96b',1,'mem::phys::PageFrameTable']]],
-  ['get_5fpfd_2',['get_pfd',['../classmem_1_1phys_1_1PageFrameTable.html#ac65bbd097bc3ce2233fbbc88edafa29c',1,'mem::phys::PageFrameTable']]]
+  ['destroy_5fthread_0',['destroy_thread',['../classsched_1_1Scheduler.html#a71c46d162d4205d4425105e7a446f7cb',1,'sched::Scheduler']]]
 ];

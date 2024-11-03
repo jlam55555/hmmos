@@ -1,5 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classutil_1_1IntrusiveListHead.html" title=" " alt="" coords="5,5,188,45"/>
-<area shape="rect" id="node2" href="$classmem_1_1phys_1_1PageFrameAllocator.html" title="Abstract base class for page frame allocators." alt="" coords="236,13,469,38"/>
-<area shape="rect" id="node3" href="$classmem_1_1phys_1_1SimplePFA.html" title="Simple round&#45;robin allocator that doesn&#39;t use auxiliary memory." alt="" coords="517,13,688,38"/>
+<area shape="rect" id="node1" href="$classutil_1_1IntrusiveListHead.html" title=" " alt="" coords="5,5,171,45"/>
+<area shape="rect" id="node2" href="$classsched_1_1KernelThread.html" title="Internal representation of a kernel thread." alt="" coords="219,13,373,38"/>
 </map>

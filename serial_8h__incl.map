@@ -1,8 +1,8 @@
 <map id="src/kernel/drivers/serial.h" name="src/kernel/drivers/serial.h">
-<area shape="rect" id="node1" title="Very simple serial driver." alt="" coords="72,5,207,45"/>
+<area shape="rect" id="node1" title="Very simple serial driver." alt="" coords="64,5,199,45"/>
 <area shape="rect" id="node2" href="$asm_8h.html" title="C wrappers around common asm functions." alt="" coords="5,93,68,119"/>
-<area shape="rect" id="node3" title=" " alt="" coords="36,167,107,192"/>
-<area shape="rect" id="node4" href="$perf_8h.html" title="Utilities for performance optimization." alt="" coords="143,93,202,119"/>
-<area shape="rect" id="node5" href="$assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="226,93,301,119"/>
-<area shape="rect" id="node6" title=" " alt="" coords="229,167,298,192"/>
+<area shape="rect" id="node3" title=" " alt="" coords="17,167,88,192"/>
+<area shape="rect" id="node4" href="$perf_8h.html" title="Utilities for performance optimization." alt="" coords="127,167,186,192"/>
+<area shape="rect" id="node5" href="$assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="194,93,269,119"/>
+<area shape="rect" id="node6" title=" " alt="" coords="210,167,279,192"/>
 </map>

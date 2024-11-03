@@ -2,7 +2,8 @@
 <area shape="rect" id="node1" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="181,5,347,31"/>
 <area shape="rect" id="node2" href="$mbr_8h.html" title="Master Boot Record definitions." alt="" coords="5,86,120,111"/>
 <area shape="rect" id="node3" href="$serial_8h.html" title="Very simple serial driver." alt="" coords="145,79,279,119"/>
-<area shape="rect" id="node4" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="303,167,454,207"/>
+<area shape="rect" id="node4" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="242,167,393,207"/>
 <area shape="rect" id="node6" href="$intrusive__list_8h.html" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="355,79,525,119"/>
-<area shape="rect" id="node5" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="303,255,454,295"/>
+<area shape="rect" id="node5" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="242,255,393,295"/>
+<area shape="rect" id="node7" href="$kthread_8h.html" title="Kernel thread and thread scheduler implementation." alt="" coords="417,174,610,199"/>
 </map>
