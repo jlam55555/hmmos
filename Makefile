@@ -57,12 +57,9 @@ QEMU_FLAGS:=-m 1G
 # so we need to query the compiler for it.
 LIBGCC:=$(shell $(CC) $(CFLAGS) -print-libgcc-file-name)
 
-# Note: you can easily build an ELF file to inspect by removing the
-# --oformat=binary flag.
 LD:=ld.lld
 LDFLAGS:=\
 	-m elf_i386 \
-	--oformat=binary \
 	--build-id=none \
 	-nostdlib
 # This needs to go at the end of the `ld` invocation (at least on GNU ld):
@@ -74,32 +71,30 @@ LDLIBS:=$(LIBGCC)
 ################################################################################
 
 # Parameters that change build flags will also create a new build
-# variant (i.e. buiulds to a different target directory). Each
+# variant (i.e. builds to a different target directory). Each
 # combination of (DEBUG, GNU, OPT) flags creates a new build variant.
+# Building with debug symbols for GDB also creates a new build
+# variant.
 OUT_DIR:=out
 
 ifneq ($(TEST),)
 TEST_INPUT:=echo " $(TEST)" |
 RUN_TARGET=$(BOOTABLE_DISK_TEST)
+KERNEL_TARGET_ELF_WITH_SYMBOLS=$(KERNEL_TEST_ELF_WITH_SYMBOLS)
 override QEMU_FLAGS+=-display none -serial stdio
 else
 RUN_TARGET=$(BOOTABLE_DISK)
+KERNEL_TARGET_ELF_WITH_SYMBOLS=$(KERNEL_ELF_WITH_SYMBOLS)
 # QEMU will write to the console. Exit with `C-a x`.
 # override QEMU_FLAGS+=-nographic
 override QEMU_FLAGS+=-serial stdio
 endif
 
 ifneq ($(DEBUG),)
-# TODO: Investigate if we can use -g even if we're not using proper
-# ELF files.
-override QEMU_FLAGS+=-no-reboot
+# Setting DEBUG enables debug assertions. This does not add debug
+# symbols (which you get by adding -g).
 override OUT_DIR:=$(OUT_DIR).debug
 override CXXFLAGS+=-DDEBUG
-
-# Interactive mode with gdb (DEBUG=i).
-ifeq ($(DEBUG),i)
-override QEMU_FLAGS+=-S -s -no-shutdown
-endif
 endif
 
 ifneq ($(SHOWINT),)
@@ -129,6 +124,20 @@ else
 override CFLAGS+=-O0
 endif
 
+ifneq ($(filter runi,$(MAKECMDGOALS)),)
+# If building for gdb, we also need to build with debug symbols. Note
+# that the flat binary (which we actually run in QEMU) will not have
+# debug symbols, but the generated ELF files for the bootloader/kernel
+# (which we load in GDB) will have the generated
+override OUT_DIR:=$(OUT_DIR).symbols
+override ASFLAGS+=-g
+override CFLAGS+=-g
+override CXXFLAGS+=-g
+else ifneq ($(filter gdb,$(MAKECMDGOALS)),)
+# Same thing as above.
+override OUT_DIR:=$(OUT_DIR).symbols
+endif
+
 BOOTABLE_DISK:=$(OUT_DIR)/disk.bin
 BOOTABLE_DISK_TEST:=$(OUT_DIR)/disk_test.bin
 
@@ -140,6 +149,7 @@ BOOT_LDFLAGS:=$(LDFLAGS) \
 	-T$(BOOT_LINKER_SCRIPT)
 
 BOOTLOADER:=$(OUT_DIR)/boot.bin
+BOOTLOADER_ELF_WITH_SYMBOLS:=$(OUT_DIR)/boot.elf
 
 BOOT_SRCS:=$(shell find $(BOOT_SRC_DIR) $(COMMON_SRC_DIR) -name *.[cS])
 _BOOT_OBJS:=$(BOOT_SRCS:$(SRC_DIR)/%.c=$(OUT_DIR)/%.o)
@@ -157,6 +167,8 @@ KERNEL_LDFLAGS:=$(LDFLAGS) \
 	-T$(KERNEL_LINKER_SCRIPT)
 KERNEL:=$(OUT_DIR)/kernel.bin
 KERNEL_TEST:=$(OUT_DIR)/kernel_test.bin
+KERNEL_ELF_WITH_SYMBOLS:=$(OUT_DIR)/kernel.elf
+KERNEL_TEST_ELF_WITH_SYMBOLS:=$(OUT_DIR)/kernel_test.elf
 
 KERNEL_SRCS:=$(shell \
 	find $(KERNEL_SRC_DIR) $(COMMON_SRC_DIR) -name *.[cS] -o -name *.cc)
@@ -193,12 +205,17 @@ $(OUT_DIR)/%.o: $(SRC_DIR)/%.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(BOOTLOADER): $(BOOT_OBJS) $(BOOT_LINKER_SCRIPT)
-	$(LD) $(BOOT_LDFLAGS) $(BOOT_OBJS) -o $@ $(LDLIBS)
-
+	$(LD) $(BOOT_LDFLAGS) --oformat=binary $(BOOT_OBJS) -o $@ $(LDLIBS)
 $(KERNEL): $(KERNEL_OBJS) $(KERNEL_LINKER_SCRIPT)
-	$(LD) $(KERNEL_LDFLAGS) $(KERNEL_OBJS) -o $@ $(LDLIBS)
-
+	$(LD) $(KERNEL_LDFLAGS) --oformat=binary $(KERNEL_OBJS) -o $@ $(LDLIBS)
 $(KERNEL_TEST): $(KERNEL_TEST_OBJS) $(KERNEL_LINKER_SCRIPT)
+	$(LD) $(KERNEL_LDFLAGS) --oformat=binary $(KERNEL_TEST_OBJS) -o $@ $(LDLIBS)
+
+$(BOOTLOADER_ELF_WITH_SYMBOLS): $(BOOT_OBJS) $(BOOT_LINKER_SCRIPT)
+	$(LD) $(BOOT_LDFLAGS) $(BOOT_OBJS) -o $@ $(LDLIBS)
+$(KERNEL_ELF_WITH_SYMBOLS): $(KERNEL_OBJS) $(KERNEL_LINKER_SCRIPT)
+	$(LD) $(KERNEL_LDFLAGS) $(KERNEL_OBJS) -o $@ $(LDLIBS)
+$(KERNEL_TEST_ELF_WITH_SYMBOLS): $(KERNEL_TEST_OBJS) $(KERNEL_LINKER_SCRIPT)
 	$(LD) $(KERNEL_LDFLAGS) $(KERNEL_TEST_OBJS) -o $@ $(LDLIBS)
 
 $(BOOTABLE_DISK): $(BOOTLOADER) $(KERNEL)
@@ -207,12 +224,29 @@ $(BOOTABLE_DISK): $(BOOTLOADER) $(KERNEL)
 $(BOOTABLE_DISK_TEST): $(BOOTLOADER) $(KERNEL_TEST)
 	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL_TEST) -o $@
 
-.PHONY: docs run clean cleanall
+.PHONY: docs run runi gdb clean cleanall
 docs:
 	doxygen
 
 run: $(RUN_TARGET)
 	$(TEST_INPUT) qemu-system-i386 $(QEMU_FLAGS) -drive format=raw,file=$<
+
+# We built the kernel and bootloader ELF with symbols but we don't
+# actually run this in QEMU. These will be used by gdb. Run and wait
+# for gdb to attach.
+runi: $(RUN_TARGET) $(BOOTLOADER_ELF_WITH_SYMBOLS) $(KERNEL_TARGET_ELF_WITH_SYMBOLS)
+	$(TEST_INPUT) qemu-system-i386 $(QEMU_FLAGS) -drive format=raw,file=$< -no-reboot -no-shutdown -S -s
+
+# Note that this doesn't build the elf files but we should check that
+# they exist. They should be built from the last call to `make runi`
+# so that it is in sync with the executable.
+gdb:
+	gdb -ex 'target remote localhost:1234' \
+	    -ex 'set confirm off' \
+	    -ex 'add-symbol-file $(BOOTLOADER_ELF_WITH_SYMBOLS)' \
+	    -ex 'add-symbol-file $(KERNEL_TARGET_ELF_WITH_SYMBOLS)' \
+	    -ex 'set confirm on' \
+	    -ex 'set print asm-demangle on'
 
 # Note that `make clean` will only clean the build directory for the
 # current build variant. To remove all build variants, use `make

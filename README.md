@@ -40,7 +40,7 @@ Build the bootloader and run it in QEMU. Make sure to have `qemu` and
 GNU `make` installed, and `doxygen` if you want to generate documentation.
 ```
 $ # Run the kernel
-$ make run OPT=1
+$ make run
 $
 $ # Run tests
 $ make run TEST=all
@@ -48,6 +48,19 @@ $ make run TEST=<testselection>
 $
 $ # Generate documentation
 $ make docs
+```
+
+### Debugging in GDB
+```
+$ # Compile with debug symbols enabled and start running in QEMU.
+$ # This doesn't actually start until `make gdb` is called.
+$ make runi
+$
+$ # Start gdb and connect to the previous session, loading the debug
+$ # symbols compiled from the last run to `make runi`. Make sure to
+$ # run this with the same compile options (e.g., OPT=*, DEBUG=*) as
+$ # in `make runi`.
+$ make gdb
 ```
 
 ## Misc.
