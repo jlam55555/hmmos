@@ -23,11 +23,16 @@ This program is free software; you may redistribute it under the terms of
 the GNU General Public License version 3 or later.
 This program has absolutely no warranty.
 This assembler was configured for a target of `x86_64-linux-gnu'.
+$
 $ clang --version
 Debian clang version 14.0.6
 Target: x86_64-pc-linux-gnu
 Thread model: posix
 InstalledDir: /usr/bin
+$
+$ qemu-system-i386 --version
+QEMU emulator version 7.2.13 (Debian 1:7.2+dfsg-7+deb12u7)
+Copyright (c) 2003-2022 Fabrice Bellard and the QEMU Project developers
 ```
 
 ## Getting started

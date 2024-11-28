@@ -33,7 +33,12 @@ mbr_start:
 	## Set stack just under the bootloader. We should have plenty
 	## of space there, since the BDA ends at 0x0500 (and the
 	## bootloader starts at 0x7C00).
+	##
+	## We round down to the next page since putting the stack on
+	## the same page as the bootloader text causes a major
+	## performance penalty. See notes/hmm.md#"slow memory speed".
 	mov $mbr_start, %sp
+	and ~0xFFF, %sp
 
 	## Print hello message (might as well).
 	mov $.Lwelcome_msg, %di
