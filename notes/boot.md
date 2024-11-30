@@ -189,7 +189,7 @@ Now all complete!
 	- [X] Direct map (only needed for the bootstrap process): first
           1MB of memory
 	- [X] Kernel map (starting at `KERNEL_LOAD_ADDR`)
-- [ ] Prepare kernel
+- [X] Prepare kernel
 	- [X] Load kernel to memory at fixed load address
 	- [X] Jump to kernel (build a simple toy kernel)
 	- [X] Report memory map and other capabilities to kernel

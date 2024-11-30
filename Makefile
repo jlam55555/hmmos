@@ -44,8 +44,7 @@ CXXFLAGS:=$(_CFLAGS) \
 	-fno-exceptions \
 	-I$(KERNEL_SRC_DIR) \
 	-I$(KERNEL_SRC_DIR)/arch/$(ARCH)
-# This can be set to a higher value, but initializing the PFT is slow.
-QEMU_FLAGS:=-m 1G
+QEMU_FLAGS:=-m 4G
 
 # libgcc contains some useful logic that may be used implicitly by
 # gcc/clang (e.g., __divdi3 for unsigned long long operations on a
@@ -97,12 +96,11 @@ override OUT_DIR:=$(OUT_DIR).debug
 override CXXFLAGS+=-DDEBUG
 endif
 
-ifneq ($(SHOWINT),)
-override QEMU_FLAGS+=-d int,cpu_reset -no-reboot
-endif
-
 # Make sure to recompile the bootloader and modify the kernel link
 # script accordingly after changing this value.
+#
+# Technically this should also be a different build variant since this
+# changes compile flags.
 ifneq ($(KERNEL_LOAD_ADDR),)
 override CFLAGS+=-DKERNEL_LOAD_ADDR=$(KERNEL_LOAD_ADDR)
 endif
@@ -140,6 +138,19 @@ endif
 
 BOOTABLE_DISK:=$(OUT_DIR)/disk.bin
 BOOTABLE_DISK_TEST:=$(OUT_DIR)/disk_test.bin
+
+################################################################################
+# QEMU options
+################################################################################
+# These don't change compile options and don't create a new build variant.
+
+ifneq ($(SHOWINT),)
+override QEMU_FLAGS+=-d int,cpu_reset -no-reboot
+endif
+
+ifneq ($(KVM),)
+override QEMU_FLAGS+=-accel kvm
+endif
 
 ################################################################################
 # Bootloader-specific config

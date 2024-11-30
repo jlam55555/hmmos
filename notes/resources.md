@@ -26,3 +26,7 @@ going to bother linking OSDev wikis since those are implied.
 
 ## C/C++ runtime
 - Mini FAQ about the misc libc/gcc crt files: https://dev.gentoo.org/~vapier/crt.txt
+
+## QEMU
+- QEMU internals blog: https://airbus-seclab.github.io/qemu_blog/
+- Setting breakpoints in QEMU w/ KVM enabled: https://forum.osdev.org/viewtopic.php?p=315671&sid=fa474a99fd3a40ba5cf2c2fafd7e44a9#p315671

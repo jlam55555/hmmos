@@ -1,5 +1,5 @@
 # hmm.md
-Interesting debugging sessions
+Interesting observations and debugging sessions
 
 ## slow memory speed
 When I was first experimenting with my kernel thread implementation, I
@@ -514,13 +514,32 @@ which shouldn't happen much of the time (text and data/stack/heap
 regions are typically on separate pages with different memory
 protections).
 
-Well, it's either QEMU or the virtualization layer in the kernel/CPU,
-I'm not too sure. I haven't tested this behavior on real HW (which
-should be doable with any executable, it doesn't have to be at the OS
-layer) but I'd doubt this kind of performance behavior is acceptable
-nor the HW smart enough to store which instructions are executed per
-page. Perhaps I should read the [QEMU
-code](https://github.com/qemu/qemu/tree/master).
+After the initial investigation I found that QEMU does not use KVM by
+default. Turning KVM on (`-accel kvm`) shows that this behavior is
+indeed due to QEMU emulation and not the Linux/hardware
+virtualization. Which makes sense given there's no way the hardware is
+complicated enough to store which bytes in a page are executable
+bytes.
+
+```
+Writing to fresh, crunchy ram...        cycles/op=63
+Filling RAM with executable instructions...     cycles/op=2
+Executed 127/4095 bytes...      cycles/op=2
+Executed 255/4095 bytes...      cycles/op=2
+...
+Executed 3967/4095 bytes...     cycles/op=2
+Executed 4095/4095 bytes...     cycles/op=2
+Cleared 383/4095 bytes...       cycles/op=2
+Cleared 511/4095 bytes...       cycles/op=2
+...
+Cleared 3967/4095 bytes...      cycles/op=2
+Cleared 4095/4095 bytes...      cycles/op=2
+```
+
+I didn't find the exact QEMU code but [this blog
+post](https://airbus-seclab.github.io/qemu_blog/tcg_p3.html) hints at
+how QEMU converts its load/store IR opcodes into the native x86
+opcodes.
 
 The solution to my original problem is to move the stack and
 (writable) data regions of the kernel onto different pages.
@@ -536,3 +555,331 @@ functions. By moving the bootloader stack to a different page, I am
 able to get similar performance without -O1.
 
 Nice!
+
+### slowness after hlt
+
+Another issue I noticed when turning on pre-emptive scheduling is that
+the `schedule()` call was much slower when pre-emptive scheduling
+(from the timer interrupt) as opposed to co-operative scheduling
+(which was essentially being done in a tight loop from the code).
+
+My guess is that the icache gets cold after not accessing it for some
+time. This is confirmed via a simple experiment:
+
+```
+// stolen from wikipedia
+unsigned int isqrt(unsigned int y) {
+  unsigned int L = 0;
+  while ((L + 1) * (L + 1) <= y) {
+    L = L + 1;
+  }
+  return L;
+}
+
+void do_benchmark() {
+  uint64_t start = arch::time::rdtsc();
+  // Random computation to benchmark.
+  isqrt(314159265);
+  uint64_t end = arch::time::rdtsc();
+  nonstd::printf("cycles=%llu\r\n", end - start);
+}
+
+__attribute__((section(".text.entry"))) void _entry() {
+  crt::run_global_ctors();
+
+  // Enable interrupts; we need the PIT timer to wake us from hlt.
+  arch::idt::init();
+
+  for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < 3; ++j) {
+      do_benchmark();
+    }
+    nonstd::printf("hlt\r\n");
+    __asm__ volatile("hlt");
+  }
+
+  acpi::shutdown();
+}
+```
+
+Output:
+
+```
+cycles=258989
+cycles=189297
+cycles=189221
+hlt
+cycles=206150
+cycles=220419
+cycles=190475
+hlt
+cycles=254999
+cycles=230698
+cycles=161823
+hlt
+```
+
+The same results with KVM enabled:
+
+```
+Enabling interrupts...
+cycles=54872
+cycles=30286
+cycles=42161
+hlt
+cycles=70262
+cycles=30286
+cycles=30495
+hlt
+cycles=70281
+cycles=30267
+cycles=30476
+hlt
+```
+
+I'm not sure exactly what's going on that causes the icache to get
+cold -- no other code is running on the OS in the meantime. I imagine
+QEMU shares the icache with the guest system and it gets cold when the
+guest system `hlt`s. With the QEMU (non-KVM) runtime, I imagine
+there's enough other code running to cause the icache to become even
+more stale.
+
+## KVM memory invalidation heisenbug
+I thought QEMU used KVM virtualization by default until recently when
+I learned it has its [own translation
+layers](https://airbus-seclab.github.io/qemu_blog/tcg_p1.html). When I
+tried to turn on KVM (`-accel kvm`), I got some weird issues with the
+page mapping.
+
+There's a check in the bootloader that the HHDM is set up
+properly. This checks that the 1MB of memory starting from 0xC0000000
+(high-half direct mapping) matches the 1MB starting from 0x0 (direct
+mapping). We can only check up to 1MB since the lower-half direct
+mapping is only 1MB for bootstrapping from real mode. We actually do
+this check twice: once before the page table is set up (check should
+fail) and once afterwards (check should succeed).
+
+With KVM acceleration turned on, the second check started failing.
+
+I had just set up debugging with symbols at this point, so I tried
+turning that on. Turns out that breakpoints don't quite work OOTB with
+KVM so you need [a little
+hack](https://forum.osdev.org/viewtopic.php?p=315671&sid=ab78e42403df71a73a191a03d238209a#p315671). This hack worked really well.
+
+Now the problem was that the error stopped showing up when running in
+the debugger, even with no breakpoints installed! Huh. It also only
+shows up in some build variants when not running in the debugger:
+clang with default optimization level doesn't cause a failure. Every
+other build variant causes the failure.
+
+Even weirder, when I put a breakpoint in the comparison failure in the
+`memcmp` call, the compared values show as equal. Here's the
+unadultered `memcmp` implementation:
+
+```
+int memcmp(const void *s1, const void *s2, size_t n) {
+  const uint8_t *p1 = (const uint8_t *)s1;
+  const uint8_t *p2 = (const uint8_t *)s2;
+
+  for (size_t i = 0; i < n; i++) {
+    if (p1[i] != p2[i]) {
+      return p1[i] < p2[i] ? -1 : 1;
+    }
+  }
+
+  return 0;
+}
+```
+
+If I put a print statement, `p1[i]` and `p2[i]` show as equal:
+
+```
+    if (p1[i] != p2[i]) {
+      console_printb(p1[i]);
+      console_printb(p2[i]);
+      console_printl((unsigned)&p1[i]);
+      console_printl((unsigned)&p2[i]);
+      return p1[i] < p2[i] ? -1 : 1;
+    }
+
+// outputs: 0x23 0x23 0x00002008 0xC0002008
+```
+
+This happens at the same addresses (2008h) for all build variants with
+failures.
+
+Let's continue this weirdness. If I check for equality again after the
+print statements, they now compare as equal, causing the check to
+pass.
+
+```
+    if (p1[i] != p2[i]) {
+      console_printb(p1[i]);
+      console_printb(p2[i]);
+      console_printl((unsigned)&p1[i]);
+      console_printl((unsigned)&p2[i]);
+      if (p1[i] == p2[i]) {
+        continue; // we hit this
+      }
+      return p1[i] < p2[i] ? -1 : 1;
+    }
+
+// outputs same as before but check now passes
+```
+
+Which means that p1[i] and/or p2[i] changed between the first and
+second comparison. Now if I take out the print statements, the second
+comparison still shows these as unequal.
+
+```
+    if (p1[i] != p2[i]) {
+      if (p1[i] == p2[i]) {
+        continue; // we don't hit this ... ??? !!!
+      }
+      return p1[i] < p2[i] ? -1 : 1;
+    }
+
+// check fails!
+```
+
+This feels like a true heisenbug scenario. Oberving the memory (via a
+print statement, or by running in a debugger) changes the
+behavior. The only way I was able to show the difference in values was
+by storing the value to a temporary.
+
+```
+    uint8_t c1 = p1[i];
+    uint8_t c2 = p2[i];
+    if (c1 != c2) {
+      console_printb(c1);
+      console_printb(c2);
+      console_printl((unsigned)&p1[i]);
+      console_printl((unsigned)&p2[i]);
+      return c1 < c2 ? -1 : 1;
+    }
+
+/// output: 0x23 0x03 0x00002008 0xC0002008
+```
+
+So, at the time of the comparison, these values are indeed
+different. But something changes it soon afterwards. This seems like
+an issue with caching -- in particular the page mapping cache (the
+TLB). The TLB cache _should_ be completely flushed when we install the
+page table by [setting the `%cr3`
+register](https://wiki.osdev.org/TLB#Modification_of_paging_structures),
+but let's try flushing it manually.
+
+```
+  for (size_t i = 0; i < n; i++) {
+    __asm__ volatile("invlpg %0\n\t"
+                     "invlpg %1\n\t"
+                     :
+                     : "m"(p1[i]), "m"(p2[i]));
+    if (p1[i] != p2[i]) {
+      return p1[i] < p2[i] ? -1 : 1;
+    }
+  }
+
+// this works! but...
+```
+
+This _seems_ to work, but it seems more like a false positive than
+anything. Really, only flushing the page for `p2[i]` should make a
+difference since its value is stale (0x03 should be 0x23), but this
+_also_ works if we only flush the TLB entry for `p1[i]`, which doesn't
+make any sense.
+
+```
+  for (size_t i = 0; i < n; i++) {
+    __asm__ volatile("invlpg %0" : : "m"(p1[i]));
+    if (p1[i] != p2[i]) {
+      return p1[i] < p2[i] ? -1 : 1;
+    }
+  }
+
+// this works! which doesn't make any sense
+```
+
+Furthermore, since we always have this issue for page 0x2008 and
+0xC0002008, flushing those TLB entries beforehand should also work,
+but the check fails if I do the following.
+
+```
+  __asm__ volatile("invlpg 0x00002008\n\t"
+                   "invlpg 0xC0002008");
+  for (size_t i = 0; i < n; i++) {
+    if (p1[i] != p2[i]) {
+      return p1[i] < p2[i] ? -1 : 1;
+    }
+  }
+
+// check fails
+```
+
+But the check passes if I do the following, which should be identical
+in behavior (but inefficient).
+
+```
+  for (size_t i = 0; i < n; i++) {
+    __asm__ volatile("invlpg 0x00002008\n\t"
+                     "invlpg 0xC0002008");
+    if (p1[i] != p2[i]) {
+      return p1[i] < p2[i] ? -1 : 1;
+    }
+  }
+
+// check passes ... why???
+```
+
+Actually, putting _any_ address as argument to `invlpg` works when
+it's in the loop. It turns out that there's a temporal aspect to this
+-- if we call `invlpg` on _any address_ shortly before we reach the
+0x2008 address, that's good enough to make the check pass.
+
+```
+  for (size_t i = 0; i < n; i++) {
+    // Check fails with 0x1FF0 but passes with 0x1FF8-0x2008.
+    if ((unsigned)&p1[i] == 0x1FF0) {
+      __asm__ volatile("invlpg 0");
+    }
+
+    if (p1[i] != p2[i]) {
+      return p1[i] < p2[i] ? -1 : 1;
+    }
+  }
+
+// check may pass or fail based on when we call `invlpg`
+```
+
+The behavior seems a bit probabilistic as if there's a race
+condition. For example, if we set the check to 0x1FF8, the check
+passes roughly half of the time on my machine.
+
+You may notice that I haven't posted any assembly here yet, and the
+reason is I haven't found anything conclusive there. I also have no
+idea where this magic address 0x2008 comes from. This is lower in
+memory than anything installed by the bootloader (lowest memory is the
+stack which is just under 0x7000) or in the [standard low memory
+map](https://wiki.osdev.org/Memory_Map_(x86)).
+
+I give up at this point. I notice that the check works if I explicitly
+read from the 0x2000 memory page beforehand. Hence the following
+kludge just after setting up the page table:
+
+```
+  // Without this running with `-accel kvm` bugs out. I have no idea
+  // why. Without this we get some _really_ weird behavior later on
+  // when trying to access address 0x2008/0xC0002008 as if the TLB is
+  // out of date. It's a flakey behavior and really annoying to debug
+  // (doesn't show up when running in the debugger). Invalidating the
+  // mapping from the TLB (via invlpg) doesn't seem to help; the only
+  // thing that helps is accessing the memory address before the first
+  // time it's accessed. This will probably surface as other bugs in
+  // the future, IDK.
+  volatile int _ = *(int *)0x2000;
+```
+
+This works if I dereference any address in the range `0x1FFD` through
+`0x2FFF`, which is an almost-page-oriented behavior. I have no idea
+why the last 12 bytes of the 0x1000 page works here, but it seems to
+be consistent behavior.

@@ -181,6 +181,17 @@ bool pt_setup(void *kernel_paddr) {
   }
   enable_paging(pd);
 
+  // Without this running with `-accel kvm` bugs out. I have no idea
+  // why. Without this we get some _really_ weird behavior later on
+  // when trying to access address 0x2008/0xC0002008 as if the TLB is
+  // out of date. It's a flakey behavior and really annoying to debug
+  // (doesn't show up when running in the debugger). Invalidating the
+  // mapping from the TLB (via invlpg) doesn't seem to help; the only
+  // thing that helps is accessing the memory address before the first
+  // time it's accessed. This will probably surface as other bugs in
+  // the future, IDK.
+  volatile int _ = *(int *)0x2000;
+
   return e820_augment_bootloader((size_t)pt_mem, dynamic_alloc_sz);
 }
 
@@ -208,13 +219,10 @@ bool check_cpuid_features() {
   return true;
 }
 
-/// Check that HHDM matches low memory for first (almost) megabyte.
+/// Check that HHDM matches low memory.
 bool check_paging_setup() {
-  /// Note: this memcmp is pretty slow, since the basic memcmp
-  /// operator we have goes one byte at a time.
-  ///
-  /// So let's limit this to the first few KBs instead of the full
-  /// 1MB-PG_SZ.
+  // This is somewhat slow so we check less than the full MB-PG_SZ as
+  // a heuristic.
   console_puts("Checking that the HHDM matches low memory...\r\n");
   return !memcmp((void *)PG_SZ, (void *)HM_START + PG_SZ, 32 * KB);
 }
