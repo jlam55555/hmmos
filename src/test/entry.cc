@@ -2,6 +2,7 @@
 #include "boot_protocol.h"
 #include "drivers/acpi.h"
 #include "drivers/serial.h"
+#include "idt.h"
 #include "mm/kmalloc.h"
 #include "mm/page_frame_allocator.h"
 #include "mm/page_frame_table.h"
@@ -10,8 +11,14 @@
 
 static volatile const BP_REQ(MEMORY_MAP, _mem_map_req);
 
+void do_schedule() {}
+
 __attribute__((section(".text.entry"))) void _entry() {
   crt::run_global_ctors();
+
+  // Any (un)locking requires sti, which requires the IDT to be setup
+  // correctly.
+  arch::idt::init();
 
   // TODO: could use scanf() logic
   char c;

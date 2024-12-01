@@ -20,4 +20,8 @@ void outl(uint16_t port, uint32_t val);
 uint8_t inb(uint16_t port);
 uint16_t inw(uint16_t port);
 uint32_t inl(uint16_t port);
+
+#define hlt __asm__ volatile("hlt")
+#define cli __asm__ volatile("cli")
+#define sti __asm__ volatile("sti")
 }

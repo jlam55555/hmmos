@@ -1,4 +1,5 @@
 #include "sched/kthread.h"
+#include "asm.h"
 #include "memdefs.h"
 #include "mm/kmalloc.h"
 #include "nonstd/libc.h"
@@ -74,6 +75,8 @@ const KernelThread *Scheduler::choose_task() const {
 }
 
 void Scheduler::schedule(bool switch_stack) {
+  cli;
+
   ASSERT(running);
 
   KernelThread *new_task = const_cast<KernelThread *>(choose_task());
@@ -85,6 +88,7 @@ void Scheduler::schedule(bool switch_stack) {
 
   if (new_task == current_task) {
     // Nothing to do here.
+    sti;
     return;
   }
 
@@ -129,6 +133,9 @@ void Scheduler::post_context_switch_bookkeeping() {
   if (unlikely(context_switch_count % 100 == 0)) {
     print_stats();
   }
+
+  // TODO: do we need to irqrestore here?
+  sti;
 }
 
 void Scheduler::destroy_thread(KernelThread *thread, bool switch_stack) {

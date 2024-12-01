@@ -7,6 +7,8 @@
 extern void (*__start_text_isrs)();
 extern void (*__stop_text_isrs)();
 
+extern void do_schedule();
+
 void (**isrs)() = &__start_text_isrs;
 unsigned num_isrs() { return &__stop_text_isrs - &__start_text_isrs; }
 
@@ -60,8 +62,8 @@ isr_dumpregs(uint32_t ivec, RegisterFrame reg_frame, InterruptFrame frame) {
 }
 
 void isr_pit(uint32_t ivec, RegisterFrame reg_frame, InterruptFrame frame) {
-  // Nothing to do here ... yet. Until we have pre-emptive scheduling.
   drivers::pic::eoi(0);
+  do_schedule();
 }
 }
 

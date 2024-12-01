@@ -12,6 +12,13 @@
 
 static volatile const BP_REQ(MEMORY_MAP, _mem_map_req);
 
+sched::Scheduler *scheduler = nullptr;
+void do_schedule() {
+  if (likely(scheduler)) {
+    scheduler->schedule();
+  }
+}
+
 namespace {
 // Trying out random C++ features.
 
@@ -38,13 +45,12 @@ public:
 static_assert(!IsBicycle<A>, "A is not a bicycle");
 static_assert(IsBicycle<B>, "B is a bicycle");
 
-sched::Scheduler *scheduler = nullptr;
 void foo() {
   for (;;) {
     // Cooperative scheduling.
-    nonstd::printf("In thread foo!\r\n");
-    __asm__("hlt");
-    scheduler->schedule();
+    // nonstd::printf("In thread foo!\r\n");
+    // hlt;
+    do_schedule();
   }
 }
 
@@ -103,9 +109,9 @@ __attribute__((section(".text.entry"))) void _entry() {
 
   // This should round-robin between main and foo.
   for (;;) {
-    nonstd::printf("In thread main!\r\n");
-    __asm__("hlt");
-    scheduler.schedule();
+    // nonstd::printf("In thread main!\r\n");
+    // hlt;
+    do_schedule();
   }
 
   // We'll never reach here unless you modify the above loop.
