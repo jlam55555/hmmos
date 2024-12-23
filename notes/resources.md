@@ -30,3 +30,7 @@ going to bother linking OSDev wikis since those are implied.
 ## QEMU
 - QEMU internals blog: https://airbus-seclab.github.io/qemu_blog/
 - Setting breakpoints in QEMU w/ KVM enabled: https://forum.osdev.org/viewtopic.php?p=315671&sid=fa474a99fd3a40ba5cf2c2fafd7e44a9#p315671
+
+## filesystem
+- `mtools` to manipulate filesystem image without mounting: https://stackoverflow.com/a/29798605
+- design of the FAT filesystem: https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system
