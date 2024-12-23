@@ -75,7 +75,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a>Second attempt at writing an OS, this time a little more from scratch now that I have a slightly better idea of what the bootloader does.</p>
 <p>Focusing on x86 first, will maybe update this to be for x86_64 later.</p>
-<h1><a class="anchor" id="autotoc_md58"></a>
+<h1><a class="anchor" id="autotoc_md65"></a>
 Setup</h1>
 <p>This project is mainly built with clang/LLVM toolchains in mind. This includes <code>clang</code>, <code>lld</code>, <code>clangd</code>, and <code>clang-format</code>. You'll need at least version 14.</p>
 <p>GNU <code>binutils</code> is needed where LLVM is lacking (i.e. <code>as</code> for GNU AT&amp;T asm syntax + <code>objdump</code> and friends).</p>
@@ -87,15 +87,20 @@ Setup</h1>
 <div class="line">the GNU General Public License version 3 or later.</div>
 <div class="line">This program has absolutely no warranty.</div>
 <div class="line">This assembler was configured for a target of `x86_64-linux-gnu&#39;.</div>
+<div class="line">$</div>
 <div class="line">$ clang --version</div>
 <div class="line">Debian clang version 14.0.6</div>
 <div class="line">Target: x86_64-pc-linux-gnu</div>
 <div class="line">Thread model: posix</div>
 <div class="line">InstalledDir: /usr/bin</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md59"></a>
+<div class="line">$</div>
+<div class="line">$ qemu-system-i386 --version</div>
+<div class="line">QEMU emulator version 7.2.13 (Debian 1:7.2+dfsg-7+deb12u7)</div>
+<div class="line">Copyright (c) 2003-2022 Fabrice Bellard and the QEMU Project developers</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md66"></a>
 Getting started</h1>
 <p>Build the bootloader and run it in QEMU. Make sure to have <code>qemu</code> and GNU <code>make</code> installed, and <code>doxygen</code> if you want to generate documentation. </p><div class="fragment"><div class="line">$ # Run the kernel</div>
-<div class="line">$ make run OPT=1</div>
+<div class="line">$ make run</div>
 <div class="line">$</div>
 <div class="line">$ # Run tests</div>
 <div class="line">$ make run TEST=all</div>
@@ -103,7 +108,18 @@ Getting started</h1>
 <div class="line">$</div>
 <div class="line">$ # Generate documentation</div>
 <div class="line">$ make docs</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md60"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md67"></a>
+Debugging in GDB</h2>
+<div class="fragment"><div class="line">$ # Compile with debug symbols enabled and start running in QEMU.</div>
+<div class="line">$ # This doesn&#39;t actually start until `make gdb` is called.</div>
+<div class="line">$ make runi</div>
+<div class="line">$</div>
+<div class="line">$ # Start gdb and connect to the previous session, loading the debug</div>
+<div class="line">$ # symbols compiled from the last run to `make runi`. Make sure to</div>
+<div class="line">$ # run this with the same compile options (e.g., OPT=*, DEBUG=*) as</div>
+<div class="line">$ # in `make runi`.</div>
+<div class="line">$ make gdb</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md68"></a>
 Misc.</h1>
 <p>Name courtesy of @Victoooooor. </p>
 </div></div><!-- PageDoc -->

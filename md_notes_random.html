@@ -74,48 +74,48 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Or more like a set of rants</p>
-<h1><a class="anchor" id="autotoc_md36"></a>
+<h1><a class="anchor" id="autotoc_md42"></a>
 asmfmt</h1>
 <p>Every time I save it eats away one layer of <code>;</code> on an otherwise empty line. So if I have a line with just <code>;;;</code>, after calling <code>format-all</code> it'll become <code>;;</code>. Not that AT&amp;T syntax uses <code>;</code> anyways, but still.</p>
 <p>Also, it has trouble parsing the line <code>jmp .</code> &ndash; the indentation is all messed up after that. Maybe another issue with AT&amp;T syntax.</p>
 <p>For now I'll manually format my asm.</p>
-<h1><a class="anchor" id="autotoc_md37"></a>
+<h1><a class="anchor" id="autotoc_md43"></a>
 Cool emacs things</h1>
 <p>I just learned about <code>fill-paragraph</code> and <code>auto-fill-mode</code>. Useful for textual files (<code>*.md</code>) and prog-mode files that don't have a different formatter (or whose formatters don't care about long lines).</p>
-<h1><a class="anchor" id="autotoc_md38"></a>
+<h1><a class="anchor" id="autotoc_md44"></a>
 binutils &lt;tt&gt;-m&lt;/tt&gt; flag</h1>
 <p>binutils is the package that supplies common build tools like <code>ld</code> and <code>objdump</code>. They have a funky way of specifying architectures known as <a href="https://en.wikipedia.org/wiki/Binary_File_Descriptor_library">BFD</a>. You can mess around with this by cloning the binutils repo, running <code>./configure</code>, and then playing around with the <code>config.sub</code> script which produces a canonical BFD.</p>
 <p>E.g., you can pass <code>x64</code>, <code>i386:x86</code>, <code>i386:i386</code>, and <code>i386:i386</code> to it. IIRC <code>x64</code> is a.k.a. x86_64 or Intel 64 or amd64 (but not IA64, that's Itanium), while <code>i386</code> and <code>x86</code> refer to the same thing. (To confuse things further, there's a thing referred to as IA-32e in the Intel SDM, but this is a 32-bit compatibility mode in x64_64 rather than its own architecture.)</p>
 <p>What's utterly confusing is that the architectures supported by objdump's <code>-m</code> flag are different. E.g., you can specify <code>i386</code>, <code>i386</code>, but x64 is <code>i386:x86_64</code>, which doesn't make much sense to me.</p>
 <p>Well, not that I'm building it in 64-bit mode now.</p>
-<h1><a class="anchor" id="autotoc_md39"></a>
+<h1><a class="anchor" id="autotoc_md45"></a>
 gdb and lldb notes</h1>
 <p>I'm able to do most of what I want to do (poking at registers and disassembly). There's also a <code>gui</code> command which gives you something like gdb's <code>layout</code> commands, and a <code>gdb-remote</code> command similar to gdb's remote targets. The commands feel less archaic than GDB's.</p>
 <p>I find that lldb chokes when I try to step one instruction for a <code>jmp .</code> instruction, while gdb works.</p>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md46"></a>
 i8086 (real mode) support</h1>
 <p>Currently GDB's <code>set architecture i8086</code> command to disassemble real-mode instructions <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22869">seems broken</a>. (I'm using GDB 14, seems broken at least as of GDB 8.) <a href="https://gitlab.com/qemu-project/qemu/-/issues/141#note_567553482">This workaround</a> works though.</p>
 <p>This is better than lldb though, where I don't see i8086 support at all. In this case you'll need to <code>objdump</code> (if you just want to look at the disassembly) or just switch to gdb (if you need the disassembly to be correct for stepping). It doesn't seem that LLVM is popular for OSDev so I'll just accept this.</p>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md47"></a>
 clang version support</h1>
 <p>I originally started out this project on a laptop running arch linux, which currently has support for LLVM 17. I tried running this on a debian bullseye (11) laptop, which only supports LLVM 11. There were a lot of issues on the older version &ndash; some of the cmdline arguments were different (for example, <code>ld.lld --oformat=binary --build_id=none</code> and <code>ld.lld --oformat=binary --build_id none</code> didn't work, but <code>ld.lld --oformat binary --build_id=none</code> did) and the linker simply did not put output sections in the right location.</p>
 <p>I thought about building LLVM 17 on my own but decided to try upgrading debian first. Upgrading to bullseye (12) gives me LLVM 14, which did pretty much work OOTB (save for the fact that we lose <em>some</em> features such as new-style <code>[[ attribute ]]</code>s).</p>
 <p>In terms of C++ support (which I care about, since I'm planning for the majority of the kernel to be written in C++), clang 14 <a href="https://clang.llvm.org/cxx_status.html">supports</a> the main features of C++17 and C++20 that I care about (C++17 structured bindings, C++17 CTAD, and (most of) C++20 concepts).</p>
 <p>I don't currently plan to build my own cross-compiler for now since clang <a href="https://stackoverflow.com/a/72254698">inherently supports cross-compiling</a>, but maybe a need will arise in the future. For now enforcing clang &gt;= 14 is good enough for this project.</p>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 QEMU x86 quirks</h1>
 <p>Both of the following make my life easier when running in QEMU, but make it harder for me to handle the expected case for real hardware.</p>
 <ul>
 <li><em>A20 is set on boot</em>: To be fair, the OSDev wiki states that this is very non-standardized and there are a myriad of ways to enable/disable the A20 line depending on the hardware. In QEMU's case, <a href="https://forum.osdev.org/viewtopic.php?f=1&amp;t=26256">it was already set on boot</a>.</li>
 <li><em>No data segment offset limit checks</em>: In real mode, I noticed I can write to 0x0000:0xB8000 without having to use unreal mode. Similarly, when in protected mode/unreal mode, I was unable to trigger the segment check (which should cause a <a href="https://wiki.osdev.org/Exceptions#General_Protection_Fault">GPF</a>) even if I manually set the limits low. It seems that QEMU doesn't perform the limit checks (<a href="https://lists.gnu.org/archive/html/qemu-devel/2019-02/msg06518.html">at least as of 2019</a>). I do get GPFs for the code segment though.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md43"></a>
+<h1><a class="anchor" id="autotoc_md49"></a>
 .clangd configuration</h1>
 <p>Clangd configuration is ... not the best. First of all, it's confusing. It can be configured via <code>compile_flags.txt</code>, <code>compile_commands.json</code>, and/or <code>.clangd</code>.</p>
 <p>The way I understand this currently is that clangd starts by looking at the <code>.clangd</code> file (which can be in any parent directory of the file you're compiling). This will then use the <code>compile_flags.txt</code> file which contains default compilation options, or <code>compile_commands.json</code> which contains concrete compilation options for each target, in order to know which flags to compile with.</p>
 <p>The problem with <code>compile_flags.txt</code> is that it's too general &ndash; this will apply to all files (you can't specify different compile flags for C vs. C++ files for example). The problem with <code>compile_commands.json</code> is that you have to generate it every time you want to use it. (Presumably you can automate this, e.g., using <a href="https://github.com/rizsotto/Bear"><code>bear</code></a>).</p>
 <p>The <a href="https://clangd.llvm.org/config"><code>.clangd</code> configuration file</a> solves most of this problem. You can filter files using the <code>PathMatch:</code> predicates to filter by C/C++ files. However adding an <code>-Irelative/include/dir</code> is relative to the compiled file, not to the project root, which is <a href="https://github.com/clangd/clangd/issues/1038">inconvenient</a>.</p>
-<h1><a class="anchor" id="autotoc_md44"></a>
+<h1><a class="anchor" id="autotoc_md50"></a>
 tmux vs. GNU screen</h1>
 <p>tl;dr: friendship ended with <code>screen</code>. now <code>tmux</code> is my best friend.</p>
 <p>I had been using <code>screen</code> as my terminal multiplexor of choice since I learned it from my mentor at Google (who had a similar emacs+screen setup). It worked ... alright up until recently, when I discovered various reasons why <code>tmux</code> seems to "just work" better OOTB. Some specific anecdotal instances (and this only from a few days of using <code>tmux</code> at work):</p>

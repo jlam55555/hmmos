@@ -73,11 +73,11 @@ $(function() {
   <div class="headertitle"><div class="title">overall kernel implementation notes </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md20"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md26"></a>
 Testing setup</h1>
 <p>The approach I took in laos was not so good, so I'd like to reformulate it here. There, you would compile the kernel with <code>-DRUNTEST=&lt;test_selection_criteria</code>, and this would only compile in the tests you want. This means that running a different set of tests means recompiling the kernel.</p>
 <p>There's no reason this can't be done at runtime, so the new idea is to build a test runner kernel that reads the test selection at runtime (via serial port).</p>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h1><a class="anchor" id="autotoc_md27"></a>
 kernel TODO</h1>
 <p>In no definitive order. Some of these can be copied from <a href="https://github.com/jlam55555/laos">laos</a>.</p>
 <ul>
