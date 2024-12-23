@@ -39,8 +39,12 @@ pmode_entry:
 	test %eax, %eax
 	jz .Lpmode_entry__err
 
+	## Log some info about the partitions. Shouldn't have any side
+	## effects.
 	call read_mbr_partitions
 
+	## Read the kernel into physical memory, and return its
+	## starting physical address.
 	call copy_kernel
 	test %eax, %eax
 	jz .Lpmode_entry__err

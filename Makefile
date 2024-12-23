@@ -93,6 +93,7 @@ ifneq ($(DEBUG),)
 # Setting DEBUG enables debug assertions. This does not add debug
 # symbols (which you get by adding -g).
 override OUT_DIR:=$(OUT_DIR).debug
+override CFLAGS+=-DDEBUG
 override CXXFLAGS+=-DDEBUG
 endif
 
@@ -178,6 +179,8 @@ KERNEL_LDFLAGS:=$(LDFLAGS) \
 	-T$(KERNEL_LINKER_SCRIPT)
 KERNEL:=$(OUT_DIR)/kernel.bin
 KERNEL_TEST:=$(OUT_DIR)/kernel_test.bin
+KERNEL_FS:=$(OUT_DIR)/kernel_fs.bin
+KERNEL_FS_TEST:=$(OUT_DIR)/kernel_test_fs.bin
 KERNEL_ELF_WITH_SYMBOLS:=$(OUT_DIR)/kernel.elf
 KERNEL_TEST_ELF_WITH_SYMBOLS:=$(OUT_DIR)/kernel_test.elf
 
@@ -229,11 +232,17 @@ $(KERNEL_ELF_WITH_SYMBOLS): $(KERNEL_OBJS) $(KERNEL_LINKER_SCRIPT)
 $(KERNEL_TEST_ELF_WITH_SYMBOLS): $(KERNEL_TEST_OBJS) $(KERNEL_LINKER_SCRIPT)
 	$(LD) $(KERNEL_LDFLAGS) $(KERNEL_TEST_OBJS) -o $@ $(LDLIBS)
 
-$(BOOTABLE_DISK): $(BOOTLOADER) $(KERNEL)
-	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL) -o $@
+# This generates the FAT32 filesystem image containing the kernel and
+# userspace executables (KERNEL_FS, KERNEL_FS_TEST).
+$(OUT_DIR)/%_fs.bin: $(OUT_DIR)/%.bin
+	dd if=/dev/zero of=$@ bs=1M count=33
+	/sbin/mkfs.fat -F32 $@
+	mcopy -i $@ $< ::KERNEL.BIN
 
-$(BOOTABLE_DISK_TEST): $(BOOTLOADER) $(KERNEL_TEST)
-	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL_TEST) -o $@
+$(BOOTABLE_DISK): $(BOOTLOADER) $(KERNEL_FS)
+	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL_FS) -o $@
+$(BOOTABLE_DISK_TEST): $(BOOTLOADER) $(KERNEL_FS_TEST)
+	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL_FS_TEST) -o $@
 
 .PHONY: docs run runi gdb clean cleanall
 docs:

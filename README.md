@@ -10,9 +10,10 @@ includes `clang`, `lld`, `clangd`, and `clang-format`. You'll need at
 least version 14.
 
 GNU `binutils` is needed where LLVM is lacking (i.e. `as` for GNU AT&T
-asm syntax + `objdump` and friends).
+asm syntax + `objdump` and friends). GNU `mtools` is also required to
+build the binary.
 
-This will be tested with `qemu`, but any (x86) emulator should be fine.
+This will be tested with `qemu` with QEMU and KVM emulation.
 
 Versions:
 ```
@@ -33,6 +34,13 @@ $
 $ qemu-system-i386 --version
 QEMU emulator version 7.2.13 (Debian 1:7.2+dfsg-7+deb12u7)
 Copyright (c) 2003-2022 Fabrice Bellard and the QEMU Project developers
+$
+$ mtools --version
+mtools (GNU mtools) 4.0.32
+configured with the following options: enable-xdf disable-vold disable-new-vold disable-debug enable-raw-term
+$
+$ uname -a
+Linux jebian 6.1.0-27-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.115-1 (2024-11-01) x86_64 GNU/Linux
 ```
 
 ## Getting started

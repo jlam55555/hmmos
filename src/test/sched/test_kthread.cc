@@ -1,7 +1,7 @@
 #include "../test.h"
 #include "sched/kthread.h"
 
-/// @file Test scheduler round-robin selection.
+/// \file Test scheduler round-robin selection.
 ///
 /// This file doesn't test the actual stack-switching behavior, which
 /// is is only a few lines and is exercised on each context switch.

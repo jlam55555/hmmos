@@ -1,5 +1,6 @@
 #include "page_frame_table.h"
 
+#include "boot_protocol.h"
 #include "mm/page_frame_allocator.h"
 #include "mm/virt.h"
 #include "util/algorithm.h"
@@ -102,11 +103,19 @@ PageFrameTable::normalize_mm(std::span<e820_mm_entry> mm) const {
 
   // Check that no regions are overlapping.
   for (unsigned i = 1; i < mm.size(); ++i) {
+    // Bootloader-reclaimable regions will overlap with usable
+    // regions, but we want to discard them. So we can effectively
+    // ignore them.
+
     ASSERT(!util::algorithm::range_overlaps2(mm[i - 1].base, //
                                              mm[i - 1].len,  //
                                              mm[i].base,     //
                                              mm[i].len,      //
-                                             /*inclusive=*/false));
+                                             /*inclusive=*/false) ||
+           (mm[i - 1].type == E820_MM_TYPE_BOOTLOADER_RECLAIMABLE &&
+            mm[i].type == E820_MM_TYPE_USABLE) ||
+           (mm[i - 1].type == E820_MM_TYPE_USABLE) &&
+               mm[i].type == E820_MM_TYPE_BOOTLOADER_RECLAIMABLE);
   }
 
   // Move usable regions to the front.

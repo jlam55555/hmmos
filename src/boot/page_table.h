@@ -156,7 +156,8 @@ void *e820_alloc(unsigned len, bool hugepg_align);
 ///
 /// \return false if there isn't enough space in the E820 memory map
 /// array, true otherwise.
-bool e820_augment_bootloader(uint64_t base, uint64_t len);
+bool e820_augment_bootloader(uint64_t base, uint64_t len,
+                             enum e820_mm_type type);
 
 /// Helper function to set up e820 map entries for the bootloader text
 /// and stack regions.

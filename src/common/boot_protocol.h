@@ -47,8 +47,19 @@ enum e820_mm_type {
   E820_MM_TYPE_ACPI_NVS,
   E820_MM_TYPE_BAD_MEM,
 
-  // Non-standard type, indicates a bootloader type to the kernel.
+  /// Bootloader-allocated memory. Includes bootloader stack, and page
+  /// tables, and kernel text region, which are all used by the HmmOS
+  /// kernel and thus cannot be reclaimed. (This is different than the
+  /// Limine boot protocol which assumes the kernel will set up its
+  /// own stack and text regions, and thus those regions are
+  /// reclaimable.)
   E820_MM_TYPE_BOOTLOADER = 6,
+
+  /// Bootloader-allocated memory that can be reclaimed by the
+  /// kernel. Includes dynamic memory allocated by the kernel and
+  /// bootloader text regions. Can be treated as usable memory by the
+  /// kernel.
+  E820_MM_TYPE_BOOTLOADER_RECLAIMABLE = 7,
 };
 
 struct e820_mm_entry {

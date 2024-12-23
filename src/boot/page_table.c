@@ -67,7 +67,8 @@ void *e820_alloc(unsigned len, bool hugepg_align) {
   return NULL;
 }
 
-bool e820_augment_bootloader(uint64_t base, uint64_t len) {
+bool e820_augment_bootloader(uint64_t base, uint64_t len,
+                             enum e820_mm_type type) {
   struct e820_mm_entry *ent;
   for (ent = e820_mem_map; e820_entry_present(ent); ++ent) {
   }
@@ -81,7 +82,7 @@ bool e820_augment_bootloader(uint64_t base, uint64_t len) {
   // Entry should be zeroed beforehand.
   ent->base = base;
   ent->len = len;
-  ent->type = E820_MM_TYPE_BOOTLOADER;
+  ent->type = type;
   return true;
 }
 
@@ -191,14 +192,18 @@ bool pt_setup(void *kernel_paddr) {
   // time it's accessed. This will probably surface as other bugs in
   // the future, IDK.
   volatile int _ = *(int *)0x2000;
+  volatile int __ = *(int *)0x4000;
 
-  return e820_augment_bootloader((size_t)pt_mem, dynamic_alloc_sz);
+  return e820_augment_bootloader((size_t)pt_mem, dynamic_alloc_sz,
+                                 E820_MM_TYPE_BOOTLOADER);
 }
 
 bool augment_bootloader_text_stack_sections() {
   // Bootloader stack and text regions, respectively.
-  return e820_augment_bootloader((size_t)&mbr_start - PG_SZ, PG_SZ) &&
-         e820_augment_bootloader((size_t)&mbr_start, 63 * 0x200);
+  return e820_augment_bootloader((size_t)&mbr_start - PG_SZ, PG_SZ,
+                                 E820_MM_TYPE_BOOTLOADER) &&
+         e820_augment_bootloader((size_t)&mbr_start, 63 * 0x200,
+                                 E820_MM_TYPE_BOOTLOADER_RECLAIMABLE);
 }
 
 bool check_cpuid_features() {

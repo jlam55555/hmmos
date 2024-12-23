@@ -7,8 +7,10 @@
 #include <assert.h>
 #include <stdint.h>
 
-#define SECTOR_SZ 0x200U
+/// MBR assumes 512-byte sectors.
+#define MBR_SECTOR_SZ 0x200U
 
+/// 16-byte sector descriptor in MBR partition table.
 struct mbr_partition_desc {
   uint8_t drive_attrs;
   uint32_t first_sector_chs : 24;

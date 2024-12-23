@@ -54,9 +54,9 @@ def write_partition_entry(
     # Starting CHS address. (3)
     write(lba_as_chs(start_sector), 3)
     # System ID (1).
-    # There's probably a better value to choose here. It just has to
-    # not be 0, which indicates an empty partition.
-    write(0xFF, 1)
+    # https://en.wikipedia.org/wiki/Partition_type#PID_0Ch
+    # TODO: assert that this is actually a FAT32 filesystem
+    write(0x0C, 1)
     # Ending CHS address. (3)
     write(lba_as_chs(start_sector + len_sectors - 1), 3)
     # LBA start. (4)
