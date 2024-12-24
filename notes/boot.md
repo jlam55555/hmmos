@@ -166,6 +166,15 @@ The kernel is expected to be a flat binary file that will be loaded at
 the configurable `KERNEL_LOAD_ADDR`. Later we can parse and load an
 ELF file, but this is simpler to get started.
 
+## Bootloader stages
+
+i.e., navigating the bootloader code
+
+1. MBR: first sector, operates in real-mode
+2. stage1.5: remaining real-mode code, loaded into memory by the MBR
+3. stage2: (32-bit) protected-mode code, can call into C code
+   (may jump into unreal-mode to call BIOS functions)
+
 ## Bootloader TODO
 Rough order, may need additional steps. Roughly based on the list from
 [Rolling your own

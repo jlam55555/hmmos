@@ -1,5 +1,6 @@
 #include "boot_protocol.h"
 #include "console.h"
+#include "fat.h"
 #include "mbr.h"
 #include "page_table.h"
 #include "perf.h"
@@ -62,13 +63,44 @@ static void _fulfill_boot_protocol_requests(void *kernel_addr,
   }
 }
 
-/// Copies the kernel to memory.
+bool read_kernel_file_cluster(struct fat32_file_cluster *cluster) {
+  // TODO
+  return false;
+}
+
+void *copy_kernel() {
+  struct mbr_partition_desc *part_desc;
+
+  // NOCOMMIT: Read FAT32 partition info.
+  struct fat32_desc fs_desc;
+  if (unlikely(!fat32_parse_partition(part_desc, &fs_desc))) {
+    // TODO: blow up
+  }
+
+  // NOCOMMIT: Traverse root directory.
+  struct fat32_file_desc kernel_file_desc;
+  if (unlikely(!fat32_find_file(&fs_desc, "KERNEL.BIN", &kernel_file_desc))) {
+    // TODO: blow up
+  }
+
+  // NOCOMMIT: Parse file chunks.
+  if (unlikely(!fat32_read_file(&kernel_file_desc, read_kernel_file_cluster))) {
+    // TODO: blow up
+  }
+
+  return NULL;
+}
+
+#if 0
+/// Reads and copies the kernel to memory.
 ///
 /// \return The physical address that the kernel was copied to on
 /// success, otherwise NULL.
 void *copy_kernel() {
   struct mbr_partition_desc const *part = _mbr_partitions;
   for (int i = 0; i < 4; ++i, ++part) {
+    // NOCOMMIT: change this to accept a FAT partition
+    //
     // For now, assume the correct partition has type 0xFF. This is
     // set by install_bootloader.py.
     if (part->partition_type == 0xFF) {
@@ -99,3 +131,4 @@ void *copy_kernel() {
   console_puts("no kernel partition found.\r\n");
   return NULL;
 }
+#endif
