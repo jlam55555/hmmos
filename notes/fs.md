@@ -8,7 +8,7 @@ itself and have a purely in-memory layout.
 The initial goals for the HmmOS filesystem are, in order:
 1. write the HmmOS kernel and userspace programs to a FAT filesystem
 2. implement basic FAT support in the bootloader (to find the kernel)
-3. write a basic SATA driver that can read/write one block at a time
+3. write a basic disk driver that can read/write one block at a time
 4. implement FAT support in the kernel to load userspace programs
 5. (later) write an ELF loader and store the binaries in ELF form
    rather than flat binaries
@@ -59,13 +59,44 @@ filesystem similar to the kernel to be dynamically loaded at runtime.
 
 Let's assume the kernel image is written in the root directory with
 name "KERNEL.BIN". We need to be able to locate and read this file
-into memory.
+into memory. For simplicity, the bootloader will maintain its own
+minimal FAT32 implementation for the sole purpose of loading the
+kernel binary.
+
+## disk interfaces
+
+(may split this out into another notes file if this gets too long)
+
+- **SATA (Serial AT Attachment)**: common physical interface for hard
+  drives. Can be accessed using the ATA (older) or AHCI (newer)
+  software interfaces.
+- **PATA (Parallel AT Attachment)**: older than SATA, can be accessed
+  using the ATA interface.
+- **IDE (Integrated Drive Electronics)**: original name for PATA
+- **ATAPI (ATA Packet Interface)**: extensions to ATA to support more
+  devices other than hard drives (e.g. optical drives, SCSI devices)
+- **AHCI (Advanced Host Controller Interface)**: encapsulates SATA
+  devices and provides a standard PCI interface. Supports all of the
+  ATA functionality and more.
+- **PCI (Peripheral Component Interconnect)**: a high-performance bus
+  for peripherals; can be used to enumerate devices.
+- **HBA (Host Bus Adapter)**: the AHCI controller. Usually this refers
+  to a physical extension card or onboard chip that connects external
+  storage to a system bus. NICs are similar for networking.
+- **FIS (Frame Information Structure)**: The packets used to
+  communicate between the CPU and the HBA.
+
+For HmmOS, we'll start with a simple AHCI driver. We can start with
+PIO-mode (slow but simple) and then implement DMA.
 
 ### TODO
-- [X] write the HmmOS kernel to a FAT filesystem
-- [ ] implement basic FAT support in the bootloader
-- [ ] write a basic SATA driver that can read/write one block at a
-      time
-- [ ] implement FAT support in the kernel to load userspace programs
-- [ ] (later) write an ELF loader and store the binaries in ELF form
-      rather than flat binaries
+- [X] write the HmmOS kernel to a FAT32 filesystem
+- [X] implement basic FAT32 support in the bootloader
+- [ ] write a basic AHCI driver in the kernel
+- [ ] implement FAT32 support in the kernel to load userspace programs
+
+Further TODO items
+- [ ] write an ELF loader and store the binaries in ELF format
+- [ ] VFS layer
+- [ ] ext2 support
+- [ ] NVMe support

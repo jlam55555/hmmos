@@ -125,4 +125,18 @@ std::span<const FuncDescriptor> enumerate_functions() {
   return {enumerated_res, enumerated_count};
 }
 
+void write_config_register(uint8_t bus, uint8_t device, uint8_t function,
+                           uint8_t reg, uint32_t val) {
+  assert(device < max_devices);
+  assert(function < max_functions);
+  assert(reg < max_registers);
+
+  uint32_t config_addr = 0x8000'0000U | ((uint32_t)bus << 16) |
+                         ((uint32_t)device << 11) | ((uint32_t)function << 8) |
+                         ((uint32_t)reg << 2);
+
+  outl((uint16_t)Port::config_addr, config_addr);
+  outl((uint16_t)Port::config_data, val);
+}
+
 } // namespace drivers::pci

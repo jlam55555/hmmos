@@ -74,7 +74,13 @@ uint16_t read_config_word(uint8_t bus, uint8_t device, uint8_t function,
 uint8_t read_config_byte(uint8_t bus, uint8_t device, uint8_t function,
                          uint8_t offset);
 
-// Helper functions to get particular words.
+// Helper functions to get particular registers/words/bytes.
+inline uint32_t get_bar(uint8_t bus, uint8_t device, uint8_t function,
+                        uint8_t bar_idx) {
+  // Precondition: This is a regular device (header type 0x0).
+  assert(bar_idx < 6);
+  return read_config_register(bus, device, function, 4 + bar_idx);
+}
 inline uint16_t get_vendor_id(uint8_t bus, uint8_t device, uint8_t function) {
   return read_config_word(bus, device, function, 0x00);
 }
@@ -92,6 +98,10 @@ inline uint8_t get_secondary_bus(uint8_t bus, uint8_t device,
   // Precondition: This is a PCI bridge device (header type 0x1).
   return read_config_byte(bus, device, function, 0x19);
 }
+
+/// \brief Write 32-bit register into function's configuration space.
+void write_config_register(uint8_t bus, uint8_t device, uint8_t function,
+                           uint8_t reg, uint32_t val);
 
 /// Abbreviated summary of the PCI header returned from enumerating
 /// the PCI bus.

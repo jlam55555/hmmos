@@ -1,6 +1,7 @@
 #include "../crt/crt.h"
 #include "boot_protocol.h"
 #include "drivers/acpi.h"
+#include "drivers/ahci.h"
 #include "drivers/pci.h"
 #include "drivers/serial.h"
 #include "idt.h"
@@ -65,12 +66,20 @@ __attribute__((section(".text.entry"))) void _entry() {
 
   // C++-ify the memory map.
   struct e820_mm_entry *ent;
+  nonstd::printf("Memory map:\r\n");
+  uint64_t usable_mem = 0;
   for (ent = _mem_map_req.memory_map; e820_entry_present(ent); ++ent) {
+    nonstd::printf("base=0x%llx len=0x%llx type=%u\r\n", ent->base, ent->len,
+                   ent->type);
+    if (ent->type == E820_MM_TYPE_USABLE) {
+      usable_mem += ent->len;
+    }
   }
   std::span<e820_mm_entry> mem_map{
       _mem_map_req.memory_map,
       static_cast<size_t>(ent - _mem_map_req.memory_map)};
-  nonstd::printf("Found %u entries in the memory map.\r\n", mem_map.size());
+  nonstd::printf("Found %u entries in the memory map. Usable=0x%llx\r\n",
+                 mem_map.size(), usable_mem);
 
 #ifdef DEBUG
   mem::virt::enumerate_page_tables();
@@ -100,13 +109,47 @@ __attribute__((section(".text.entry"))) void _entry() {
   arch::idt::init();
 
   nonstd::printf("PCI functions:\r\n");
-  for (const auto &fn_desc : drivers::pci::enumerate_functions()) {
+  const auto pci_fn_descs = drivers::pci::enumerate_functions();
+  for (const auto &fn_desc : pci_fn_descs) {
     nonstd::printf("%x:%x.%u [%x]: [%x:%x]\r\n", fn_desc.bus, fn_desc.device,
                    fn_desc.function, fn_desc._class, fn_desc.vendor_id,
                    fn_desc.device_id);
   }
 
-#if 0
+  // This depends on PCI
+  nonstd::printf("Initializing AHCI driver...\r\n");
+  assert(drivers::ahci::init(pci_fn_descs));
+
+  // Compute sum of bytes in first sector; compare to
+  // $ python3 -c "print(sum(open('out/disk.bin','rb').read(512)))"
+  uint8_t *outbuf = reinterpret_cast<uint8_t *>(::operator new(512));
+  assert(outbuf != nullptr);
+  assert(drivers::ahci::read_blocking(/*port_idx=*/0, /*lba_lo=*/0,
+                                      /*lba_hi=*/0,
+                                      /*sectors_count=*/1, (uint16_t *)outbuf));
+  unsigned sum = 0;
+  for (int i = 0; i < 32; ++i) {
+    nonstd::printf("%x: ", i << 4);
+    for (int j = 0; j < 16; ++j) {
+      nonstd::printf("%x ", outbuf[i * 16 + j]);
+    }
+    nonstd::printf("\r\n");
+  }
+  for (int i = 0; i < 512; ++i) {
+    sum += outbuf[i];
+  }
+  nonstd::printf("read first sector sum=%u\r\n", sum);
+
+  nonstd::memset(outbuf, 0, 512);
+  drivers::ahci::read_blocking(0, 2048, 0, 1, (uint16_t *)outbuf);
+  for (int i = 0; i < 32; ++i) {
+    nonstd::printf("%x: ", i << 4);
+    for (int j = 0; j < 16; ++j) {
+      nonstd::printf("%x ", outbuf[i * 16 + j]);
+    }
+    nonstd::printf("\r\n");
+  }
+
   nonstd::printf("Initializing scheduler...\r\n");
   sched::Scheduler scheduler;
   ::scheduler = &scheduler;
@@ -117,6 +160,7 @@ __attribute__((section(".text.entry"))) void _entry() {
 
   nonstd::printf("Done.\r\n");
 
+#if 0
   // We should never get here if we call `destroy_thread()` above.
   // scheduler.destroy_thread();
   // nonstd::printf("Unreachable");

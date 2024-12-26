@@ -88,29 +88,6 @@ cross-compiling](https://stackoverflow.com/a/72254698), but maybe a
 need will arise in the future. For now enforcing clang >= 14 is good
 enough for this project.
 
-## QEMU x86 quirks
-Both of the following make my life easier when running in QEMU, but
-make it harder for me to handle the expected case for real hardware.
-
-- *A20 is set on boot*: To be fair, the OSDev wiki states that this is
-  very non-standardized and there are a myriad of ways to
-  enable/disable the A20 line depending on the hardware. In QEMU's
-  case, [it was already set on
-  boot](https://forum.osdev.org/viewtopic.php?f=1&t=26256).
-- *No data segment offset limit checks*: In real mode, I noticed I can
-  write to 0x0000:0xB8000 without having to use unreal
-  mode. Similarly, when in protected mode/unreal mode, I was unable to
-  trigger the segment check (which should cause a
-  [GPF](https://wiki.osdev.org/Exceptions#General_Protection_Fault))
-  even if I manually set the limits low. It seems that QEMU doesn't
-  perform the limit checks ([at least as of
-  2019](https://lists.gnu.org/archive/html/qemu-devel/2019-02/msg06518.html)).
-  I do get GPFs for the code segment though.
-- *PCI vendor ID 0x1234*: According to [this blog
-  post](https://web.archive.org/web/20200416081308/https://www.kraxel.org/blog/2020/01/qemu-pci-ids/). Indeed
-  0x1234 doesn't show up on the [list of PCI
-  vendors](https://devicehunt.com/all-pci-vendors).
-
 ## .clangd configuration
 Clangd configuration is ... not the best. First of all, it's
 confusing. It can be configured via `compile_flags.txt`,

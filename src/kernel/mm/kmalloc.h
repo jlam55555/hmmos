@@ -9,8 +9,9 @@
 /// and can be freed at once) as a very simple allocator model.
 ///
 
+#include <cstddef>
+#include <cstdint>
 #include <new>
-#include <stddef.h>
 
 namespace mem {
 

@@ -44,7 +44,7 @@ CXXFLAGS:=$(_CFLAGS) \
 	-fno-exceptions \
 	-I$(KERNEL_SRC_DIR) \
 	-I$(KERNEL_SRC_DIR)/arch/$(ARCH)
-QEMU_FLAGS:=-m 4G -M q35
+QEMU_FLAGS:=-nodefaults -m 4G -M q35 -vga std
 
 # libgcc contains some useful logic that may be used implicitly by
 # gcc/clang (e.g., __divdi3 for unsigned long long operations on a
@@ -153,6 +153,10 @@ ifneq ($(KVM),)
 override QEMU_FLAGS+=-accel kvm
 endif
 
+ifneq ($(QMONITOR),)
+override QEMU_FLAGS+=-monitor unix:qemu-monitor-socket,server,nowait
+endif
+
 ################################################################################
 # Bootloader-specific config
 ################################################################################
@@ -244,7 +248,7 @@ $(BOOTABLE_DISK): $(BOOTLOADER) $(KERNEL_FS)
 $(BOOTABLE_DISK_TEST): $(BOOTLOADER) $(KERNEL_FS_TEST)
 	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL_FS_TEST) -o $@
 
-.PHONY: docs run runi gdb clean cleanall
+.PHONY: docs run runi gdb qmonitor clean cleanall
 docs:
 	doxygen
 
@@ -267,6 +271,10 @@ gdb:
 	    -ex 'add-symbol-file $(KERNEL_TARGET_ELF_WITH_SYMBOLS)' \
 	    -ex 'set confirm on' \
 	    -ex 'set print asm-demangle on'
+
+# Attach to QEMU monitor (from https://unix.stackexchange.com/a/476617):
+qmonitor:
+	socat -,echo=0,icanon=0 unix-connect:qemu-monitor-socket
 
 # Note that `make clean` will only clean the build directory for the
 # current build variant. To remove all build variants, use `make

@@ -4,6 +4,48 @@ now that I have a slightly better idea of what the bootloader does.
 
 Focusing on x86 first, will maybe update this to be for x86_64 later.
 
+High-level roadmap for HmmOS:
+- Bootloader
+  - [X] Simple boot protocol with bootloader requests
+  - [X] Kernel loader
+	- [X] With FAT32 support
+	- [ ] With ELF support
+- Memory management
+  - [X] Page frame allocator
+  - [ ] Slab allocator
+  - [ ] vmalloc
+- Userspace processes
+  - [X] Kernel threads
+  - [X] Thread scheduling
+  - [ ] ELF loader
+  - [ ] Syscalls
+  - [ ] Shared libraries
+  - Sample programs
+    - [ ] Shell
+	- [ ] Simple libc implementation
+- Filesystem
+  - Filesystem drivers
+    - [ ] FAT32
+	- [ ] ext2
+  - [ ] VFS layer
+- Device drivers (very simple)
+  - [X] Serial port
+  - [X] BIOS text mode display
+  - [X] ACPI
+  - [ ] Keyboard
+  - [ ] AHCI (SATA)
+  - [ ] Graphics
+  - [ ] UDP
+  - [ ] TCP
+- SMP
+  - [ ] Locking primitives
+- Tooling
+  - [X] Debugging in GDB
+  - [X] clang+gcc tooling
+  - [X] Testing in QEMU w/ optional KVM virtualization
+  - [X] Unit test framework
+  - [ ] Kernel module system with dependencies
+
 ## Setup
 This project is mainly built with clang/LLVM toolchains in mind. This
 includes `clang`, `lld`, `clangd`, and `clang-format`. You'll need at
