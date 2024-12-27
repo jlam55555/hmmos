@@ -1,6 +1,7 @@
 #include "../crt/crt.h"
 #include "boot_protocol.h"
 #include "drivers/acpi.h"
+#include "drivers/pci.h"
 #include "drivers/serial.h"
 #include "idt.h"
 #include "mm/kmalloc.h"
@@ -93,6 +94,14 @@ __attribute__((section(".text.entry"))) void _entry() {
   nonstd::printf("Enabling interrupts...\r\n");
   arch::idt::init();
 
+  nonstd::printf("PCI functions:\r\n");
+  for (const auto &fn_desc : drivers::pci::enumerate_functions()) {
+    nonstd::printf("%x:%x.%u [%x]: [%x:%x]\r\n", fn_desc.bus, fn_desc.device,
+                   fn_desc.function, fn_desc._class, fn_desc.vendor_id,
+                   fn_desc.device_id);
+  }
+
+#if 0
   nonstd::printf("Initializing scheduler...\r\n");
   sched::Scheduler scheduler;
   ::scheduler = &scheduler;
@@ -113,6 +122,7 @@ __attribute__((section(".text.entry"))) void _entry() {
     // hlt;
     do_schedule();
   }
+#endif
 
   // We'll never reach here unless you modify the above loop.
   crt::run_global_dtors();

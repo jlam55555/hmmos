@@ -2,6 +2,14 @@
 Probably incomplete since it's impossible to link everything. I'm not
 going to bother linking OSDev wikis since those are implied.
 
+## General OS theory
+- _Operating Systems: Three Easy Pieces_ (OSTEP): https://pages.cs.wisc.edu/~remzi/OSTEP/
+- _Linux Device Drivers, third ed._ (LDD3): https://lwn.net/Kernel/LDD3/
+- _Writing Device Drivers_ (Oracle): https://docs.oracle.com/cd/E18752_01/html/816-4854/index.html
+
+## x86, x86-64 architectures
+- Intel Software Developer Manual (SDM): https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
+
 ## Bootloader
 - OSDev Rolling your own bootloader: https://wiki.osdev.org/Rolling_Your_Own_Bootloader
 - GAS assembler directives: https://ftp.gnu.org/old-gnu/Manuals/gas-2.9.1/html_chapter/as_7.html
@@ -30,6 +38,7 @@ going to bother linking OSDev wikis since those are implied.
 ## QEMU
 - QEMU internals blog: https://airbus-seclab.github.io/qemu_blog/
 - Setting breakpoints in QEMU w/ KVM enabled: https://forum.osdev.org/viewtopic.php?p=315671&sid=fa474a99fd3a40ba5cf2c2fafd7e44a9#p315671
+- Q35/ICH9 architecture: https://wiki.qemu.org/Features/Q35
 
 ## filesystem
 - `mtools` to manipulate filesystem image without mounting: https://stackoverflow.com/a/29798605

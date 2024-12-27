@@ -226,6 +226,8 @@ static inline void _term_writer(char c, __attribute__((unused)) char *_buf,
 ///
 /// This is an internal implementation with inspiration from
 /// https://github.com/mpaland/printf
+///
+/// TODO: implement flags, width, .precision, modifiers
 static int _vsnprintf(writer_t write, char *buf, size_t n, const char *fmt,
                       va_list va) {
   size_t i, j, k, len, radix;

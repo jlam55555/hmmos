@@ -106,6 +106,10 @@ make it harder for me to handle the expected case for real hardware.
   perform the limit checks ([at least as of
   2019](https://lists.gnu.org/archive/html/qemu-devel/2019-02/msg06518.html)).
   I do get GPFs for the code segment though.
+- *PCI vendor ID 0x1234*: According to [this blog
+  post](https://web.archive.org/web/20200416081308/https://www.kraxel.org/blog/2020/01/qemu-pci-ids/). Indeed
+  0x1234 doesn't show up on the [list of PCI
+  vendors](https://devicehunt.com/all-pci-vendors).
 
 ## .clangd configuration
 Clangd configuration is ... not the best. First of all, it's

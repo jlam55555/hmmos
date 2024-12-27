@@ -44,7 +44,7 @@ CXXFLAGS:=$(_CFLAGS) \
 	-fno-exceptions \
 	-I$(KERNEL_SRC_DIR) \
 	-I$(KERNEL_SRC_DIR)/arch/$(ARCH)
-QEMU_FLAGS:=-m 4G
+QEMU_FLAGS:=-m 4G -M q35
 
 # libgcc contains some useful logic that may be used implicitly by
 # gcc/clang (e.g., __divdi3 for unsigned long long operations on a
