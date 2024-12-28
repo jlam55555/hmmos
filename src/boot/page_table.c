@@ -172,7 +172,8 @@ bool pt_setup(void *kernel_paddr) {
     _pt_map_pg(pd, dm_pt, pg, pg, false);
   }
   // Set up 1GB HHDM.
-  for (uint64_t pg = 0; pg < (1 * GB) - KERNEL_MAP_SZ; pg += HUGE_PG_SZ) {
+  for (uint64_t pg = 0; pg < (1 * GB) - KERNEL_MAP_SZ - IO_MAP_SZ;
+       pg += HUGE_PG_SZ) {
     _pt_map_hugepg(pd, pg + HM_START, pg, true);
   }
   // Set up kernel mapping.

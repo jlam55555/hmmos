@@ -40,6 +40,12 @@
 _Static_assert(HUGEPG_ALIGNED(KERNEL_LOAD_ADDR),
                "KERNEL_LOAD_ADDR must be hugepage-aligned");
 
+/// Some reserved space in the high memory virtual address space for
+/// remapping I/O ports and device memory-mapped memory. See
+/// kernel/mm/virt.h for more info.
+#define IO_MAP_SZ (4 * MB)
+_Static_assert(HUGEPG_ALIGNED(IO_MAP_SZ), "IO_MAP_SZ must be hugepage-aligned");
+
 enum e820_mm_type {
   E820_MM_TYPE_USABLE = 1,
   E820_MM_TYPE_RESERVED,

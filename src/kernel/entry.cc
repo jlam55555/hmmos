@@ -6,6 +6,7 @@
 #include "idt.h"
 #include "mm/kmalloc.h"
 #include "mm/page_frame_allocator.h"
+#include "mm/virt.h"
 #include "nonstd/libc.h"
 #include "sched/kthread.h"
 #include <climits>
@@ -70,6 +71,10 @@ __attribute__((section(".text.entry"))) void _entry() {
       _mem_map_req.memory_map,
       static_cast<size_t>(ent - _mem_map_req.memory_map)};
   nonstd::printf("Found %u entries in the memory map.\r\n", mem_map.size());
+
+#ifdef DEBUG
+  mem::virt::enumerate_page_tables();
+#endif
 
   /// Random computation.
   nonstd::printf("fac(15)=%llu\r\n", fac<15>());

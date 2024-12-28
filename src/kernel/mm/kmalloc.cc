@@ -21,6 +21,10 @@ void *kmalloc(size_t sz) noexcept {
 
   // Alloc new page(s) as needed.
   if (!arena || ((size_t)arena & (PG_SZ - 1)) + sz > PG_SZ) {
+    // TODO: this should only attempt to allocate pages in the first
+    // 1GB of memory (that are reachable via the HHDM). Otherwise the
+    // allocated memory is not accessible to the kernel and
+    // direct_to_hhdm() will throw.
     auto page_frame = pfa->alloc(util::algorithm::ceil_pow2<PG_SZ>(sz) / PG_SZ);
     arena = page_frame ? virt::direct_to_hhdm(*page_frame) : nullptr;
   }
