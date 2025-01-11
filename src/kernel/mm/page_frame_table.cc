@@ -1,6 +1,7 @@
 #include "page_frame_table.h"
 
 #include "boot_protocol.h"
+#include "libc_minimal.h"
 #include "mm/page_frame_allocator.h"
 #include "mm/virt.h"
 #include "util/algorithm.h"
@@ -13,10 +14,30 @@ PageFrameTable::PageFrameTable(std::span<e820_mm_entry> mm)
     : PageFrameTable(mm, std::nullopt) {}
 
 PageFrameTable::PageFrameTable(
-    std::span<e820_mm_entry> mm,
+    std::span<e820_mm_entry> _mm,
     std::optional<std::span<PageFrameDescriptor>> _pft)
-    : total_mem_bytes{compute_total_mem(mm)}, usable_regions{normalize_mm(mm)},
+    : total_mem_bytes{compute_total_mem(_mm)}, mm_copy{[_mm, this] {
+        ASSERT(_mm.size() <= mm_copy.size());
+        decltype(mm_copy) rv{};
+        std::copy(_mm.begin(), _mm.end(), rv.begin());
+        return rv;
+      }()},
+      mm{mm_copy.begin(), _mm.size()}, usable_regions{normalize_mm(mm)},
       pft{_pft ? *_pft : alloc_pft()}, usable_mem_bytes{compute_usable_mem()} {
+
+  // Also zero bootloader-reclaimable memory. We observe slowdowns
+  // when trying to write to the same pages as executable instructions
+  // in QEMU so this helps with performance. (This is also a good
+  // thing for general security.)
+  //
+  // Note that any data structures within the bootloader reclaimable
+  // region will be zeroed after this (e.g., the E820 memory map), so
+  // we need to use/copy them before this point.
+  for (const auto mm_entry : mm) {
+    if (mm_entry.type == E820_MM_TYPE_BOOTLOADER_RECLAIMABLE) {
+      nonstd::memset(virt::direct_to_hhdm(mm_entry.base), 0, mm_entry.len);
+    }
+  }
 
   // If PFT was provided, check that it is valid (large enough). If
   // it is larger than implied by the memory map, we won't use the
@@ -106,7 +127,6 @@ PageFrameTable::normalize_mm(std::span<e820_mm_entry> mm) const {
     // Bootloader-reclaimable regions will overlap with usable
     // regions, but we want to discard them. So we can effectively
     // ignore them.
-
     ASSERT(!util::algorithm::range_overlaps2(mm[i - 1].base, //
                                              mm[i - 1].len,  //
                                              mm[i].base,     //

@@ -883,3 +883,20 @@ This works if I dereference any address in the range `0x1FFD` through
 `0x2FFF`, which is an almost-page-oriented behavior. I have no idea
 why the last 12 bytes of the 0x1000 page works here, but it seems to
 be consistent behavior.
+
+## A fun memset
+
+Overwriting stack memory or the GDT can lead to fun errors! Both of
+the following happened on the same `memset()` call, leading to double
+the f(r)u(stratio)n!
+
+Clobbering the stack: I'd misplaced it via a bad asm instruction :/
+Memory corruption is a fun thing. Led to a page fault within
+`memset()` (not the source/destination memory regions, but the text
+region :/).
+
+Obliterating the GDT: I marked the bootloader text region reclaimable
+by the kernel and forgot the GDT was in there. The GP faults with
+error 0x8 (segment-related error) should've been a clue. This only
+popped up after the next `iret` since that's the next time a segment
+register is loaded from the GDT.

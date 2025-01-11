@@ -111,7 +111,7 @@ protected:
 
 private:
   // Helper functions to construct const members.
-  uint64_t compute_total_mem(std::span<e820_mm_entry> mm) const;
+  uint64_t compute_total_mem(const std::span<e820_mm_entry> mm) const;
   uint64_t compute_usable_mem() const;
   std::span<e820_mm_entry> normalize_mm(std::span<e820_mm_entry> mm) const;
   std::span<PageFrameDescriptor> alloc_pft() const;
@@ -128,6 +128,16 @@ private:
                           uint64_t end);
   void unregister_allocator(PageFrameAllocator &allocator);
   util::IntrusiveListHead<PageFrameAllocator> allocators;
+
+  /// \brief Copy of the input E820 memory map.
+  ///
+  /// We need a copy since the original may live in
+  /// bootloader-reclaimable memory, which is cleared.
+  std::array<e820_mm_entry, 32> mm_copy;
+
+  /// Dynamically-sized view of the memory map. Points into \ref
+  /// mm_copy. Just for convenience.
+  const std::span<e820_mm_entry> mm;
 
   /// \brief List of usable memory regions.
   ///

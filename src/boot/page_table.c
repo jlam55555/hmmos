@@ -183,6 +183,10 @@ bool pt_setup(void *kernel_paddr) {
   }
   enable_paging(pd);
 
+  // Reload the GDT descriptor, which was set up to use the HHDM.
+  extern char gdt_desc[12];
+  __asm__("lgdt %0" : : "m"(gdt_desc));
+
   // Without this running with `-accel kvm` bugs out. I have no idea
   // why. Without this we get some _really_ weird behavior later on
   // when trying to access address 0x2008/0xC0002008 as if the TLB is
@@ -201,7 +205,7 @@ bool pt_setup(void *kernel_paddr) {
 
 bool augment_bootloader_text_stack_sections() {
   // Bootloader stack and text regions, respectively.
-  return e820_augment_bootloader((size_t)&mbr_start - PG_SZ, PG_SZ,
+  return e820_augment_bootloader(((size_t)&mbr_start - PG_SZ) & ~0x0FFF, PG_SZ,
                                  E820_MM_TYPE_BOOTLOADER) &&
          e820_augment_bootloader((size_t)&mbr_start, 63 * 0x200,
                                  E820_MM_TYPE_BOOTLOADER_RECLAIMABLE);

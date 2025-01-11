@@ -13,6 +13,8 @@ static volatile const BP_REQ(MEMORY_MAP, _mem_map_req);
 
 void do_schedule() {}
 
+char test_selection_buf[4096] = {};
+
 __attribute__((section(".text.entry"))) void _entry() {
   crt::run_global_ctors();
 
@@ -22,9 +24,7 @@ __attribute__((section(".text.entry"))) void _entry() {
 
   // TODO: could use scanf() logic
   char c;
-  char test_selection_buf[4096] = {};
   unsigned pos = 0;
-
   while ((c = serial::get().read()) != '\n' &&
          pos < sizeof test_selection_buf) {
     test_selection_buf[pos++] = c;

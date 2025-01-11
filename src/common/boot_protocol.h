@@ -1,6 +1,6 @@
 #pragma once
 
-/// \file
+/// \file boot_protocol.h
 /// \brief The runtime interface between the bootloader and kernel.
 ///
 /// The bootloader can share data with the kernel (e.g., physical
@@ -109,6 +109,23 @@ struct bp_req_header {
   uint32_t req_id;
 } __attribute__((packed));
 
+/// \brief Memory map bootloader request
+///
+/// This returns the set of usable and unusable memory regions. This
+/// includes the VGA E820 memory map, augmented with
+/// bootloader-allocated regions.
+///
+/// Bootloader-allocated regions comprise:
+/// - Non-reclaimable regions:
+///   - Bootloader/initial kernel stack (typically at 0xC0006000)
+///   - Kernel text region (will be mapped at KERNEL_LOAD_ADDR)
+///   - GDT (copied to end of kernel text region)
+///   - Initial page tables
+/// - Bootloader-reclaimable regions:
+///   - Bootloader text region
+///     (includes E820 memory map)
+///   - Temporary bootloader dynamic memory
+///
 struct bp_req_memory_map {
   struct bp_req_header hdr;
   struct e820_mm_entry *memory_map;

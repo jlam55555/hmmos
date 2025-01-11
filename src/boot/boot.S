@@ -38,7 +38,7 @@ mbr_start:
 	## the same page as the bootloader text causes a major
 	## performance penalty. See notes/hmm.md#"slow memory speed".
 	mov $mbr_start, %sp
-	and ~0xFFF, %sp
+	and $~0xFFF, %sp
 
 	## Print hello message (might as well).
 	mov $.Lwelcome_msg, %di

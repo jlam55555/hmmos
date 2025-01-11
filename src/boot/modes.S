@@ -10,6 +10,9 @@
 	.globl enter_unreal_mode
 	.globl pmode_to_urmode
 
+	.globl gdt_desc
+	.globl gdt
+
 	## Enter 32-bit protected mode from (un)real mode.
 	##
 	## Note: Do not enable interrupts until the IDT is set up.
@@ -21,7 +24,7 @@ enter_prot_mode:
 	cli
 	push %eax
 
-	lgdt .Lgdt_desc
+	lgdt gdt_desc
 	mov %cr0, %eax
 	or $1, %al		# Set PE bit.
 	mov %eax, %cr0
@@ -52,7 +55,7 @@ enter_prot_mode:
 	.code16
 enter_unreal_mode:
 	cli
-	lgdt .Lgdt_desc
+	lgdt gdt_desc
 	mov %cr0, %eax
 	or $0x01, %al
 	mov %eax, %cr0
@@ -125,12 +128,15 @@ pmode_to_urmode:
 	pop %ax
 	jmp *%ax
 
+	## This is the "initial GDT". We'll copy the GDT outside of
+	## the bootloader text region since it is
+	## bootloader-reclaimable memory.
 	.section .rodata
-.Lgdt_desc:
-	.word (.Lgdt__end - .Lgdt - 1)
-	.word .Lgdt, 0x0000
+gdt_desc:
+	.word (.Lgdt__end - gdt - 1)
+	.word gdt, 0x0000
 
-.Lgdt:
+gdt:
 	.quad 0x0
 .Lgdt__ring0_code:
 	.word 0xFFFF, 0x0000
