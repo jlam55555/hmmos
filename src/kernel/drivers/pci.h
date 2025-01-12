@@ -7,6 +7,8 @@
 /// (primarily the memory-mapped configuration space). PCIe is
 /// backward-compatible so this should still work.
 ///
+/// TODO: make this thread-safe
+///
 #include "asm.h"
 #include "nonstd/libc.h"
 #include <cassert>

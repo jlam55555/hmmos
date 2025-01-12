@@ -4,6 +4,7 @@
 #include "drivers/ahci.h"
 #include "drivers/pci.h"
 #include "drivers/serial.h"
+#include "fs/drivers/fat32.h"
 #include "idt.h"
 #include "mm/kmalloc.h"
 #include "mm/page_frame_allocator.h"
@@ -120,35 +121,41 @@ __attribute__((section(".text.entry"))) void _entry() {
   nonstd::printf("Initializing AHCI driver...\r\n");
   assert(drivers::ahci::init(pci_fn_descs));
 
-  // Compute sum of bytes in first sector; compare to
-  // $ python3 -c "print(sum(open('out/disk.bin','rb').read(512)))"
-  uint8_t *outbuf = reinterpret_cast<uint8_t *>(::operator new(512));
-  assert(outbuf != nullptr);
-  assert(drivers::ahci::read_blocking(/*port_idx=*/0, /*lba_lo=*/0,
-                                      /*lba_hi=*/0,
-                                      /*sectors_count=*/1, (uint16_t *)outbuf));
-  unsigned sum = 0;
-  for (int i = 0; i < 32; ++i) {
-    nonstd::printf("%x: ", i << 4);
-    for (int j = 0; j < 16; ++j) {
-      nonstd::printf("%x ", outbuf[i * 16 + j]);
-    }
-    nonstd::printf("\r\n");
-  }
-  for (int i = 0; i < 512; ++i) {
-    sum += outbuf[i];
-  }
-  nonstd::printf("read first sector sum=%u\r\n", sum);
+  nonstd::printf("Initializing FAT filesystem...\r\n");
+  auto boot_part_desc = fs::fat32::Filesystem::find_boot_part();
+  assert(boot_part_desc.has_value());
+  auto filesystem = fs::fat32::Filesystem::from_partition(*boot_part_desc);
 
-  nonstd::memset(outbuf, 0, 512);
-  drivers::ahci::read_blocking(0, 2048, 0, 1, (uint16_t *)outbuf);
-  for (int i = 0; i < 32; ++i) {
-    nonstd::printf("%x: ", i << 4);
-    for (int j = 0; j < 16; ++j) {
-      nonstd::printf("%x ", outbuf[i * 16 + j]);
-    }
-    nonstd::printf("\r\n");
+  auto kernel_file = filesystem.lookup_file(filesystem.root_fd(), "KERNEL.BIN");
+  assert(kernel_file);
+  nonstd::printf("kernel file size=%u\r\n", kernel_file->file_sz_bytes);
+
+  auto src_file = filesystem.lookup_file(filesystem.root_fd(),
+                                         "SRC/KERNEL/FS/DRIVERS/FAT32.CC");
+  assert(src_file);
+  nonstd::printf("contents of %s (size=%u):\r\n", src_file->name,
+                 src_file->file_sz_bytes);
+  ssize_t rval, pos = 0;
+  auto _buf = reinterpret_cast<std::byte *>(mem::kmalloc(4096));
+  std::span buf{_buf, 4095};
+  while ((rval = filesystem.read(*src_file, pos, buf)) > 0) {
+    // Force the string to be null-terminated. We do own the byte past
+    // the end of the buffer so this is safe.
+    //
+    // TODO: we should support a print specifier to print a given
+    // number of characters (super useful for string_view as well).
+    buf[rval] = std::byte{0};
+    nonstd::printf("%s", (const char *)buf.data());
+    pos += rval;
   }
+  if (rval < 0) {
+    nonstd::printf("error reading src file\r\n");
+    assert(false);
+  }
+
+#ifdef DEBUG
+  filesystem.dump_tree(filesystem.root_fd());
+#endif
 
   nonstd::printf("Initializing scheduler...\r\n");
   sched::Scheduler scheduler;

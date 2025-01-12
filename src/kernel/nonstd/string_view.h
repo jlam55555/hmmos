@@ -21,6 +21,7 @@ public:
   constexpr const char *data() const { return _data; }
   constexpr size_t length() const { return _len; }
   constexpr size_t size() const { return _len; }
+  constexpr bool empty() const { return _len == 0; };
 
   constexpr bool operator==(const string_view &rhs) const {
     return _len == rhs._len && !strncmp(_data, rhs._data, _len);
@@ -34,6 +35,8 @@ public:
     }
     return _len <=> rhs._len;
   }
+
+  constexpr const char operator[](size_t pos) const { return _data[pos]; }
 
   static constexpr size_t npos = -1;
 

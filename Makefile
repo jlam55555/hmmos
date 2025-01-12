@@ -242,6 +242,8 @@ $(OUT_DIR)/%_fs.bin: $(OUT_DIR)/%.bin
 	dd if=/dev/zero of=$@ bs=1M count=33
 	/sbin/mkfs.fat -F32 $@
 	mcopy -i $@ $< ::KERNEL.BIN
+	@# Just for fun, copy the source files onto the disk.
+	mcopy -i $@ -s src ::SRC
 
 $(BOOTABLE_DISK): $(BOOTLOADER) $(KERNEL_FS)
 	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL_FS) -o $@

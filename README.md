@@ -12,8 +12,8 @@ High-level roadmap for HmmOS:
 	- [ ] With ELF support
 - Memory management
   - [X] Page frame allocator
+  - [X] vmalloc
   - [ ] Slab allocator
-  - [ ] vmalloc
 - Userspace processes
   - [X] Kernel threads
   - [X] Thread scheduling
@@ -25,15 +25,16 @@ High-level roadmap for HmmOS:
 	- [ ] Simple libc implementation
 - Filesystem
   - Filesystem drivers
-    - [ ] FAT32
+    - [X] FAT32
 	- [ ] ext2
   - [ ] VFS layer
+    - [ ] LRU page cache
 - Device drivers (very simple)
   - [X] Serial port
   - [X] BIOS text mode display
   - [X] ACPI
+  - [X] AHCI (SATA)
   - [ ] Keyboard
-  - [ ] AHCI (SATA)
   - [ ] Graphics
   - [ ] UDP
   - [ ] TCP

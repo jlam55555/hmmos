@@ -621,7 +621,7 @@ bool rebase_port_memory(GlobalRegisters &abar, unsigned max_port) {
 #ifdef DEBUG
   nonstd::printf(
       "allocating %u memory for AHCI port memory regions base_mem=0x%x\r\n",
-      alloc_sz, (size_t)base_mem);
+      alloc_sz, (size_t)ahci_virt_base);
 #endif
 
   std::byte *received_fis_base = ahci_virt_base + (max_port << 10);
@@ -760,6 +760,9 @@ bool init(const std::span<const pci::FuncDescriptor> &pci_fn_descriptors) {
 
 bool read_blocking(uint8_t port_idx, uint32_t startl, uint32_t starth,
                    uint32_t count, uint16_t *buf) {
+  // Output buffer must be sector_aligned.
+  assert(util::algorithm::aligned_pow2<512>((size_t)buf));
+
   assert(abar != nullptr);
   auto &port = abar->ports[port_idx];
 

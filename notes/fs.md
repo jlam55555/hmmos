@@ -92,11 +92,12 @@ PIO-mode (slow but simple) and then implement DMA.
 ### TODO
 - [X] write the HmmOS kernel to a FAT32 filesystem
 - [X] implement basic FAT32 support in the bootloader
-- [ ] write a basic AHCI driver in the kernel
-- [ ] implement FAT32 support in the kernel to load userspace programs
+- [X] write a basic AHCI driver in the kernel
+- [X] implement FAT32 support in the kernel to load userspace programs
 
 Further TODO items
 - [ ] write an ELF loader and store the binaries in ELF format
 - [ ] VFS layer
+- [ ] LRU page cache
 - [ ] ext2 support
 - [ ] NVMe support

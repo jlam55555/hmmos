@@ -3,6 +3,8 @@
 /// \file ahci.h
 /// \brief AHCI driver for SATA devices
 ///
+/// TODO: make this thread-safe
+///
 #include <cstddef>
 #include <cstdint>
 #include <span>

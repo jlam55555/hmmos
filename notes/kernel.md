@@ -45,4 +45,3 @@ In no definitive order. Some of these can be copied from
 	- [ ] disk
 	- [ ] timer
 	- [ ] graphics (very simple)
-- [ ] filesystem (I have no idea how these work)
