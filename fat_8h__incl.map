@@ -1,0 +1,13 @@
+<map id="src/boot/fat.h" name="src/boot/fat.h">
+<area shape="rect" id="node1" title="FAT32 driver for the bootloader. Only used to locate and load the kernel binary." alt="" coords="297,5,405,31"/>
+<area shape="rect" id="node2" href="$mbr_8h.html" title="Master Boot Record definitions." alt="" coords="276,79,335,104"/>
+<area shape="rect" id="node11" title=" " alt="" coords="359,79,433,104"/>
+<area shape="rect" id="node3" href="$boot_2page__table_8h.html" title="Some useful definitions used by page_table.c." alt="" coords="132,152,239,177"/>
+<area shape="rect" id="node7" title=" " alt="" coords="233,299,303,324"/>
+<area shape="rect" id="node8" href="$assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="343,152,417,177"/>
+<area shape="rect" id="node4" href="$boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="95,225,217,251"/>
+<area shape="rect" id="node6" title=" " alt="" coords="5,299,88,324"/>
+<area shape="rect" id="node5" href="$memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="112,299,208,324"/>
+<area shape="rect" id="node9" href="$perf_8h.html" title="Utilities for performance optimization." alt="" coords="347,225,405,251"/>
+<area shape="rect" id="node10" title=" " alt="" coords="429,225,499,251"/>
+</map>

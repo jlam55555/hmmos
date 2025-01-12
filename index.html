@@ -75,11 +75,73 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a>Second attempt at writing an OS, this time a little more from scratch now that I have a slightly better idea of what the bootloader does.</p>
 <p>Focusing on x86 first, will maybe update this to be for x86_64 later.</p>
-<h1><a class="anchor" id="autotoc_md65"></a>
+<p>High-level roadmap for HmmOS:</p><ul>
+<li>Bootloader<ul>
+<li>[X] Simple boot protocol with bootloader requests</li>
+<li>[X] Kernel loader<ul>
+<li>[X] With FAT32 support</li>
+<li>[ ] With ELF support</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Memory management<ul>
+<li>[X] Page frame allocator</li>
+<li>[ ] Slab allocator</li>
+<li>[ ] vmalloc</li>
+</ul>
+</li>
+<li>Userspace processes<ul>
+<li>[X] Kernel threads</li>
+<li>[X] Thread scheduling</li>
+<li>[ ] ELF loader</li>
+<li>[ ] Syscalls</li>
+<li>[ ] Shared libraries</li>
+<li>Sample programs<ul>
+<li>[ ] Shell</li>
+<li>[ ] Simple libc implementation</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Filesystem<ul>
+<li>Filesystem drivers<ul>
+<li>[ ] FAT32</li>
+<li>[ ] ext2</li>
+</ul>
+</li>
+<li>[ ] VFS layer</li>
+</ul>
+</li>
+<li>Device drivers (very simple)<ul>
+<li>[X] Serial port</li>
+<li>[X] BIOS text mode display</li>
+<li>[X] ACPI</li>
+<li>[ ] Keyboard</li>
+<li>[ ] AHCI (SATA)</li>
+<li>[ ] Graphics</li>
+<li>[ ] UDP</li>
+<li>[ ] TCP</li>
+</ul>
+</li>
+<li>SMP<ul>
+<li>[ ] Locking primitives</li>
+</ul>
+</li>
+<li>Tooling<ul>
+<li>[X] Debugging in GDB</li>
+<li>[X] clang+gcc tooling</li>
+<li>[X] Testing in QEMU w/ optional KVM virtualization</li>
+<li>[X] Unit test framework</li>
+<li>[ ] Kernel module system with dependencies</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md80"></a>
 Setup</h1>
 <p>This project is mainly built with clang/LLVM toolchains in mind. This includes <code>clang</code>, <code>lld</code>, <code>clangd</code>, and <code>clang-format</code>. You'll need at least version 14.</p>
-<p>GNU <code>binutils</code> is needed where LLVM is lacking (i.e. <code>as</code> for GNU AT&amp;T asm syntax + <code>objdump</code> and friends).</p>
-<p>This will be tested with <code>qemu</code>, but any (x86) emulator should be fine.</p>
+<p>GNU <code>binutils</code> is needed where LLVM is lacking (i.e. <code>as</code> for GNU AT&amp;T asm syntax + <code>objdump</code> and friends). GNU <code>mtools</code> is also required to build the binary.</p>
+<p>This will be tested with <code>qemu</code> with QEMU and KVM emulation.</p>
 <p>Versions: </p><div class="fragment"><div class="line">$ as --version</div>
 <div class="line">GNU assembler (GNU Binutils for Debian) 2.40</div>
 <div class="line">Copyright (C) 2023 Free Software Foundation, Inc.</div>
@@ -97,7 +159,14 @@ Setup</h1>
 <div class="line">$ qemu-system-i386 --version</div>
 <div class="line">QEMU emulator version 7.2.13 (Debian 1:7.2+dfsg-7+deb12u7)</div>
 <div class="line">Copyright (c) 2003-2022 Fabrice Bellard and the QEMU Project developers</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md66"></a>
+<div class="line">$</div>
+<div class="line">$ mtools --version</div>
+<div class="line">mtools (GNU mtools) 4.0.32</div>
+<div class="line">configured with the following options: enable-xdf disable-vold disable-new-vold disable-debug enable-raw-term</div>
+<div class="line">$</div>
+<div class="line">$ uname -a</div>
+<div class="line">Linux jebian 6.1.0-27-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.115-1 (2024-11-01) x86_64 GNU/Linux</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md81"></a>
 Getting started</h1>
 <p>Build the bootloader and run it in QEMU. Make sure to have <code>qemu</code> and GNU <code>make</code> installed, and <code>doxygen</code> if you want to generate documentation. </p><div class="fragment"><div class="line">$ # Run the kernel</div>
 <div class="line">$ make run</div>
@@ -108,7 +177,7 @@ Getting started</h1>
 <div class="line">$</div>
 <div class="line">$ # Generate documentation</div>
 <div class="line">$ make docs</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md67"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md82"></a>
 Debugging in GDB</h2>
 <div class="fragment"><div class="line">$ # Compile with debug symbols enabled and start running in QEMU.</div>
 <div class="line">$ # This doesn&#39;t actually start until `make gdb` is called.</div>
@@ -119,7 +188,7 @@ Debugging in GDB</h2>
 <div class="line">$ # run this with the same compile options (e.g., OPT=*, DEBUG=*) as</div>
 <div class="line">$ # in `make runi`.</div>
 <div class="line">$ make gdb</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md68"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md83"></a>
 Misc.</h1>
 <p>Name courtesy of @Victoooooor. </p>
 </div></div><!-- PageDoc -->

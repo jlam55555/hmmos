@@ -177,6 +177,14 @@ Bootloading strategy</h1>
 <div class="line">out/disk.bin1 *     2048  2048       1  512B ff BBT</div>
 </div><!-- fragment --><p>The kernel is expected to be a flat binary file that will be loaded at the configurable <code>KERNEL_LOAD_ADDR</code>. Later we can parse and load an ELF file, but this is simpler to get started.</p>
 <h1><a class="anchor" id="autotoc_md17"></a>
+Bootloader stages</h1>
+<p>i.e., navigating the bootloader code</p>
+<ol type="1">
+<li>MBR: first sector, operates in real-mode</li>
+<li>stage1.5: remaining real-mode code, loaded into memory by the MBR</li>
+<li>stage2: (32-bit) protected-mode code, can call into C code (may jump into unreal-mode to call BIOS functions)</li>
+</ol>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Bootloader TODO</h1>
 <p>Rough order, may need additional steps. Roughly based on the list from <a href="https://wiki.osdev.org/Rolling_Your_Own_Bootloader">Rolling your own bootloader</a>.</p>
 <p>Now all complete!</p>

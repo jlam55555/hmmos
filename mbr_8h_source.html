@@ -80,26 +80,26 @@ $(function() {
 <a href="mbr_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="page__table_8h.html">page_table.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="kernel_2arch_2x86_2page__table_8h.html">page_table.h</a>&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;<a class="code" href="assert_8h.html">assert.h</a>&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#define SECTOR_SZ 0x200U</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="structmbr__partition__desc.html">   12</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structmbr__partition__desc.html">mbr_partition_desc</a> {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  uint8_t drive_attrs;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  uint32_t first_sector_chs : 24;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  uint8_t partition_type;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  uint32_t last_sector_chs : 24;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  uint32_t first_sector_lba;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  uint32_t sector_count;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>} __attribute__((packed));</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>_Static_assert(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> <a class="code hl_struct" href="structmbr__partition__desc.html">mbr_partition_desc</a>) == 16,</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>               <span class="stringliteral">&quot;mbr_partition_desc should be 16 bytes&quot;</span>);</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="mbr_8h.html#a18e3540a6d6f5fb8e285a627f25dfc5f">   11</a></span><span class="preprocessor">#define MBR_SECTOR_SZ 0x200U</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="structmbr__partition__desc.html">   14</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structmbr__partition__desc.html">mbr_partition_desc</a> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  uint8_t drive_attrs;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  uint32_t first_sector_chs : 24;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  uint8_t partition_type;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  uint32_t last_sector_chs : 24;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  uint32_t first_sector_lba;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  uint32_t sector_count;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>} __attribute__((packed));</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>_Static_assert(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> <a class="code hl_struct" href="structmbr__partition__desc.html">mbr_partition_desc</a>) == 16,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>               <span class="stringliteral">&quot;mbr_partition_desc should be 16 bytes&quot;</span>);</div>
 <div class="ttc" id="aassert_8h_html"><div class="ttname"><a href="assert_8h.html">assert.h</a></div><div class="ttdoc">Runtime assertion macros. Note that static_assert will remain as it is.</div></div>
-<div class="ttc" id="apage__table_8h_html"><div class="ttname"><a href="page__table_8h.html">page_table.h</a></div><div class="ttdoc">Some useful definitions used by page_table.c.</div></div>
-<div class="ttc" id="astructmbr__partition__desc_html"><div class="ttname"><a href="structmbr__partition__desc.html">mbr_partition_desc</a></div><div class="ttdef"><b>Definition:</b> mbr.h:12</div></div>
+<div class="ttc" id="akernel_2arch_2x86_2page__table_8h_html"><div class="ttname"><a href="kernel_2arch_2x86_2page__table_8h.html">page_table.h</a></div><div class="ttdoc">x86 page table implementation</div></div>
+<div class="ttc" id="astructmbr__partition__desc_html"><div class="ttname"><a href="structmbr__partition__desc.html">mbr_partition_desc</a></div><div class="ttdoc">16-byte sector descriptor in MBR partition table.</div><div class="ttdef"><b>Definition:</b> mbr.h:14</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

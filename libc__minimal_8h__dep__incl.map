@@ -3,6 +3,7 @@
 <area shape="rect" id="node2" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="5,79,156,119"/>
 <area shape="rect" id="node4" href="$libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="180,86,352,111"/>
 <area shape="rect" id="node3" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="5,167,156,207"/>
-<area shape="rect" id="node5" href="$string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="180,167,355,207"/>
-<area shape="rect" id="node6" href="$test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="212,255,323,280"/>
+<area shape="rect" id="node5" href="$pci_8h.html" title="Driver for the PCI (Peripheral Component Interconnect) bus." alt="" coords="189,167,324,207"/>
+<area shape="rect" id="node6" href="$string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="348,167,523,207"/>
+<area shape="rect" id="node7" href="$test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="380,255,491,280"/>
 </map>

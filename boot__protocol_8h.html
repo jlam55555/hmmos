@@ -106,10 +106,11 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="center"><img src="boot__protocol_8h__dep__incl.png" border="0" usemap="#asrc_2common_2boot__protocol_8hdep" alt=""/></div>
 <map name="asrc_2common_2boot__protocol_8hdep" id="asrc_2common_2boot__protocol_8hdep">
 <area shape="rect" title="The runtime interface between the bootloader and kernel." alt="" coords="165,5,371,31"/>
-<area shape="rect" href="page__table_8h.html" title="Some useful definitions used by page_table.c." alt="" coords="5,86,168,111"/>
+<area shape="rect" href="boot_2page__table_8h.html" title="Some useful definitions used by page_table.c." alt="" coords="5,86,168,111"/>
 <area shape="rect" href="page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="193,79,343,119"/>
-<area shape="rect" href="virt_8h.html" title="Virtual memory definitions." alt="" coords="367,86,521,111"/>
+<area shape="rect" href="virt_8h.html" title="Virtual memory mapping." alt="" coords="367,86,521,111"/>
 <area shape="rect" href="mbr_8h.html" title="Master Boot Record definitions." alt="" coords="29,174,144,199"/>
+<area shape="rect" href="fat_8h.html" title="FAT32 driver for the bootloader. Only used to locate and load the kernel binary." alt="" coords="33,255,141,280"/>
 <area shape="rect" href="page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="193,167,343,207"/>
 </map>
 </div>
@@ -123,6 +124,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbp__req__header.html">bp_req_header</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbp__req__memory__map.html">bp_req_memory_map</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memory map bootloader request.  <a href="structbp__req__memory__map.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -133,6 +135,8 @@ Macros</h2></td></tr>
 <tr class="memitem:a3c61c065ab14afc9896d9cca9369606f"><td class="memItemLeft" align="right" valign="top"><a id="a3c61c065ab14afc9896d9cca9369606f" name="a3c61c065ab14afc9896d9cca9369606f"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>KERNEL_MAP_SZ</b>&#160;&#160;&#160;(4 * GB - <a class="el" href="boot__protocol_8h.html#a8cf50ce50e5c69c8f5893969eec156ef">KERNEL_LOAD_ADDR</a>)</td></tr>
 <tr class="separator:a3c61c065ab14afc9896d9cca9369606f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0565e413bb83e0539ebc2006482544d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="boot__protocol_8h.html#aa0565e413bb83e0539ebc2006482544d">IO_MAP_SZ</a>&#160;&#160;&#160;(4 * MB)</td></tr>
+<tr class="separator:aa0565e413bb83e0539ebc2006482544d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad78dc1d4a1d0d5cf33838872fd90afcc"><td class="memItemLeft" align="right" valign="top"><a id="ad78dc1d4a1d0d5cf33838872fd90afcc" name="ad78dc1d4a1d0d5cf33838872fd90afcc"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BP_REQ_MAGIC</b>&#160;&#160;&#160;0xF7438B7CA1676C21ULL</td></tr>
 <tr class="memdesc:ad78dc1d4a1d0d5cf33838872fd90afcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Randomly generated. Used to identify bootloader requests in the kernel binary. <br /></td></tr>
@@ -149,14 +153,15 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a539c68a0b5166670c9ac882503f12142"><td class="memItemLeft" align="right" valign="top"><a id="a539c68a0b5166670c9ac882503f12142" name="a539c68a0b5166670c9ac882503f12142"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>e820_mm_type</b> { <br />
+<tr class="memitem:a539c68a0b5166670c9ac882503f12142"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="boot__protocol_8h.html#a539c68a0b5166670c9ac882503f12142">e820_mm_type</a> { <br />
 &#160;&#160;<b>E820_MM_TYPE_USABLE</b> = 1
 , <b>E820_MM_TYPE_RESERVED</b>
 , <b>E820_MM_TYPE_ACPI_RECLAIMABLE</b>
 , <b>E820_MM_TYPE_ACPI_NVS</b>
 , <br />
 &#160;&#160;<b>E820_MM_TYPE_BAD_MEM</b>
-, <b>E820_MM_TYPE_BOOTLOADER</b> = 6
+, <a class="el" href="boot__protocol_8h.html#a539c68a0b5166670c9ac882503f12142a01fb267f873a85d62fe62edde015cc75">E820_MM_TYPE_BOOTLOADER</a> = 6
+, <a class="el" href="boot__protocol_8h.html#a539c68a0b5166670c9ac882503f12142aa5dfd9e969ea2ad1121652df9189ed3f">E820_MM_TYPE_BOOTLOADER_RECLAIMABLE</a> = 7
 <br />
  }</td></tr>
 <tr class="separator:a539c68a0b5166670c9ac882503f12142"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,6 +174,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a1b0af7a607578ef2947c7be7520c07e7"><td class="memItemLeft" align="right" valign="top"><a id="a1b0af7a607578ef2947c7be7520c07e7" name="a1b0af7a607578ef2947c7be7520c07e7"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>_Static_assert</b> (HUGEPG_ALIGNED(<a class="el" href="boot__protocol_8h.html#a8cf50ce50e5c69c8f5893969eec156ef">KERNEL_LOAD_ADDR</a>), &quot;KERNEL_LOAD_ADDR must be hugepage-aligned&quot;)</td></tr>
 <tr class="separator:a1b0af7a607578ef2947c7be7520c07e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a884db0b8844450930b373b24fb49ebc1"><td class="memItemLeft" align="right" valign="top"><a id="a884db0b8844450930b373b24fb49ebc1" name="a884db0b8844450930b373b24fb49ebc1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_Static_assert</b> (HUGEPG_ALIGNED(<a class="el" href="boot__protocol_8h.html#aa0565e413bb83e0539ebc2006482544d">IO_MAP_SZ</a>), &quot;IO_MAP_SZ must be hugepage-aligned&quot;)</td></tr>
+<tr class="separator:a884db0b8844450930b373b24fb49ebc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91e23733577778e55b54da9955733b2f"><td class="memItemLeft" align="right" valign="top"><a id="a91e23733577778e55b54da9955733b2f" name="a91e23733577778e55b54da9955733b2f"></a>
 struct <a class="el" href="structbp__req__header.html">bp_req_header</a>&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> ((packed))</td></tr>
 <tr class="separator:a91e23733577778e55b54da9955733b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,13 +246,13 @@ struct <a class="el" href="structe820__mm__entry.html">e820_mm_entry</a> *&#160;
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">struct </span>_BP_REQ_##REQ_ID VAR = {                                              \</div>
 <div class="line">      .hdr = {.magic = <a class="code hl_define" href="boot__protocol_8h.html#ad78dc1d4a1d0d5cf33838872fd90afcc">BP_REQ_MAGIC</a>, .req_id = BP_REQID_##REQ_ID}};</div>
-<div class="ttc" id="aboot__protocol_8h_html_ad78dc1d4a1d0d5cf33838872fd90afcc"><div class="ttname"><a href="boot__protocol_8h.html#ad78dc1d4a1d0d5cf33838872fd90afcc">BP_REQ_MAGIC</a></div><div class="ttdeci">#define BP_REQ_MAGIC</div><div class="ttdoc">Randomly generated. Used to identify bootloader requests in the kernel binary.</div><div class="ttdef"><b>Definition:</b> boot_protocol.h:74</div></div>
+<div class="ttc" id="aboot__protocol_8h_html_ad78dc1d4a1d0d5cf33838872fd90afcc"><div class="ttname"><a href="boot__protocol_8h.html#ad78dc1d4a1d0d5cf33838872fd90afcc">BP_REQ_MAGIC</a></div><div class="ttdeci">#define BP_REQ_MAGIC</div><div class="ttdoc">Randomly generated. Used to identify bootloader requests in the kernel binary.</div><div class="ttdef"><b>Definition:</b> boot_protocol.h:91</div></div>
 </div><!-- fragment -->
 <p>Kernel interface for defining a bootloader request. </p>
 <p>The request object needs to be a global variable and not optimized out of the binary.</p>
 <p>Example: </p><div class="fragment"><div class="line"><span class="keyword">static</span> <span class="keyword">volatile</span> <span class="keyword">const</span> <a class="code hl_define" href="boot__protocol_8h.html#a47712fbaf979e1392e74f80c15575acd">BP_REQ</a>(MEMORY_MAP, _mem_map_req);</div>
-<div class="ttc" id="aboot__protocol_8h_html_a47712fbaf979e1392e74f80c15575acd"><div class="ttname"><a href="boot__protocol_8h.html#a47712fbaf979e1392e74f80c15575acd">BP_REQ</a></div><div class="ttdeci">#define BP_REQ(REQ_ID, VAR)</div><div class="ttdoc">Kernel interface for defining a bootloader request.</div><div class="ttdef"><b>Definition:</b> boot_protocol.h:115</div></div>
-</div><!-- fragment --><p> This is akin to defining <code>struct <a class="el" href="structbp__req__memory__map.html">bp_req_memory_map</a> _mem_map_req</code> with the required magic variables and request ID.</p>
+<div class="ttc" id="aboot__protocol_8h_html_a47712fbaf979e1392e74f80c15575acd"><div class="ttname"><a href="boot__protocol_8h.html#a47712fbaf979e1392e74f80c15575acd">BP_REQ</a></div><div class="ttdeci">#define BP_REQ(REQ_ID, VAR)</div><div class="ttdoc">Kernel interface for defining a bootloader request.</div><div class="ttdef"><b>Definition:</b> boot_protocol.h:149</div></div>
+</div><!-- fragment --><p> This is akin to defining <code>struct <a class="el" href="structbp__req__memory__map.html" title="Memory map bootloader request.">bp_req_memory_map</a> _mem_map_req</code> with the required magic variables and request ID.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">REQ_ID</td><td>the name of the request. It should be all caps and not include the BP_REQID/bp_req prefix. </td></tr>
@@ -252,6 +260,21 @@ struct <a class="el" href="structe820__mm__entry.html">e820_mm_entry</a> *&#160;
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aa0565e413bb83e0539ebc2006482544d" name="aa0565e413bb83e0539ebc2006482544d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0565e413bb83e0539ebc2006482544d">&#9670;&#160;</a></span>IO_MAP_SZ</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IO_MAP_SZ&#160;&#160;&#160;(4 * MB)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Some reserved space in the high memory virtual address space for remapping I/O ports and device memory-mapped memory. See <a class="el" href="virt_8h.html" title="Virtual memory mapping.">kernel/mm/virt.h</a> for more info. </p>
 
 </div>
 </div>
@@ -288,6 +311,26 @@ struct <a class="el" href="structe820__mm__entry.html">e820_mm_entry</a> *&#160;
 </div><div class="memdoc">
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a35754974ef66773440111c2bdd24ea27aa91fc843033745075c1e450debe7fba8" name="a35754974ef66773440111c2bdd24ea27aa91fc843033745075c1e450debe7fba8"></a>BP_REQID_MEMORY_MAP&#160;</td><td class="fielddoc"><p>As a sanity check, a zero reqid is treated as an error. Start at index 1. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a539c68a0b5166670c9ac882503f12142" name="a539c68a0b5166670c9ac882503f12142"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a539c68a0b5166670c9ac882503f12142">&#9670;&#160;</a></span>e820_mm_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="boot__protocol_8h.html#a539c68a0b5166670c9ac882503f12142">e820_mm_type</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a539c68a0b5166670c9ac882503f12142a01fb267f873a85d62fe62edde015cc75" name="a539c68a0b5166670c9ac882503f12142a01fb267f873a85d62fe62edde015cc75"></a>E820_MM_TYPE_BOOTLOADER&#160;</td><td class="fielddoc"><p>Bootloader-allocated memory. Includes bootloader stack, and page tables, and kernel text region, which are all used by the HmmOS kernel and thus cannot be reclaimed. (This is different than the Limine boot protocol which assumes the kernel will set up its own stack and text regions, and thus those regions are reclaimable.) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a539c68a0b5166670c9ac882503f12142aa5dfd9e969ea2ad1121652df9189ed3f" name="a539c68a0b5166670c9ac882503f12142aa5dfd9e969ea2ad1121652df9189ed3f"></a>E820_MM_TYPE_BOOTLOADER_RECLAIMABLE&#160;</td><td class="fielddoc"><p>Bootloader-allocated memory that can be reclaimed by the kernel. Includes dynamic memory allocated by the kernel and bootloader text regions. Can be treated as usable memory by the kernel. </p>
 </td></tr>
 </table>
 

@@ -85,7 +85,7 @@ $(function() {
 
 <p>Master Boot Record definitions.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="page__table_8h_source.html">page_table.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="boot_2page__table_8h_source.html">page_table.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="assert_8h_source.html">assert.h</a>&gt;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -94,7 +94,7 @@ Include dependency graph for mbr.h:</div>
 <div class="center"><img src="mbr_8h__incl.png" border="0" usemap="#asrc_2boot_2mbr_8h" alt=""/></div>
 <map name="asrc_2boot_2mbr_8h" id="asrc_2boot_2mbr_8h">
 <area shape="rect" title="Master Boot Record definitions." alt="" coords="248,5,363,31"/>
-<area shape="rect" href="page__table_8h.html" title="Some useful definitions used by page_table.c." alt="" coords="132,79,239,104"/>
+<area shape="rect" href="boot_2page__table_8h.html" title="Some useful definitions used by page_table.c." alt="" coords="132,79,239,104"/>
 <area shape="rect" title=" " alt="" coords="233,225,303,251"/>
 <area shape="rect" href="assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="343,79,417,104"/>
 <area shape="rect" href="boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="95,152,217,177"/>
@@ -104,25 +104,36 @@ Include dependency graph for mbr.h:</div>
 <area shape="rect" title=" " alt="" coords="429,152,499,177"/>
 </map>
 </div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="mbr_8h__dep__incl.png" border="0" usemap="#asrc_2boot_2mbr_8hdep" alt=""/></div>
+<map name="asrc_2boot_2mbr_8hdep" id="asrc_2boot_2mbr_8hdep">
+<area shape="rect" title="Master Boot Record definitions." alt="" coords="5,5,120,31"/>
+<area shape="rect" href="fat_8h.html" title="FAT32 driver for the bootloader. Only used to locate and load the kernel binary." alt="" coords="9,79,117,104"/>
+</map>
+</div>
 </div>
 <p><a href="mbr_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmbr__partition__desc.html">mbr_partition_desc</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">16-byte sector descriptor in MBR partition table.  <a href="structmbr__partition__desc.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:afd2495621dcf9415fb7b921e88714fe5"><td class="memItemLeft" align="right" valign="top"><a id="afd2495621dcf9415fb7b921e88714fe5" name="afd2495621dcf9415fb7b921e88714fe5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SECTOR_SZ</b>&#160;&#160;&#160;0x200U</td></tr>
-<tr class="separator:afd2495621dcf9415fb7b921e88714fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18e3540a6d6f5fb8e285a627f25dfc5f"><td class="memItemLeft" align="right" valign="top"><a id="a18e3540a6d6f5fb8e285a627f25dfc5f" name="a18e3540a6d6f5fb8e285a627f25dfc5f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MBR_SECTOR_SZ</b>&#160;&#160;&#160;0x200U</td></tr>
+<tr class="memdesc:a18e3540a6d6f5fb8e285a627f25dfc5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">MBR assumes 512-byte sectors. <br /></td></tr>
+<tr class="separator:a18e3540a6d6f5fb8e285a627f25dfc5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5a714872e8b9fef13a812f5c1b922665"><td class="memItemLeft" align="right" valign="top"><a id="a5a714872e8b9fef13a812f5c1b922665" name="a5a714872e8b9fef13a812f5c1b922665"></a>
+<tr class="memitem:a5d6c3faccad38e7a1d136ccda50bdea5"><td class="memItemLeft" align="right" valign="top"><a id="a5d6c3faccad38e7a1d136ccda50bdea5" name="a5d6c3faccad38e7a1d136ccda50bdea5"></a>
 struct <a class="el" href="structmbr__partition__desc.html">mbr_partition_desc</a>&#160;</td><td class="memItemRight" valign="bottom"><b>__attribute__</b> ((packed))</td></tr>
-<tr class="separator:a5a714872e8b9fef13a812f5c1b922665"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a5d6c3faccad38e7a1d136ccda50bdea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a253b721b5115ee6df4caec110112222c"><td class="memItemLeft" align="right" valign="top"><a id="a253b721b5115ee6df4caec110112222c" name="a253b721b5115ee6df4caec110112222c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>_Static_assert</b> (sizeof(struct <a class="el" href="structmbr__partition__desc.html">mbr_partition_desc</a>)==16, &quot;mbr_partition_desc should be 16 bytes&quot;)</td></tr>
 <tr class="separator:a253b721b5115ee6df4caec110112222c"><td class="memSeparator" colspan="2">&#160;</td></tr>

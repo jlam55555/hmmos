@@ -1,4 +1,5 @@
 <map id="src/boot/page_table.h" name="src/boot/page_table.h">
 <area shape="rect" id="node1" title="Some useful definitions used by page_table.c." alt="" coords="5,5,168,31"/>
 <area shape="rect" id="node2" href="$mbr_8h.html" title="Master Boot Record definitions." alt="" coords="29,79,144,104"/>
+<area shape="rect" id="node3" href="$fat_8h.html" title="FAT32 driver for the bootloader. Only used to locate and load the kernel binary." alt="" coords="33,152,141,177"/>
 </map>

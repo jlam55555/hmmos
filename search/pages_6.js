@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['random_20notes_0',['random notes',['../md_notes_random.html',1,'']]],
-  ['resources_1',['Resources',['../md_notes_resources.html',1,'']]]
+  ['overall_20kernel_20implementation_20notes_0',['overall kernel implementation notes',['../md_notes_kernel.html',1,'']]]
 ];

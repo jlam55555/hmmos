@@ -75,14 +75,31 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">objutil.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>Utility functions/macros for C++ objects.  
 <a href="#details">More...</a></p>
-<div class="textblock"><div class="dynheader">
+<div class="textblock"><code>#include &quot;<a class="el" href="bw_8h_source.html">util/bw.h</a>&quot;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for objutil.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="objutil_8h__incl.png" border="0" usemap="#asrc_2kernel_2util_2objutil_8h" alt=""/></div>
+<map name="asrc_2kernel_2util_2objutil_8h" id="asrc_2kernel_2util_2objutil_8h">
+<area shape="rect" title="Utility functions/macros for C++ objects." alt="" coords="68,5,235,31"/>
+<area shape="rect" href="bw_8h.html" title="Bitwise operations." alt="" coords="75,79,153,104"/>
+<area shape="rect" title=" " alt="" coords="5,152,76,177"/>
+<area shape="rect" title=" " alt="" coords="102,152,169,177"/>
+<area shape="rect" title=" " alt="" coords="193,152,285,177"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="objutil_8h__dep__incl.png" border="0" usemap="#asrc_2kernel_2util_2objutil_8hdep" alt=""/></div>
@@ -101,6 +118,15 @@ Macros</h2></td></tr>
 <tr class="separator:a922193d9f82c8176c2de6ee31444edfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada6c5ab7ef08f2616a1c8eba171c390e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="objutil_8h.html#ada6c5ab7ef08f2616a1c8eba171c390e">NON_MOVABLE</a>(Class)</td></tr>
 <tr class="separator:ada6c5ab7ef08f2616a1c8eba171c390e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a2783582ab4727e87204faf4c87616ae1"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="conceptbw_1_1BitfieldLike.html">bw::BitfieldLike</a> A&gt; </td></tr>
+<tr class="memitem:a2783582ab4727e87204faf4c87616ae1"><td class="memTemplItemLeft" align="right" valign="top">A&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="objutil_8h.html#a2783582ab4727e87204faf4c87616ae1">objutil::copy_from_volatile</a> (const volatile A &amp;src)</td></tr>
+<tr class="separator:a2783582ab4727e87204faf4c87616ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aa2a1e30fd22434ff885da41ae37004"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="conceptbw_1_1BitfieldLike.html">bw::BitfieldLike</a> A&gt; </td></tr>
+<tr class="memitem:a4aa2a1e30fd22434ff885da41ae37004"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="objutil_8h.html#a4aa2a1e30fd22434ff885da41ae37004">objutil::copy_to_volatile</a> (volatile A &amp;dst, const A &amp;src)</td></tr>
+<tr class="separator:a4aa2a1e30fd22434ff885da41ae37004"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Utility functions/macros for C++ objects. </p>
@@ -144,8 +170,90 @@ Macros</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  <a class="code hl_define" href="objutil_8h.html#a922193d9f82c8176c2de6ee31444edfb">NON_COPYABLE</a>(Class)                                                          \</div>
 <div class="line">  Class(Class &amp;&amp;) = <span class="keyword">delete</span>;                                                    \</div>
 <div class="line">  Class &amp;operator=(Class &amp;&amp;) = <span class="keyword">delete</span>;</div>
-<div class="ttc" id="aobjutil_8h_html_a922193d9f82c8176c2de6ee31444edfb"><div class="ttname"><a href="objutil_8h.html#a922193d9f82c8176c2de6ee31444edfb">NON_COPYABLE</a></div><div class="ttdeci">#define NON_COPYABLE(Class)</div><div class="ttdef"><b>Definition:</b> objutil.h:8</div></div>
+<div class="ttc" id="aobjutil_8h_html_a922193d9f82c8176c2de6ee31444edfb"><div class="ttname"><a href="objutil_8h.html#a922193d9f82c8176c2de6ee31444edfb">NON_COPYABLE</a></div><div class="ttdeci">#define NON_COPYABLE(Class)</div><div class="ttdef"><b>Definition:</b> objutil.h:13</div></div>
 </div><!-- fragment --><p>If an object needs to have a stable reference, e.g., if a pointer is stored in some container. E.g., any object containing an intrusive list should be marked NON_MOVABLE. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a2783582ab4727e87204faf4c87616ae1" name="a2783582ab4727e87204faf4c87616ae1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2783582ab4727e87204faf4c87616ae1">&#9670;&#160;</a></span>copy_from_volatile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="conceptbw_1_1BitfieldLike.html">bw::BitfieldLike</a> A&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">A objutil::copy_from_volatile </td>
+          <td>(</td>
+          <td class="paramtype">const volatile A &amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Allow copying a volatile struct of standard integer size into a non-volatile struct, or vice-versa.</p>
+<p>This is useful to copy organized data or bitfields from a volatile struct without using a union/conversion to int type first.</p>
+<div class="fragment"><div class="line"><span class="keyword">struct </span>MyVolatileStructImpl {</div>
+<div class="line">  uint8_t foo;</div>
+<div class="line">  uint8_t bar;</div>
+<div class="line">  <span class="keyword">struct </span>{</div>
+<div class="line">    uint8_t flag1 : 1;</div>
+<div class="line">    uint8_t flag2 : 1;</div>
+<div class="line">    uint8_t flag3 : 1;</div>
+<div class="line">    uint8_t flag4 : 1;</div>
+<div class="line">    uint8_t flag5 : 4;</div>
+<div class="line">  } bitfield;</div>
+<div class="line">  uint8_t baz;</div>
+<div class="line">};</div>
+<div class="line"><span class="keyword">using </span>MyVolatileStruct = <span class="keyword">volatile</span> MyVolatileStruct;</div>
+<div class="line"> </div>
+<div class="line">MyVolatileStruct mvs = ...;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Assignment from volatile to non-volatile struct not allowed</span></div>
+<div class="line"><span class="comment">// auto bitfieldCopy = mvs.bitfield;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// We can cast away cv-qualifiers, which will compile but is not</span></div>
+<div class="line"><span class="comment">// safe because it ends up being a regular struct assignment which</span></div>
+<div class="line"><span class="comment">// is not generally safe with volatile instances.</span></div>
+<div class="line"><span class="comment">// auto bitfield = const_cast&lt;decltype(mvs.bitfield)&amp;&gt;(mvs.bitfield);</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Assigning a volatile int to a non-volatile int is safe, and</span></div>
+<div class="line"><span class="comment">// vice versa.</span></div>
+<div class="line">uint8_t tmp = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">volatile </span>uint8_t&amp;<span class="keyword">&gt;</span>(mvs.bitfield);</div>
+<div class="line"><span class="keyword">auto</span> bitfield = <span class="keyword">reinterpret_cast&lt;</span>decltype(mvs.bitfield)&amp;<span class="keyword">&gt;</span>(tmp);</div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a id="a4aa2a1e30fd22434ff885da41ae37004" name="a4aa2a1e30fd22434ff885da41ae37004"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4aa2a1e30fd22434ff885da41ae37004">&#9670;&#160;</a></span>copy_to_volatile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="conceptbw_1_1BitfieldLike.html">bw::BitfieldLike</a> A&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void objutil::copy_to_volatile </td>
+          <td>(</td>
+          <td class="paramtype">volatile A &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const A &amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd>copy_from_volatile </dd></dl>
 
 </div>
 </div>

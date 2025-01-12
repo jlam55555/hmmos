@@ -81,22 +81,26 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Virtual memory definitions.  
+<p>Virtual memory mapping.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="boot__protocol_8h_source.html">boot_protocol.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="memdefs_8h_source.html">memdefs.h</a>&quot;</code><br />
+<code>#include &quot;page_table.h&quot;</code><br />
+<code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
-<code>#include &lt;stddef.h&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for virt.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="virt_8h__incl.png" border="0" usemap="#asrc_2kernel_2mm_2virt_8h" alt=""/></div>
 <map name="asrc_2kernel_2mm_2virt_8h" id="asrc_2kernel_2mm_2virt_8h">
-<area shape="rect" title="Virtual memory definitions." alt="" coords="146,5,299,31"/>
+<area shape="rect" title="Virtual memory mapping." alt="" coords="281,5,434,31"/>
 <area shape="rect" href="boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="101,79,224,104"/>
 <area shape="rect" href="memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="5,152,101,177"/>
-<area shape="rect" title=" " alt="" coords="249,79,319,104"/>
-<area shape="rect" title=" " alt="" coords="344,79,419,104"/>
+<area shape="rect" title=" " alt="" coords="248,79,355,104"/>
+<area shape="rect" title=" " alt="" coords="379,79,448,104"/>
+<area shape="rect" title=" " alt="" coords="473,79,543,104"/>
+<area shape="rect" title=" " alt="" coords="567,79,654,104"/>
 <area shape="rect" title=" " alt="" coords="125,152,208,177"/>
 <area shape="rect" title=" " alt="" coords="233,152,303,177"/>
 </map>
@@ -110,19 +114,278 @@ Functions</h2></td></tr>
 template&lt;typename T  = void&gt; </td></tr>
 <tr class="memitem:ad3d92bcdb7ec58cfc0f57c0ee9cde839"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>mem::virt::direct_to_hhdm</b> (uint64_t phys_addr)</td></tr>
 <tr class="separator:ad3d92bcdb7ec58cfc0f57c0ee9cde839"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed77b205063c394a65afbf1c0d3d14ed"><td class="memItemLeft" align="right" valign="top"><a id="aed77b205063c394a65afbf1c0d3d14ed" name="aed77b205063c394a65afbf1c0d3d14ed"></a>
+uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt::hhdm_to_direct</b> (void *_virt_addr)</td></tr>
+<tr class="separator:aed77b205063c394a65afbf1c0d3d14ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4573a847019db1cb01868cbab5b6c74d"><td class="memItemLeft" align="right" valign="top"><a id="a4573a847019db1cb01868cbab5b6c74d" name="a4573a847019db1cb01868cbab5b6c74d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt::enumerate_page_tables</b> ()</td></tr>
+<tr class="memdesc:a4573a847019db1cb01868cbab5b6c74d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Walk page tables and log page mappings. <br /></td></tr>
+<tr class="separator:a4573a847019db1cb01868cbab5b6c74d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae23dbe5992b6206fe2837617b46f7d03"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8cc.html#ae23dbe5992b6206fe2837617b46f7d03">mem::virt::ioremap</a> (uint64_t phys, void *virt, unsigned pg)</td></tr>
+<tr class="separator:ae23dbe5992b6206fe2837617b46f7d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e76d4f30425f2797ed9bd2de8804e1d"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8cc.html#a4e76d4f30425f2797ed9bd2de8804e1d">mem::virt::io_alloc</a> (unsigned pg)</td></tr>
+<tr class="separator:a4e76d4f30425f2797ed9bd2de8804e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a576507b16ed2f190608c7eda2f14ff40"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8cc.html#a576507b16ed2f190608c7eda2f14ff40">mem::virt::vmalloc</a> (void *virt, unsigned pg)</td></tr>
+<tr class="separator:a576507b16ed2f190608c7eda2f14ff40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b6e7e9db5f4a9712a0e826bc7fd99e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8h.html#a4b6e7e9db5f4a9712a0e826bc7fd99e5">mem::virt::map</a> (uint64_t phys, void *virt, bool uncacheable=false)</td></tr>
+<tr class="separator:a4b6e7e9db5f4a9712a0e826bc7fd99e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e569e14df5582858423480c98916b79"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8h.html#a2e569e14df5582858423480c98916b79">mem::virt::unmap</a> (void *virt)</td></tr>
+<tr class="separator:a2e569e14df5582858423480c98916b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8641db06d1acd8f2621861528f187a3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8h.html#ab8641db06d1acd8f2621861528f187a3">mem::virt::mark_uncacheable</a> (void *virt)</td></tr>
+<tr class="separator:ab8641db06d1acd8f2621861528f187a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a7eb0fe4eca777be5c645a92e152e9ba1"><td class="memItemLeft" align="right" valign="top"><a id="a7eb0fe4eca777be5c645a92e152e9ba1" name="a7eb0fe4eca777be5c645a92e152e9ba1"></a>
+constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt::kernel_map_sz</b> = KERNEL_MAP_SZ</td></tr>
+<tr class="separator:a7eb0fe4eca777be5c645a92e152e9ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b18d8c78e52efff9a74474177a7735c"><td class="memItemLeft" align="right" valign="top"><a id="a3b18d8c78e52efff9a74474177a7735c" name="a3b18d8c78e52efff9a74474177a7735c"></a>
+constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt::kernel_map_start</b> = 4 * GB - kernel_map_sz</td></tr>
+<tr class="separator:a3b18d8c78e52efff9a74474177a7735c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91262a851dc1c7bc73e18bddb312cf51"><td class="memItemLeft" align="right" valign="top"><a id="a91262a851dc1c7bc73e18bddb312cf51" name="a91262a851dc1c7bc73e18bddb312cf51"></a>
+constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt::io_map_sz</b> = <a class="el" href="boot__protocol_8h.html#aa0565e413bb83e0539ebc2006482544d">IO_MAP_SZ</a></td></tr>
+<tr class="separator:a91262a851dc1c7bc73e18bddb312cf51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e86326e3d175ecce114e2bbc9523d46"><td class="memItemLeft" align="right" valign="top"><a id="a7e86326e3d175ecce114e2bbc9523d46" name="a7e86326e3d175ecce114e2bbc9523d46"></a>
+constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt::io_map_start</b> = kernel_map_start - io_map_sz</td></tr>
+<tr class="separator:a7e86326e3d175ecce114e2bbc9523d46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18f84f3cdf22323ab7dfba7e3e75d3d6"><td class="memItemLeft" align="right" valign="top"><a id="a18f84f3cdf22323ab7dfba7e3e75d3d6" name="a18f84f3cdf22323ab7dfba7e3e75d3d6"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt::hhdm_len</b> = 1 * GB - KERNEL_MAP_SZ</td></tr>
+constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt::hhdm_len</b> = 1 * GB - (kernel_map_sz + io_map_sz)</td></tr>
 <tr class="separator:a18f84f3cdf22323ab7dfba7e3e75d3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a092ee6321af4a826650f24e38b274aec"><td class="memItemLeft" align="right" valign="top"><a id="a092ee6321af4a826650f24e38b274aec" name="a092ee6321af4a826650f24e38b274aec"></a>
 constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt::hhdm_start</b> = HM_START</td></tr>
 <tr class="separator:a092ee6321af4a826650f24e38b274aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Virtual memory definitions. </p>
-</div></div><!-- contents -->
+<div class="textblock"><p>Virtual memory mapping. </p>
+<p>The virtual memory space is roughly partitioned like so (with values of KERNEL_MAP_SZ and IO_MAP_SZ at time of writing):</p>
+<p>+--------------------&mdash;+---&mdash;+-----------------------------&mdash;+ | 0xFE000000-0xFFFFFFFF | 32MB | Kernel map; mapped by | | | | bootloader | |------------------------------------------------------------&mdash;| | 0xFDC00000-0xFDFFFFFF | 4MB | Device mapped memory/IO ports; | | | | mapped by kernel on startup | |------------------------------------------------------------&mdash;| | 0xC0000000-0xFDBFFFFF | ~1GB | HHDM; mapped by bootloader | |------------------------------------------------------------&mdash;| | 0x00000000-0xBFFFFFFF | 3GB | (userspace) low memory; | | | | mapped by kernel, swapped | | | | on context switch | +--------------------&mdash;+---&mdash;+-----------------------------&mdash;+</p>
+<p>The memory-map/IO port region and low memory may not be completely mapped. The kernel map and HHDM should be completely mapped.</p>
+<p>Technically the kernel map doesn't have to be independent of the HHDM, but it's what Limine did and I copied it. From a practical perspective, it's useful to distinguish kernel text/data addresses from kernel heap-allocated structures, and we can possibly use different caching for the kernel virtual addresses. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a4e76d4f30425f2797ed9bd2de8804e1d" name="a4e76d4f30425f2797ed9bd2de8804e1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e76d4f30425f2797ed9bd2de8804e1d">&#9670;&#160;</a></span>io_alloc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * mem::virt::io_alloc </td>
+          <td>(</td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>pg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Allocate virtual memory pages for use with ioremap(). These pages will be allocated from the virtual memory hole reserved for this purpose (starting at io_map_start).</p>
+<p>This assumes the memory is never freed.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pg</td><td>The number of contiguous 4KB virtual memory pages to allocate </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The start of the contiguous virtual memory region, or nullptr if allocation failed </dd></dl>
+
+</div>
+</div>
+<a id="ae23dbe5992b6206fe2837617b46f7d03" name="ae23dbe5992b6206fe2837617b46f7d03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae23dbe5992b6206fe2837617b46f7d03">&#9670;&#160;</a></span>ioremap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mem::virt::ioremap </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>phys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>virt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>pg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Maps the contiguous virtual memory region of <em>pg</em> pages starting at <em>virt</em> to the contiguous physical memory region starting at <em>phys</em>. Mark these pages as uncacheable. Intended for mapping memory-mapped or IO port physical addresses (usually assigned by firmware) into the virtual address space.</p>
+<p>This will fail if any of the pages in the virtual address range are already mapped.</p>
+<dl class="section note"><dt>Note</dt><dd>This is based on a layman's understanding of Linux's ioremap() interface, but should not be held to any of the same requirements or guarantees.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">phys</td><td>Start of contiguous physical memory region to map to </td></tr>
+    <tr><td class="paramname">phys</td><td>Start of contiguous virtual memory region to map from </td></tr>
+    <tr><td class="paramname">pg</td><td>Number of pages to map </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success </dd></dl>
+
+</div>
+</div>
+<a id="a4b6e7e9db5f4a9712a0e826bc7fd99e5" name="a4b6e7e9db5f4a9712a0e826bc7fd99e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b6e7e9db5f4a9712a0e826bc7fd99e5">&#9670;&#160;</a></span>map()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mem::virt::map </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>phys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>virt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>uncacheable</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Maps the (4KB) virtual memory page <em>virt</em> to the physical memory page <em>phys</em>.</p>
+<dl class="section note"><dt>Note</dt><dd>This is a lower-level interface &ndash; you should usually use ioremap() or vmalloc() to map pages into the virtual memory space.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">phys</td><td>Physical page to map to </td></tr>
+    <tr><td class="paramname">virt</td><td>Virtual page to map from </td></tr>
+    <tr><td class="paramname">uncacheable</td><td>Whether page should be marked uncacheable </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success </dd></dl>
+
+</div>
+</div>
+<a id="ab8641db06d1acd8f2621861528f187a3" name="ab8641db06d1acd8f2621861528f187a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8641db06d1acd8f2621861528f187a3">&#9670;&#160;</a></span>mark_uncacheable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mem::virt::mark_uncacheable </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>virt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Update virtual -&gt; physical page table mapping attributes. </p>
+
+</div>
+</div>
+<a id="a2e569e14df5582858423480c98916b79" name="a2e569e14df5582858423480c98916b79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e569e14df5582858423480c98916b79">&#9670;&#160;</a></span>unmap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mem::virt::unmap </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>virt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Unmaps the (4KB) page containing the given virtual address from the page table.</p>
+<dl class="section return"><dt>Returns</dt><dd>true on success </dd></dl>
+
+</div>
+</div>
+<a id="a576507b16ed2f190608c7eda2f14ff40" name="a576507b16ed2f190608c7eda2f14ff40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a576507b16ed2f190608c7eda2f14ff40">&#9670;&#160;</a></span>vmalloc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mem::virt::vmalloc </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>virt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>pg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Allocates <em>pg</em> physical pages, and map the contiguous virtual memory region starting at <em>virt</em> to these physical pages. Intended for use in allocating memory for userspace processes.</p>
+<p>This will fail if we OOM when allocating physical pages, or if any of the pages in the virtual address range are already mapped.</p>
+<dl class="section note"><dt>Note</dt><dd>The allocated physical pages may not be contiguous.</dd>
+<dd>
+This is based on a layman's understanding of Linux's vmalloc() interface, but should not be held to any of the same requirements or guarantees.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">virt</td><td>Start of the virtual memory region to map </td></tr>
+    <tr><td class="paramname">pg</td><td>Number of pages to allocate </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success </dd></dl>
+<p>TODO: This should attempt to allocate pages past the first 1GB of memory, and possibly fallback to the first 1GB of memory. Otherwise it'll eat into kernel memory (memory reachable via HHDM).</p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6

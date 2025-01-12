@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kernel_5fload_5faddr_0',['KERNEL_LOAD_ADDR',['../boot__protocol_8h.html#a8cf50ce50e5c69c8f5893969eec156ef',1,'boot_protocol.h']]]
+  ['io_5fmap_5fsz_0',['IO_MAP_SZ',['../boot__protocol_8h.html#aa0565e413bb83e0539ebc2006482544d',1,'boot_protocol.h']]]
 ];

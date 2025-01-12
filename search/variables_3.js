@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['unusable_0',['unusable',['../classmem_1_1phys_1_1PageFrameDescriptor.html#ab660cd994d569701423c7df53df0aecc',1,'mem::phys::PageFrameDescriptor::unusable()'],['../page__frame__table_8h.html#a2815e7e544fa19a4986d8f599b5e2d79',1,'unusable():&#160;page_frame_table.h']]],
-  ['usable_5fmem_5fbytes_1',['usable_mem_bytes',['../classmem_1_1phys_1_1PageFrameTable.html#aa92b474ed55f584c77e67df2e37acc37',1,'mem::phys::PageFrameTable']]]
+  ['max_5fbuses_0',['max_buses',['../pci_8h.html#a9564455eff486ea688e40c15364bc97d',1,'drivers::pci']]],
+  ['max_5fdevices_1',['max_devices',['../pci_8h.html#a71a65bc95cfcc3e97b57188be87760f4',1,'drivers::pci']]],
+  ['max_5fenumerated_5ffunctions_2',['max_enumerated_functions',['../pci_8h.html#a9a1a4ffc9df028675adea3bc10ce1338',1,'drivers::pci']]],
+  ['max_5ffunctions_3',['max_functions',['../pci_8h.html#a65a206f8510c2e26059b242bd5a5ccea',1,'drivers::pci']]],
+  ['max_5fregisters_4',['max_registers',['../pci_8h.html#a585481888e186cffa9fa564fced4f569',1,'drivers::pci']]]
 ];

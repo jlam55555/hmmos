@@ -74,7 +74,19 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Probably incomplete since it's impossible to link everything. I'm not going to bother linking OSDev wikis since those are implied.</p>
-<h1><a class="anchor" id="autotoc_md52"></a>
+<h1><a class="anchor" id="autotoc_md63"></a>
+General OS theory</h1>
+<ul>
+<li><em>Operating Systems: Three Easy Pieces</em> (OSTEP): <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">https://pages.cs.wisc.edu/~remzi/OSTEP/</a></li>
+<li><em>Linux Device Drivers, third ed.</em> (LDD3): <a href="https://lwn.net/Kernel/LDD3/">https://lwn.net/Kernel/LDD3/</a></li>
+<li><em>Writing Device Drivers</em> (Oracle): <a href="https://docs.oracle.com/cd/E18752_01/html/816-4854/index.html">https://docs.oracle.com/cd/E18752_01/html/816-4854/index.html</a></li>
+</ul>
+<h1><a class="anchor" id="autotoc_md64"></a>
+x86, x86-64 architectures</h1>
+<ul>
+<li>Intel Software Developer Manual (SDM): <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html</a></li>
+</ul>
+<h1><a class="anchor" id="autotoc_md65"></a>
 Bootloader</h1>
 <ul>
 <li>OSDev Rolling your own bootloader: <a href="https://wiki.osdev.org/Rolling_Your_Own_Bootloader">https://wiki.osdev.org/Rolling_Your_Own_Bootloader</a></li>
@@ -88,19 +100,21 @@ Bootloader</h1>
 <li>Ralph Brown's Interrupt List (RBIL): <a href="http://www.cs.cmu.edu/~ralf/files.html">http://www.cs.cmu.edu/~ralf/files.html</a></li>
 <li>Grub boot stages: <a href="https://www.system-rescue.org/disk-partitioning/Grub-boot-stages/">https://www.system-rescue.org/disk-partitioning/Grub-boot-stages/</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md53"></a>
+<h1><a class="anchor" id="autotoc_md66"></a>
 Memory</h1>
 <ul>
 <li>Paging strategy for x86: <a href="https://forum.osdev.org/viewtopic.php?p=312121#p312121">https://forum.osdev.org/viewtopic.php?p=312121#p312121</a></li>
 <li><em>Understanding the Linux Virtual Memory Manager</em> by Mel Gorman</li>
+<li><em>A Primer on Memory Consistency and Cache Coherence</em> by Nagarajan et al.</li>
+<li>ioremap()/memremap(): <a href="https://lwn.net/Articles/653585/">https://lwn.net/Articles/653585/</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md54"></a>
+<h1><a class="anchor" id="autotoc_md67"></a>
 MBR</h1>
 <ul>
 <li>CHS decoding: <a href="https://thestarman.pcministry.com/asm/mbr/PartTables.htm#Decoding">https://thestarman.pcministry.com/asm/mbr/PartTables.htm#Decoding</a></li>
 <li>fdisk CHS decoding: <a href="https://superuser.com/a/1733477">https://superuser.com/a/1733477</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md55"></a>
+<h1><a class="anchor" id="autotoc_md68"></a>
 Build system</h1>
 <ul>
 <li>Advanced auto dependency generation: <a href="https://make.mad-scientist.net/papers/advanced-auto-dependency-generation/">https://make.mad-scientist.net/papers/advanced-auto-dependency-generation/</a><ul>
@@ -108,16 +122,31 @@ Build system</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md56"></a>
+<h1><a class="anchor" id="autotoc_md69"></a>
 C/C++ runtime</h1>
 <ul>
 <li>Mini FAQ about the misc libc/gcc crt files: <a href="https://dev.gentoo.org/~vapier/crt.txt">https://dev.gentoo.org/~vapier/crt.txt</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md57"></a>
+<h1><a class="anchor" id="autotoc_md70"></a>
 QEMU</h1>
 <ul>
 <li>QEMU internals blog: <a href="https://airbus-seclab.github.io/qemu_blog/">https://airbus-seclab.github.io/qemu_blog/</a></li>
-<li>Setting breakpoints in QEMU w/ KVM enabled: <a href="https://forum.osdev.org/viewtopic.php?p=315671&sid=fa474a99fd3a40ba5cf2c2fafd7e44a9#p315671">https://forum.osdev.org/viewtopic.php?p=315671&amp;sid=fa474a99fd3a40ba5cf2c2fafd7e44a9#p315671</a> </li>
+<li>Setting breakpoints in QEMU w/ KVM enabled: <a href="https://forum.osdev.org/viewtopic.php?p=315671&sid=fa474a99fd3a40ba5cf2c2fafd7e44a9#p315671">https://forum.osdev.org/viewtopic.php?p=315671&amp;sid=fa474a99fd3a40ba5cf2c2fafd7e44a9#p315671</a></li>
+<li>Q35/ICH9 architecture: <a href="https://wiki.qemu.org/Features/Q35">https://wiki.qemu.org/Features/Q35</a></li>
+<li>Attaching QEMU monitor to running VM instance: <a href="https://unix.stackexchange.com/a/476617">https://unix.stackexchange.com/a/476617</a></li>
+</ul>
+<h1><a class="anchor" id="autotoc_md71"></a>
+filesystem</h1>
+<ul>
+<li><code>mtools</code> to manipulate filesystem image without mounting: <a href="https://stackoverflow.com/a/29798605">https://stackoverflow.com/a/29798605</a></li>
+<li>design of the FAT filesystem: <a href="https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system">https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system</a></li>
+</ul>
+<h1><a class="anchor" id="autotoc_md72"></a>
+AHCI</h1>
+<ul>
+<li>ATA/ATAPI command spec: <a href="https://people.freebsd.org/~imp/asiabsdcon2015/works/d2161r5-ATAATAPI_Command_Set_-_3.pdf">https://people.freebsd.org/~imp/asiabsdcon2015/works/d2161r5-ATAATAPI_Command_Set_-_3.pdf</a></li>
+<li>SATA AHCI spec: <a href="https://www.intel.com/content/www/us/en/io/serial-ata/serial-ata-ahci-spec-rev1-3-1.html">https://www.intel.com/content/www/us/en/io/serial-ata/serial-ata-ahci-spec-rev1-3-1.html</a></li>
+<li>PIO, third-party DMA, and bus mastering (first-party DMA). A good first introduction to DMA: <a href="http://www.tweak3d.net/articles/howbusmaster/">http://www.tweak3d.net/articles/howbusmaster/</a> </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

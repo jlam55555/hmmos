@@ -1,0 +1,4 @@
+<map id="src/boot/mbr.h" name="src/boot/mbr.h">
+<area shape="rect" id="node1" title="Master Boot Record definitions." alt="" coords="5,5,120,31"/>
+<area shape="rect" id="node2" href="$fat_8h.html" title="FAT32 driver for the bootloader. Only used to locate and load the kernel binary." alt="" coords="9,79,117,104"/>
+</map>

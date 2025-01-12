@@ -76,12 +76,17 @@ $(function() {
   <div class="headertitle"><div class="title">bp_req_memory_map Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Memory map bootloader request.  
+ <a href="structbp__req__memory__map.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="boot__protocol_8h_source.html">boot_protocol.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for bp_req_memory_map:</div>
 <div class="dyncontent">
 <div class="center"><img src="structbp__req__memory__map__coll__graph.png" border="0" usemap="#abp__req__memory__map_coll__map" alt="Collaboration graph"/></div>
 <map name="abp__req__memory__map_coll__map" id="abp__req__memory__map_coll__map">
-<area shape="rect" title=" " alt="" coords="56,93,220,119"/>
+<area shape="rect" title="Memory map bootloader request." alt="" coords="56,93,220,119"/>
 <area shape="rect" href="structbp__req__header.html" title=" " alt="" coords="5,5,124,31"/>
 <area shape="rect" href="structe820__mm__entry.html" title=" " alt="" coords="149,5,277,31"/>
 </map>
@@ -96,7 +101,24 @@ struct <a class="el" href="structbp__req__header.html">bp_req_header</a>&#160;</
 struct <a class="el" href="structe820__mm__entry.html">e820_mm_entry</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>memory_map</b></td></tr>
 <tr class="separator:a166fefe68fad6a6088b85e070d143f83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Memory map bootloader request. </p>
+<p>This returns the set of usable and unusable memory regions. This includes the VGA E820 memory map, augmented with bootloader-allocated regions.</p>
+<p>Bootloader-allocated regions comprise:</p><ul>
+<li>Non-reclaimable regions:<ul>
+<li>Bootloader/initial kernel stack (typically at 0xC0006000)</li>
+<li>Kernel text region (will be mapped at KERNEL_LOAD_ADDR)</li>
+<li>GDT (copied to end of kernel text region)</li>
+<li>Initial page tables</li>
+</ul>
+</li>
+<li>Bootloader-reclaimable regions:<ul>
+<li>Bootloader text region (includes E820 memory map)</li>
+<li>Temporary bootloader dynamic memory </li>
+</ul>
+</li>
+</ul>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/common/<a class="el" href="boot__protocol_8h_source.html">boot_protocol.h</a></li>
 </ul>
 </div><!-- contents -->

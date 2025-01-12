@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['bp_5freq_5fheader_0',['bp_req_header',['../structbp__req__header.html',1,'']]],
-  ['bp_5freq_5fmemory_5fmap_1',['bp_req_memory_map',['../structbp__req__memory__map.html',1,'']]]
+  ['_5ffat32_5fdirent_0',['_fat32_dirent',['../struct__fat32__dirent.html',1,'']]],
+  ['_5ffat32_5fvbr_1',['_fat32_vbr',['../struct__fat32__vbr.html',1,'']]]
 ];

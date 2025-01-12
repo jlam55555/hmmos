@@ -79,23 +79,67 @@ $(function() {
 <div class="contents">
 <a href="virt_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="boot__protocol_8h.html">boot_protocol.h</a>&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="memdefs_8h.html">memdefs.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span>mem::virt {</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> hhdm_len = 1 * GB - KERNEL_MAP_SZ;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> hhdm_start = HM_START;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T = <span class="keywordtype">void</span>&gt; <span class="keyword">inline</span> T *direct_to_hhdm(uint64_t phys_addr) {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(phys_addr + hhdm_start);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>} <span class="comment">// namespace mem::virt</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &quot;<a class="code" href="boot__protocol_8h.html">boot_protocol.h</a>&quot;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#include &quot;<a class="code" href="memdefs_8h.html">memdefs.h</a>&quot;</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &quot;page_table.h&quot;</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">namespace </span>mem::virt {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">// See comment at top of file. These macros are shared with bootloader</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">// code, since the bootloader sets up most of the virtual memory</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">// mappings. {kernel,io}_map_start should be void* but that&#39;s not</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">// constexpr.</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> kernel_map_sz = KERNEL_MAP_SZ;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> kernel_map_start = 4 * GB - kernel_map_sz;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> io_map_sz = <a class="code hl_define" href="boot__protocol_8h.html#aa0565e413bb83e0539ebc2006482544d">IO_MAP_SZ</a>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> io_map_start = kernel_map_start - io_map_sz;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> hhdm_len = 1 * GB - (kernel_map_sz + io_map_sz);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> hhdm_start = HM_START;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">// These memory regions should partition the entire 32-bit virtual</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">// address space.</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword">static_assert</span>(hhdm_start + hhdm_len + io_map_sz + kernel_map_sz == 4 * GB);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T = <span class="keywordtype">void</span>&gt; <span class="keyword">inline</span> T *direct_to_hhdm(uint64_t phys_addr) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  assert(phys_addr &lt; hhdm_len);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(phys_addr + hhdm_start);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">inline</span> uint64_t hhdm_to_direct(<span class="keywordtype">void</span> *_virt_addr) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordtype">size_t</span> virt_addr = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(_virt_addr);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  assert(virt_addr &gt;= hhdm_start &amp;&amp; virt_addr &lt; hhdm_start + hhdm_len);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">return</span> virt_addr - hhdm_start;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="virt_8h.html#a4573a847019db1cb01868cbab5b6c74d">   71</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> enumerate_page_tables() {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  arch::page_table::enumerate_page_tables();</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="keywordtype">bool</span> ioremap(uint64_t phys, <span class="keywordtype">void</span> *virt, <span class="keywordtype">unsigned</span> pg);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="keywordtype">void</span> *io_alloc(<span class="keywordtype">unsigned</span> pg);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="keywordtype">bool</span> vmalloc(<span class="keywordtype">void</span> *virt, <span class="keywordtype">unsigned</span> pg);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="virt_8h.html#a4b6e7e9db5f4a9712a0e826bc7fd99e5">  139</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> map(uint64_t phys, <span class="keywordtype">void</span> *virt, <span class="keywordtype">bool</span> uncacheable = <span class="keyword">false</span>) {</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="keywordflow">return</span> arch::page_table::map(phys, virt, uncacheable);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="virt_8h.html#a2e569e14df5582858423480c98916b79">  148</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> unmap(<span class="keywordtype">void</span> *virt) { <span class="keywordflow">return</span> arch::page_table::unmap(virt); }</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="virt_8h.html#ab8641db06d1acd8f2621861528f187a3">  152</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> mark_uncacheable(<span class="keywordtype">void</span> *virt) {</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="keywordflow">return</span> arch::page_table::mark_uncacheable(virt);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>}</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>} <span class="comment">// namespace mem::virt</span></div>
 <div class="ttc" id="aboot__protocol_8h_html"><div class="ttname"><a href="boot__protocol_8h.html">boot_protocol.h</a></div><div class="ttdoc">The runtime interface between the bootloader and kernel.</div></div>
+<div class="ttc" id="aboot__protocol_8h_html_aa0565e413bb83e0539ebc2006482544d"><div class="ttname"><a href="boot__protocol_8h.html#aa0565e413bb83e0539ebc2006482544d">IO_MAP_SZ</a></div><div class="ttdeci">#define IO_MAP_SZ</div><div class="ttdef"><b>Definition:</b> boot_protocol.h:46</div></div>
 <div class="ttc" id="amemdefs_8h_html"><div class="ttname"><a href="memdefs_8h.html">memdefs.h</a></div><div class="ttdoc">Useful definitions related to memory sizing.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

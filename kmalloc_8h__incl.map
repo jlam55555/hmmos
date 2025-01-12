@@ -1,5 +1,6 @@
 <map id="src/kernel/mm/kmalloc.h" name="src/kernel/mm/kmalloc.h">
-<area shape="rect" id="node1" title="Very simple sequential allocator." alt="" coords="5,5,188,31"/>
-<area shape="rect" id="node2" title=" " alt="" coords="29,79,79,104"/>
-<area shape="rect" id="node3" title=" " alt="" coords="103,79,178,104"/>
+<area shape="rect" id="node1" title="Very simple sequential allocator." alt="" coords="43,5,225,31"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,79,76,104"/>
+<area shape="rect" id="node3" title=" " alt="" coords="101,79,167,104"/>
+<area shape="rect" id="node4" title=" " alt="" coords="192,79,241,104"/>
 </map>
