@@ -14,6 +14,7 @@
           architectures, only the code for the correct architecture
           will actually be compiled
         - **drivers**: support for particular HW devices
+        - **fs**: VHS and filesystem drivers
 		- **mm**: physical and virtual memory management
 		- **nonstd**: imitating standard library code
 		- **sched**: kernel thread scheduling and synchronization
