@@ -106,9 +106,9 @@ not for now.
 | 0x0200 | 0x7C00 | Bootloader stage 1.5. Loaded into memory by the MBR at 0x7E00. |
 | ?? | ?? | Kernel binary file. Stored at the beginning of a partition. |
 
-## GDT layout
+## (Bootloader) GDT layout
 We'll use a standard flat model for the GDT. We mostly need 32-bit
-descriptors, one for (code, data) x (ring 0, ring 3).
+descriptors, one for (code, data) in ring0.
 
 Additionally, we'll have one code segment for "big unreal mode" (with
 limit 0xFFFF) to avoid any edge cases with "huge unreal mode" due to
@@ -119,13 +119,14 @@ the upper bits of %eip not being set properly on mode switches.
 | 0 | Null descriptor |
 | 1 | Ring 0 code (32-bit) |
 | 2 | Ring 0 data (32-bit) |
-| 3 | Ring 3 code (32-bit) |
-| 4 | Ring 3 data (32-bit) |
-| 5 | Ring 0 code (16-bit) |
+| 3 | Ring 0 code (16-bit) |
 
 We don't need 16-bit descriptors for switching back to real
 mode. Indeed, the whole point of unreal mode is to switch back to real
 mode using cached 32-bit GDT descriptors.
+
+The kernel will reconfigure the GDT with ring 3 segments and a TSS,
+and without the unreal mode segment.
 
 ## Bootloading strategy
 In lieu of reading filesystems to get the kernel ELF file (a la GRUB

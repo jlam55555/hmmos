@@ -44,13 +44,6 @@ stage_1_5:
 	call rmode_println
 	call detect_mem_map
 
-	mov $.Lenable_unreal_mode_msg, %di
-	call rmode_println
-	call enter_unreal_mode
-
-	## TODO (intern project): set up graphical mode, with
-	## fonts. Maybe this is for the kernel to do?
-
 	## Enter 32-bit mode (and never leave)
 	mov $.Lenable_prot_mode_msg, %di
 	call rmode_println

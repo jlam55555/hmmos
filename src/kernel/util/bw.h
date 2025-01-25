@@ -1,7 +1,13 @@
 #pragma once
 
 /// \file bw.h
-/// \brief Bitwise operations
+/// \brief Bitwise operations, especially on structs
+///
+/// It would be nice if these could be constexpr, but alas we are
+/// doing some sketchy stuff here (reinterpret_cast<> is not allowed
+/// in constexpr contexts and probably for good reason). However, this
+/// should be expected to work when structs are little-endian and
+/// properly packed.
 ///
 #include <cstddef>
 #include <cstdint>
@@ -46,7 +52,8 @@ template <typename _RetT = void, BitfieldLike B,
           BitfieldLike RetT = std::conditional_t<
               std::is_void_v<_RetT>, detail::IntType<sizeof(B)>, _RetT>>
 RetT not_(const B &b) {
-  return reinterpret_cast<RetT>(~id(b));
+  auto tmp = ~id(b);
+  return reinterpret_cast<RetT &>(tmp);
 }
 
 namespace detail {

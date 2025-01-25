@@ -2,6 +2,7 @@
 #include "boot_protocol.h"
 #include "drivers/acpi.h"
 #include "drivers/serial.h"
+#include "gdt.h"
 #include "idt.h"
 #include "mm/kmalloc.h"
 #include "mm/page_frame_allocator.h"
@@ -17,6 +18,8 @@ char test_selection_buf[4096] = {};
 
 __attribute__((section(".text.entry"))) void _entry() {
   crt::run_global_ctors();
+
+  arch::gdt::init();
 
   // Any (un)locking requires sti, which requires the IDT to be setup
   // correctly.

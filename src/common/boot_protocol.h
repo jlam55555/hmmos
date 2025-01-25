@@ -119,11 +119,10 @@ struct bp_req_header {
 /// - Non-reclaimable regions:
 ///   - Bootloader/initial kernel stack (typically at 0xC0006000)
 ///   - Kernel text region (will be mapped at KERNEL_LOAD_ADDR)
-///   - GDT (copied to end of kernel text region)
 ///   - Initial page tables
 /// - Bootloader-reclaimable regions:
 ///   - Bootloader text region
-///     (includes E820 memory map)
+///     (includes E820 memory map and GDT)
 ///   - Temporary bootloader dynamic memory
 ///
 struct bp_req_memory_map {
