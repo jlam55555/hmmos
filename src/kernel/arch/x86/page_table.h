@@ -10,7 +10,7 @@
 namespace arch::page_table {
 
 void enumerate_page_tables();
-bool map(uint64_t phys, void *virt, bool uncacheable);
+bool map(uint64_t phys, void *virt, bool u_s, bool r_w, bool uncacheable);
 bool unmap(void *virt);
 bool mark_uncacheable(void *virt);
 

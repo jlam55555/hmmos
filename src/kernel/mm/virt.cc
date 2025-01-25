@@ -9,6 +9,8 @@ bool ioremap(uint64_t phys, void *virt, unsigned pg) {
   for (int i = 0; i < pg; ++i) {
     if (unlikely(!map(phys + (i << PG_SZ_BITS),
                       (void *)((uint32_t)virt + (i << PG_SZ_BITS)),
+                      /*userspace=*/false,
+                      /*writable=*/true,
                       /*uncacheable=*/true))) {
       return false;
     }
@@ -26,7 +28,7 @@ void *io_alloc(unsigned pg) {
   return res;
 }
 
-bool vmalloc(void *virt, unsigned pg) {
+bool vmalloc(void *virt, unsigned pg, bool writable) {
   /// TODO: This should attempt to allocate pages past the first 1GB of
   /// memory, and possibly fallback to the first 1GB of memory.
   /// Otherwise it'll eat into kernel memory (memory reachable via
@@ -41,7 +43,8 @@ bool vmalloc(void *virt, unsigned pg) {
     if (void *pg = ::operator new(PG_SZ);
         unlikely(pg == nullptr) ||
         unlikely(!map(hhdm_to_direct(pg),
-                      (void *)((size_t)virt + (i << PG_SZ_BITS))))) {
+                      (void *)((size_t)virt + (i << PG_SZ_BITS)),
+                      /*userspace=*/true, writable))) {
       return false;
     }
   }

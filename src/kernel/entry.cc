@@ -11,7 +11,9 @@
 #include "mm/page_frame_allocator.h"
 #include "mm/virt.h"
 #include "nonstd/libc.h"
+#include "proc.h"
 #include "sched/kthread.h"
+#include "util/algorithm.h"
 #include <climits>
 #include <concepts>
 
@@ -51,6 +53,21 @@ static_assert(!IsBicycle<A>, "A is not a bicycle");
 static_assert(IsBicycle<B>, "B is a bicycle");
 
 void foo() {
+  // Map a userspace stack and text region.
+  auto *userspace_stk = (void *)0x10000000;
+  auto *userspace_text = (void *)0x10001000;
+
+  mem::virt::vmalloc(userspace_stk, 1, true);
+  mem::virt::vmalloc(userspace_text, 1, false);
+
+  *(uint16_t *)userspace_text = 0x0B0F; // ud instruction, should cause ud
+  // *(uint8_t *)userspace_text = 0xF4; // hlt instruction, should cause gpf
+
+  uint32_t esp;
+  __asm__("mov %%esp, %0" : "=m"(esp));
+  arch::gdt::set_tss_esp0((void *)util::algorithm::ceil_pow2<PG_SZ>(esp));
+  arch::proc::enter_userspace();
+
   for (;;) {
     // Cooperative scheduling.
     // nonstd::printf("In thread foo!\r\n");
@@ -170,7 +187,7 @@ __attribute__((section(".text.entry"))) void _entry() {
 
   nonstd::printf("Done.\r\n");
 
-#if 0
+#if 1
   // We should never get here if we call `destroy_thread()` above.
   // scheduler.destroy_thread();
   // nonstd::printf("Unreachable");

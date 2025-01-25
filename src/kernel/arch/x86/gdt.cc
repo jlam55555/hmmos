@@ -61,7 +61,7 @@ TSS tss{
     // This will be set in \ref set_tss_esp0().
     .esp0 = 0,
     // GDT data segment
-    .ss0 = 2,
+    .ss0 = 0x10,
     // No IO bitmap
     .iopb = sizeof(TSS),
 };

@@ -153,7 +153,7 @@ void enumerate_page_tables() {
   }
 }
 
-bool map(uint64_t phys, void *virt, bool uncacheable) {
+bool map(uint64_t phys, void *virt, bool u_s, bool r_w, bool uncacheable) {
   assert(PG_ALIGNED(phys));
   assert(PG_ALIGNED((size_t)virt));
 
@@ -165,6 +165,15 @@ bool map(uint64_t phys, void *virt, bool uncacheable) {
   unsigned pd_idx = ((size_t)virt >> PG_SZ_BITS) >> directory_entry_bits;
   auto &pde = pd[pd_idx];
   if (pde.p) {
+    if (u_s) {
+      // If the page is to be mapped as user-readable (u_s), the PDE
+      // also has to be marked u_s.
+      //
+      // NOCOMMIT: this never gets unset, we should do this in the
+      // bootloader or when allocating the top-level PD.
+      pde.u_s = true;
+    }
+
     // If page directory entry exists, check that it isn't a hugepage
     // (not supported by HmmOS).
     assert(!pde.ps);
@@ -179,8 +188,8 @@ bool map(uint64_t phys, void *virt, bool uncacheable) {
     // Initialize page directory entry.
     nonstd::memset(&pde, 0, sizeof pde);
     pde.p = 1;
-    pde.r_w = 1;
-    pde.u_s = 0;
+    pde.r_w = r_w;
+    pde.u_s = u_s;
     pde.pwt = 0;
     pde.pcd = 0;
     pde.a = 0;
@@ -201,8 +210,8 @@ bool map(uint64_t phys, void *virt, bool uncacheable) {
 
   nonstd::memset(&pte, 0, sizeof pte);
   pte.p = 1;
-  pte.r_w = 1;
-  pte.u_s = 0;
+  pte.r_w = r_w;
+  pte.u_s = u_s;
   pte.pwt = 0;
   pte.pcd = uncacheable;
   pte.a = 0;
