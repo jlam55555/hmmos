@@ -5,6 +5,7 @@
 #include "drivers/pci.h"
 #include "drivers/serial.h"
 #include "fs/drivers/fat32.h"
+#include "gdt.h"
 #include "idt.h"
 #include "mm/kmalloc.h"
 #include "mm/page_frame_allocator.h"
@@ -95,6 +96,8 @@ __attribute__((section(".text.entry"))) void _entry() {
   while (*str) {
     serial::get().write(*str++);
   }
+
+  arch::gdt::init();
 
   nonstd::printf("Initializing PFT...\r\n");
   mem::phys::PageFrameTable pft(mem_map);

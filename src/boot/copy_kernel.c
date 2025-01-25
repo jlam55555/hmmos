@@ -53,6 +53,9 @@ static void _fulfill_boot_protocol_requests(void *kernel_addr,
     console_printl(req_hdr->req_id);
     console_puts("\r\n");
 
+    // TODO (intern project): more bootloader requests! maybe
+    // graphical mode (with fonts?)
+
     switch (req_hdr->req_id) {
     case BP_REQID_MEMORY_MAP: {
       struct bp_req_memory_map *req = needle;
@@ -96,26 +99,17 @@ void *copy_kernel() {
     return NULL;
   }
 
-  // We're also going to allocate a small amount of space for the GDT
-  // just after the kernel. The reason is that we don't want to waste
-  // a whole page of E820_MM_TYPE_BOOTLOADER just for the GDT.
-  extern struct gdt_desc {
-    uint16_t len;
-    uint32_t offset;
-  } __attribute__((packed)) gdt_desc;
-  size_t gdt_len = gdt_desc.len + 1;
-
   // Kernel is larger than KERNEL_LOAD_ADDR. This constant needs
   // to be configured higher.
   size_t kernel_len = kernel_file_desc.file_sz_bytes;
-  assert(kernel_len + gdt_len <= 4 * GB - KERNEL_LOAD_ADDR);
+  assert(kernel_len <= 4 * GB - KERNEL_LOAD_ADDR);
 
   console_puts("Allocating memory for the kernel...\r\n");
-  void *kernel_paddr = e820_alloc(kernel_len + gdt_len, true);
+  void *kernel_paddr = e820_alloc(kernel_len, true);
   if (unlikely(kernel_paddr == NULL)) {
     return kernel_paddr;
   }
-  e820_augment_bootloader((size_t)kernel_paddr, kernel_len + gdt_len,
+  e820_augment_bootloader((size_t)kernel_paddr, kernel_len,
                           E820_MM_TYPE_BOOTLOADER);
 
   if (unlikely(!fat32_read_file(kernel_paddr, &kernel_file_desc))) {
@@ -125,13 +119,6 @@ void *copy_kernel() {
 
   _fulfill_boot_protocol_requests(kernel_paddr, kernel_len);
   console_puts("Fulfilled kernel boot protocol requests.\r\n");
-
-  // Move the GDT as described above. The offset will be in HHDM -- we
-  // can't set it yet since we the HHDM/paging hasn't been set up yet.
-  // We'll reload the GDT once we set up paging. It's fine not to
-  // reload it since the CPU should cache the GDTR.
-  memcpy(kernel_paddr + kernel_len, (void *)gdt_desc.offset, gdt_len);
-  gdt_desc.offset = (size_t)kernel_paddr + kernel_len + HM_START;
 
   return kernel_paddr;
 }
