@@ -115,6 +115,14 @@ public:
     }
     return npos;
   }
+  constexpr size_t rfind(char needle) const {
+    for (int i = size() - 1; i >= 0; --i) {
+      if (data()[i] == needle) {
+        return i;
+      }
+    }
+    return npos;
+  }
   constexpr bool contains(string_view needle) { return find(needle) != npos; }
 
 private:

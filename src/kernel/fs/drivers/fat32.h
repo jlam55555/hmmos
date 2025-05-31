@@ -6,9 +6,13 @@
 /// TODO: make this thread-safe
 
 #include "drivers/ahci.h"
+#include "fs/vfs.h"
+#include "libc_minimal.h"
 #include "memdefs.h"
+#include "nonstd/allocator.h"
 #include "nonstd/libc.h"
 #include "nonstd/memory.h"
+#include "nonstd/node_hash_map.h"
 #include "nonstd/string_view.h"
 #include <functional>
 #include <optional>
@@ -29,11 +33,59 @@ struct MBRPartition {
 static_assert(sizeof(MBRPartition) == 16);
 
 struct VBR;
+
+/// FAT directory entry struct. Not exposed externally.
 struct DirectoryEntry;
+
+class Filesystem;
+class Inode final : public fs::Inode {
+public:
+  Inode(unsigned _id, Filesystem &_fs, uint32_t _start_cluster,
+        uint32_t _file_sz_bytes, bool _is_directory,
+        std::array<char, 13> _name);
+  ~Inode();
+
+  ssize_t read(void *buf, size_t offset, size_t count, Result &res) final;
+
+  // TODO
+  Result write(void *buf, size_t offset, size_t count) final {
+    return Result::Unsupported;
+  }
+  Result truncate(size_t len) final { return Result::Unsupported; }
+  Result mmap(void *addr, size_t offset, size_t count) final {
+    return Result::Unsupported;
+  }
+  Result flush() final { return Result::Unsupported; }
+
+  // Directory entries.
+  virtual Result creat(nonstd::string_view name) final {
+    return Result::Unsupported;
+  }
+  virtual Result mkdir(nonstd::string_view name) final {
+    return Result::Unsupported;
+  }
+  virtual Result rmdir(nonstd::string_view name) final {
+    return Result::Unsupported;
+  }
+  virtual Result link(fs::Inode &new_parent, nonstd::string_view name) final {
+    return Result::Unsupported;
+  }
+  virtual Result unlink() final { return Result::Unsupported; }
+  virtual Inode *lookup(nonstd::string_view name, Result &res) const final;
+
+private:
+  Filesystem &fs;
+  uint32_t start_cluster;
+  uint32_t file_sz_bytes;
+  /// Null-terminated "normal" filename
+  char name[13];
+};
 
 /// Interface for interacting with FAT32 filesystem.
 ///
-class Filesystem {
+class Filesystem final : public fs::Filesystem {
+  friend class Inode;
+
 public:
   /// Returns the boot FAT32 partition.
   ///
@@ -45,67 +97,35 @@ public:
   ///
   static Filesystem from_partition(MBRPartition &boot_part);
 
-  struct FileDescriptor {
-    uint32_t start_cluster;
-    uint32_t file_sz_bytes;
-    bool is_file;
-    /// Null-terminated "normal" filename
-    char name[13];
-  };
+  Dentry *get_root_dentry() final {
+    static auto *root_inode = new Inode{
+        next_inode++,           //
+        *this,                  //
+        root_dir_start_cluster, //
+        /*_file_sz_bytes=*/0,   //
+        /*_is_directory=*/true, //
+        std::array<char, 13>{}, //
+    };
+    static auto *root_dentry =
+        new Dentry{/*parent=*/nullptr, *root_inode, "<root>"};
 
-  // Public interface. This a low-level interface that will be be used
-  // by the VFS interface eventually (which will actually provide the
-  // syscall interface). For now I've modelled the functions after the
-  // syscall interface.
+    // This dentry/inode should never be recycled. Without the
+    // following, this dentry would have a refcount of 0, which means
+    // it might get cleaned up the next time someone dec_rc()'s it to
+    // 0, and bad things (TM) will happen.
+    //
+    // TODO: Is it important to clean this up on shutdown?
+    root_dentry->inc_rc();
 
-  /// Lookup a file descriptor by relative path (starting from \a
-  /// dir).
-  ///
-  std::optional<FileDescriptor> lookup_file(const FileDescriptor &dir,
-                                            nonstd::string_view path);
-
-  /// Read bytes at file offset \a off into the buffer \a buf, up to
-  /// the size of \a buf.
-  ///
-  /// Unlike the syscall, this is stateless and does not maintain a
-  /// file pointer. The VFS is expected to maintain file state.
-  ///
-  /// Unlike the syscall, this uses the FAT32-specific file
-  /// descriptor, not the file descriptor type exposed by the VFS.
-  ///
-  /// \return On success, the number of bytes read (zero indicates
-  ///         EOF). On error, -1 is returned.
-  ssize_t read(const FileDescriptor &fd, size_t off, std::span<std::byte> buf);
-
-  /// Returns directory entries in \a out, up to the size of \a buf.
-  ///
-  /// Unlike the syscall, this uses the FAT32-specific file
-  /// descriptor, not the file descriptor or inode type exposed by the
-  /// VFS.
-  ///
-  /// \return On success, the number of entries is returned. On end of
-  ///         directory, 0 is returned. On error, -1 is returned.
-  ssize_t getdents(const FileDescriptor &fd, std::span<FileDescriptor> buf);
-
-  /// Returns the root file descriptor.
-  ///
-  FileDescriptor root_fd() const {
-    return {.start_cluster = root_dir_start_cluster,
-            .file_sz_bytes = 0,
-            .is_file = false,
-            .name = ""};
+    return root_dentry;
   }
-
-  /// For debugging -- recursively dumps a filetree at the given path.
-  ///
-  void dump_tree(const FileDescriptor &fd);
 
 private:
   static constexpr unsigned fat_entries_per_sector = 512 / sizeof(uint32_t);
 
   Filesystem(const VBR &vbr, const MBRPartition &part);
 
-  /// Helper function for iterating directories.
+  /// Helper function for iterating directories on disk.
   ///
   /// std::function isn't the best for performance; this can be easily
   /// changed to a function template parameter if wanted.
@@ -118,12 +138,6 @@ private:
   ///           returns true, stop iterating the directory.
   void iterate_dir(uint32_t dir_cluster,
                    std::function<bool(const DirectoryEntry *)> cb);
-
-  /// Find a file/subdir in dir using \ref iterate_dir().
-  ///
-  /// \param path_component A single component of a path (i.e., no /)
-  std::optional<FileDescriptor>
-  find_file_in_dir(uint32_t dir_cluster, nonstd::string_view path_component);
 
   /// Returns the LBA of the sector containing the FAT entry for \a cluster.
   ///
@@ -166,6 +180,19 @@ private:
 
   /// Cluster index of cluster stored in \ref data_cache.
   uint32_t data_cache_cluster = -1;
+
+  /// Next inode number.
+  uint32_t next_inode = 0;
+
+  /// Mapping of start_cluster -> inode. All inodes in this superblock
+  /// must live in this hashmap. See usage in \ref Inode::lookup().
+  ///
+  /// TODO: This will also be used by readdir(), once we implement
+  /// that.
+  ///
+  /// N.B. at any given point of time, start cluster uniquely
+  /// identifies a file/directory in the superblock.
+  nonstd::node_hash_map<uint32_t, Inode *> start_cluster_to_inode;
 };
 
 } // namespace fs::fat32

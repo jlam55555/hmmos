@@ -4,6 +4,8 @@
 #include "nonstd/allocator.h"
 #include "nonstd/queue.h"
 #include "nonstd/string.h"
+#include "perf.h"
+#include "util/algorithm.h"
 #include "util/assert.h"
 #include <functional>
 
@@ -165,19 +167,127 @@ struct DirectoryEntry {
   uint16_t modified_date;
   uint16_t cluster_lo;
   uint32_t file_sz_bytes;
-
-  Filesystem::FileDescriptor to_fd() const {
-    Filesystem::FileDescriptor rval{
-        .start_cluster = ((uint32_t)cluster_hi << 2) | cluster_lo,
-        .file_sz_bytes = file_sz_bytes,
-        .is_file = !attr.subdir};
-    auto name =
-        convert_8_3_to_normal_filename(nonstd::string_view{short_filename, 11});
-    nonstd::memcpy(rval.name, name.data(), sizeof rval.name);
-    return rval;
-  }
 } __attribute__((packed));
 static_assert(sizeof(DirectoryEntry) == 32);
+
+Inode::Inode(unsigned _id, Filesystem &_fs, uint32_t _start_cluster,
+             uint32_t _file_sz_bytes, bool _is_directory,
+             std::array<char, 13> _name)
+    : fs::Inode{_id, _is_directory}, fs{_fs}, start_cluster{_start_cluster},
+      file_sz_bytes{_file_sz_bytes} {
+  nonstd::strncpy(name, _name.data(), _name.size());
+  const auto [_, inserted] =
+      fs.start_cluster_to_inode.try_emplace(start_cluster, this);
+  ASSERT(inserted);
+}
+
+Inode::~Inode() {
+  const auto it = fs.start_cluster_to_inode.find(start_cluster);
+  ASSERT(it != fs.start_cluster_to_inode.end() && it->second == this);
+  fs.start_cluster_to_inode.erase(it);
+}
+
+ssize_t Inode::read(void *buf, size_t offset, size_t count, Result &res) {
+  if (is_directory) {
+    res = Result::IsDirectory;
+    return -1;
+  }
+
+  if (offset >= file_sz_bytes) {
+    return 0;
+  }
+
+  // buf_pos is redundant since it can be computed from offset and
+  // file_pos, but it's straightforward.
+  uint32_t cur_cluster = start_cluster;
+  size_t file_pos = 0;
+  size_t buf_pos = 0;
+  const size_t file_sz = file_sz_bytes;
+
+  // This is more naturally written recursively, but it is iterative
+  // to avoid stack overflows.
+  while (1) {
+    if (offset >= fs.sectors_per_cluster * 512) {
+      // Skip this cluster entirely, no need to read it.
+      offset -= fs.sectors_per_cluster * 512;
+      file_pos += fs.sectors_per_cluster * 512;
+    } else {
+      // If the input buffer is aligned we can directly copy to the
+      // output buf and avoid the extra memcpy. The extra memcpy
+      // keeps things simple though.
+      fs.read_cluster_to_data_cache(cur_cluster);
+
+      size_t bytes_to_read_from_cluster =
+          std::min(file_sz - file_pos, (size_t)fs.sectors_per_cluster * 512);
+      size_t bytes_to_write_to_buf =
+          std::min(bytes_to_read_from_cluster - offset, count);
+      assert(bytes_to_read_from_cluster > 0);
+      assert(bytes_to_write_to_buf > 0);
+
+      nonstd::memcpy((char *)buf + buf_pos, fs.data_cache.get() + offset,
+                     bytes_to_write_to_buf);
+      file_pos += bytes_to_read_from_cluster;
+      buf_pos += bytes_to_write_to_buf;
+      offset = 0;
+    }
+
+    if (file_pos == file_sz || buf_pos == count) {
+      return buf_pos;
+    }
+
+    cur_cluster = fs.advance_cluster(cur_cluster);
+  }
+
+  __builtin_unreachable();
+}
+
+Inode *Inode::lookup(nonstd::string_view _name, Result &res) const {
+  // This should never be called on a regular file.
+  ASSERT(is_directory);
+
+  const auto path_component_8_3 = convert_normal_to_8_3_filename(_name);
+
+  std::optional<DirectoryEntry> dirent;
+  fs.iterate_dir(start_cluster, [&](const auto *it) {
+    // Note: VFAT is not supported.
+    if (nonstd::string_view{path_component_8_3.data(), 11} ==
+        nonstd::string_view{it->short_filename, 11}) {
+      dirent.emplace(*it);
+      return true;
+    }
+    return false;
+  });
+
+  if (!dirent) {
+    res = Result::FileNotFound;
+    return nullptr;
+  }
+
+  const uint32_t start_cluster =
+      /*_start_cluster=*/((uint32_t)dirent->cluster_hi << 2) |
+      dirent->cluster_lo;
+
+  // FAT32 doesn't support hardlinks, so we expect to see the child
+  // inode in the dcache if it exists. This is a failsafe to prevent
+  // us from duplicating inodes.
+  if (auto it = fs.start_cluster_to_inode.find(start_cluster);
+      unlikely(it != fs.start_cluster_to_inode.end())) {
+    // TODO: need some sort of syslog.
+    nonstd::printf("Found existing FAT32 inode but it was not in its parent's "
+                   "list of children! Is the filesystem corrupted?\r\n");
+    return it->second;
+  }
+
+  return new Inode{
+      fs.next_inode++,
+      fs,
+      start_cluster,
+      dirent->file_sz_bytes,
+      bool(dirent->attr.subdir),
+      convert_8_3_to_normal_filename(
+          nonstd::string_view{dirent->short_filename, 11}),
+  };
+}
 
 Filesystem::Filesystem(const VBR &vbr, const MBRPartition &part)
     : bytes_per_sector{vbr.ebpb.bytes_per_sector},
@@ -192,9 +302,12 @@ Filesystem::Filesystem(const VBR &vbr, const MBRPartition &part)
       // allocator doesn't currently guarantee this. It does guarantee
       // that allocating >= 1PG is page-aligned however. This will be
       // fixed with the slab allocator.
-      fat_cache{scoped_buf(PG_SZ)}, data_cache{scoped_buf(std::min(
-                                        PG_SZ,
-                                        (size_t)sectors_per_cluster * 512))} {}
+      fat_cache{scoped_buf(PG_SZ)}, //
+      data_cache{
+          scoped_buf(std::min(PG_SZ, (size_t)sectors_per_cluster * 512))} {
+  ASSERT(util::algorithm::aligned_pow2<512>((size_t)fat_cache.get()));
+  ASSERT(util::algorithm::aligned_pow2<512>((size_t)data_cache.get()));
+}
 
 std::optional<MBRPartition> Filesystem::find_boot_part() {
   // Really we only need 512-byte aligned, but the current stupid
@@ -231,8 +344,8 @@ uint32_t Filesystem::get_fat_sector_for_cluster(uint32_t cluster) {
 
 void Filesystem::iterate_dir(uint32_t dir_cluster,
                              std::function<bool(const DirectoryEntry *)> cb) {
-  // Same note as \ref lookup_file(): this is more naturally written
-  // recursively, but it is iterative to avoid stack overflows.
+  // This is more naturally written recursively, but it is iterative
+  // to avoid stack overflows.
   while (1) {
     read_cluster_to_data_cache(dir_cluster);
 
@@ -258,158 +371,6 @@ void Filesystem::iterate_dir(uint32_t dir_cluster,
     }
 
     dir_cluster = advance_cluster(dir_cluster);
-  }
-
-  __builtin_unreachable();
-}
-
-std::optional<Filesystem::FileDescriptor>
-Filesystem::find_file_in_dir(uint32_t dir_cluster,
-                             nonstd::string_view path_component) {
-  auto path_component_8_3 = convert_normal_to_8_3_filename(path_component);
-
-  std::optional<DirectoryEntry> dirent;
-  iterate_dir(dir_cluster, [&](const auto *it) {
-    // Note: VFAT is not supported.
-    if (nonstd::string_view{path_component_8_3.data(), 11} ==
-        nonstd::string_view{it->short_filename, 11}) {
-      dirent.emplace(*it);
-      return true;
-    }
-    return false;
-  });
-  if (!dirent) {
-    return {};
-  }
-  return dirent->to_fd();
-}
-
-std::optional<Filesystem::FileDescriptor>
-Filesystem::lookup_file(const FileDescriptor &dir, nonstd::string_view path) {
-  // This is more easily written recursively, but it has to be
-  // iterative to avoid stack overflowing.
-  FileDescriptor dir_it = dir;
-  while (!path.empty()) {
-    if (dir_it.is_file) {
-      return {};
-    }
-
-    const size_t pos = path.find("/");
-    const auto [component, next_component] =
-        pos == nonstd::string_view::npos
-            ? std::pair{path, nonstd::string_view{""}}
-            : std::pair{path.substr(0, pos), path.substr(pos + 1)};
-
-    const auto next_dir_it = find_file_in_dir(dir_it.start_cluster, component);
-    if (!next_dir_it) {
-      return {};
-    }
-
-    dir_it = *next_dir_it;
-    path = next_component;
-  }
-  return dir_it;
-}
-
-ssize_t Filesystem::getdents(const FileDescriptor &dir,
-                             std::span<FileDescriptor> buf) {
-  if (dir.is_file) {
-    return -1;
-  }
-
-  size_t pos = 0;
-  bool buf_too_small = false;
-  iterate_dir(dir.start_cluster, [&](const auto *it) {
-    if (pos >= buf.size()) {
-      buf_too_small = true;
-      return true;
-    }
-
-    buf[pos++] = it->to_fd();
-    return false;
-  });
-  return buf_too_small ? -1 : pos;
-}
-
-void Filesystem::dump_tree(const FileDescriptor &dir) {
-  assert(!dir.is_file);
-
-  // Simple BFS to print tree in topological order.
-  // queueitem = (dir_cluster, path)
-  using QueueItem = std::pair<FileDescriptor, nonstd::string>;
-  nonstd::queue<QueueItem> q;
-  q.emplace(dir, "");
-
-  while (!q.empty()) {
-    const auto [dir, path] = q.front();
-    q.pop();
-
-    std::array<FileDescriptor, 32> fds;
-    ssize_t dirents = getdents(dir, fds);
-    if (dirents < 0) {
-      nonstd::printf("fds array is too small\r\n");
-      assert(false);
-    }
-
-    nonstd::printf("\r\n%s/\r\n", path.data());
-    for (auto &fd : std::span{fds.begin(), (size_t)dirents}) {
-      nonstd::printf("\t%s%s\r\n", fd.name, fd.is_file ? "" : "/");
-      if (!fd.is_file && fd.name[0] != '.') {
-        q.emplace(fd, path + "/" + fd.name);
-      }
-    }
-  }
-}
-
-ssize_t Filesystem::read(const FileDescriptor &fd, size_t off,
-                         std::span<std::byte> buf) {
-  if (!fd.is_file) {
-    return -1;
-  }
-
-  if (off >= fd.file_sz_bytes) {
-    return 0;
-  }
-
-  // buf_pos is redundant since it can be computed from offset and
-  // file_pos, but it's straightforward.
-  uint32_t cur_cluster = fd.start_cluster;
-  size_t file_pos = 0;
-  size_t buf_pos = 0;
-  const size_t file_sz = fd.file_sz_bytes;
-
-  // Same note as \ref lookup_file(): this is more naturally written
-  // recursively, but it is iterative to avoid stack overflows.
-  while (1) {
-    if (off >= sectors_per_cluster * 512) {
-      // Skip this cluster entirely, no need to read it.
-      off -= sectors_per_cluster * 512;
-      file_pos += sectors_per_cluster * 512;
-    } else {
-      // If the input buffer is aligned we can directly copy to the
-      // output buf and avoid the extra memcpy. The extra memcpy
-      // keeps things simple though.
-      read_cluster_to_data_cache(cur_cluster);
-
-      size_t bytes_to_read_from_cluster =
-          std::min(file_sz - file_pos, (size_t)sectors_per_cluster * 512);
-      size_t bytes_to_write_to_buf =
-          std::min(bytes_to_read_from_cluster - off, buf.size() - buf_pos);
-      assert(bytes_to_read_from_cluster > 0);
-      assert(bytes_to_write_to_buf > 0);
-
-      nonstd::memcpy(buf.data() + buf_pos, data_cache.get() + off,
-                     bytes_to_write_to_buf);
-      file_pos += bytes_to_read_from_cluster;
-      buf_pos += bytes_to_write_to_buf;
-      off = 0;
-    }
-
-    if (file_pos == file_sz || buf_pos == buf.size()) {
-      return buf_pos;
-    }
-
-    cur_cluster = advance_cluster(cur_cluster);
   }
 
   __builtin_unreachable();

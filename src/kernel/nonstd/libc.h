@@ -52,6 +52,28 @@ constexpr int strncmp(const char *s1, const char *s2, size_t n) {
   }
   return n ? *s1 - *s2 : 0;
 }
+constexpr char *strcpy(char *dst, const char *src) {
+  char *tmp = dst;
+  while (*src) {
+    *dst++ = *src++;
+  }
+  *dst = '\0';
+  return tmp;
+}
+// note that strncpy does NOT null terminate
+constexpr char *strncpy(char *dst, const char *src, size_t n) {
+  char *tmp = dst;
+  while (*src && --n) {
+    *dst++ = *src++;
+  }
+  if (n) {
+    // bzero beforehand is more efficient
+    while (--n) {
+      *dst++ = '\0';
+    }
+  }
+  return tmp;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // stdio.h

@@ -13,6 +13,9 @@
 ///
 /// The extra pair of parens is due to `assert` failing to accept an
 /// argument with commas.
+///
+/// For the actual assert behavior, see \ref __assert_fail() in
+/// nonstd/libc.
 #define ASSERT(...) assert(likely(__VA_ARGS__))
 
 /// \brief Compile-out debug macro in non-debug builds.

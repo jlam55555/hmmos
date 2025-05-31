@@ -37,7 +37,8 @@ void run_global_dtors() {
 
 extern "C" void __cxa_pure_virtual() {}
 
-extern "C" void *__dso_handle /*=nullptr*/;
+extern "C" void *__dso_handle;
+void *__dso_handle = nullptr;
 
 namespace {
 
@@ -81,5 +82,19 @@ extern "C" void __cxa_finalize(void *f) {
   }
   return;
 }
+
+/// Static automatic variable initialization thread-safe guards spec:
+/// https://web.archive.org/web/20160310184418/https://mentorembedded.github.io/cxx-abi/abi.html#once-ctor
+///
+/// Most of this implementation from
+/// https://github.com/gcc-mirror/gcc/commit/969fe59ca826b190a1529a6a655372c1d9676d99.
+__extension__ typedef int __guard __attribute__((mode(__DI__)));
+extern "C" int __cxa_guard_acquire(__guard *g) {
+  // NOCOMMIT: add guard here. spin_lock_irqsave suffices until we
+  // have multiprocessor support.
+  return !*(char *)(g);
+}
+extern "C" void __cxa_guard_release(__guard *g) { *(char *)g = 1; }
+extern "C" void __cxa_guard_abort(__guard *) {}
 
 } // namespace crt

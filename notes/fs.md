@@ -89,6 +89,20 @@ kernel binary.
 For HmmOS, we'll start with a simple AHCI driver. We can start with
 PIO-mode (slow but simple) and then implement DMA.
 
+## Linux fs implementations
+
+- syscall implementations: include/linux/syscalls.h
+- VHS implementations:
+  - fs/namei.c (name lookup)
+  - fs/readdir.c (getdents)
+  - fs/inode.c (inode helpers)
+  - include/linux/fs.h (inode defs)
+  - include/linux/dcache.h (dentry defs)
+- fs implementations:
+  - fat/namei.c (fat_lookup)
+  - fat/dir.c (fat_readdir)
+  - fat/inode.c (fat inode helpers)
+
 ### TODO
 - [X] write the HmmOS kernel to a FAT32 filesystem
 - [X] implement basic FAT32 support in the bootloader

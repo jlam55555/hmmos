@@ -5,6 +5,7 @@
 #include "drivers/pci.h"
 #include "drivers/serial.h"
 #include "fs/drivers/fat32.h"
+#include "fs/vfs.h"
 #include "gdt.h"
 #include "idt.h"
 #include "mm/kmalloc.h"
@@ -129,37 +130,6 @@ __attribute__((section(".text.entry"))) void _entry() {
   assert(boot_part_desc.has_value());
   auto filesystem = fs::fat32::Filesystem::from_partition(*boot_part_desc);
 
-  auto kernel_file = filesystem.lookup_file(filesystem.root_fd(), "KERNEL.BIN");
-  assert(kernel_file);
-  nonstd::printf("kernel file size=%u\r\n", kernel_file->file_sz_bytes);
-
-  auto src_file = filesystem.lookup_file(filesystem.root_fd(),
-                                         "SRC/KERNEL/FS/DRIVERS/FAT32.CC");
-  assert(src_file);
-  nonstd::printf("contents of %s (size=%u):\r\n", src_file->name,
-                 src_file->file_sz_bytes);
-  ssize_t rval, pos = 0;
-  auto _buf = reinterpret_cast<std::byte *>(mem::kmalloc(4096));
-  std::span buf{_buf, 4095};
-  while ((rval = filesystem.read(*src_file, pos, buf)) > 0) {
-    // Force the string to be null-terminated. We do own the byte past
-    // the end of the buffer so this is safe.
-    //
-    // TODO: we should support a print specifier to print a given
-    // number of characters (super useful for string_view as well).
-    buf[rval] = std::byte{0};
-    nonstd::printf("%s", (const char *)buf.data());
-    pos += rval;
-  }
-  if (rval < 0) {
-    nonstd::printf("error reading src file\r\n");
-    assert(false);
-  }
-
-#ifdef DEBUG
-  filesystem.dump_tree(filesystem.root_fd());
-#endif
-
   nonstd::printf("Initializing scheduler...\r\n");
   sched::Scheduler scheduler;
   ::scheduler = &scheduler;
@@ -169,6 +139,28 @@ __attribute__((section(".text.entry"))) void _entry() {
   scheduler.new_thread(&foo);
 
   nonstd::printf("Done.\r\n");
+
+  fs::init(filesystem);
+
+  fs::Process proc;
+  fs::Result res;
+  const auto fd = proc.open("/SRC/KERNEL/NONSTD/STACK.H", res);
+  ASSERT(fd != fs::InvalidFD && res == fs::Result::Ok);
+
+  ssize_t rval = 0;
+  auto buf = reinterpret_cast<std::byte *>(mem::kmalloc(4096));
+  while ((rval = proc.read(fd, buf, 4095, res)) > 0 && res == fs::Result::Ok) {
+    // Force the string to be null-terminated. We do own the byte past
+    // the end of the buffer so this is safe.
+    //
+    // TODO: we should support a print specifier to print a given
+    // number of characters (super useful for string_view as well).
+    buf[rval] = std::byte{0};
+    nonstd::printf("%s", (char *)buf);
+  }
+  ASSERT(rval >= 0 && res == fs::Result::Ok);
+
+  proc.close(fd, res);
 
 #if 0
   // We should never get here if we call `destroy_thread()` above.

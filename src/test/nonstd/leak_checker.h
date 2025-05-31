@@ -58,8 +58,8 @@ private:
     TEST_ASSERT(net_allocs == net_deallocs);
   }
 
-  static uint64_t construct_count;
-  static uint64_t destruct_count;
+  static inline uint64_t construct_count = 0;
+  static inline uint64_t destruct_count = 0;
   uint64_t start_alloc_count = 0;
   uint64_t start_dealloc_count = 0;
 };
