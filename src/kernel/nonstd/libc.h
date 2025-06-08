@@ -7,10 +7,11 @@
 /// Not intended to be standards-compliant.
 
 #include "libc_minimal.h"
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
+#include <cstdarg>
+#include <cstdbool>
+#include <cstddef>
+#include <cstdint>
+#include <cstdlib>
 
 extern "C" {
 namespace nonstd {
@@ -42,6 +43,9 @@ constexpr int strcmp(const char *s1, const char *s2) {
   return *s1 - *s2;
 }
 constexpr int strncmp(const char *s1, const char *s2, size_t n) {
+  if (n == 0) {
+    return 0;
+  }
   while (*s1 && *s2 && *s1 == *s2 && --n) {
     ++s1;
     ++s2;
@@ -72,6 +76,11 @@ int vsnprintf(char *s, size_t n, const char *fmt, va_list)
 //
 // An implementation of `__assert_fail()`, which is required for the
 // `assert()` macro, is provided.
+
+////////////////////////////////////////////////////////////////////////////////
+// stdlib.h
+////////////////////////////////////////////////////////////////////////////////
+std::ldiv_t ldiv(long x, long y);
 
 } // namespace nonstd
 }

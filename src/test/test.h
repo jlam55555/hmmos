@@ -47,7 +47,8 @@ namespace test {
 ///
 class TestFixture {
 public:
-  virtual void setup() = 0;
+  virtual void setup() {}
+  virtual void destroy(bool &) {}
   virtual void run(bool &) = 0;
 };
 
@@ -105,6 +106,7 @@ bool matches(nonstd::string_view test_name, nonstd::string_view test_selection);
     ::test::TestFixture &&fixture = Fixture##TEST_NAME_SYM{};                  \
     fixture.setup();                                                           \
     fixture.run(res);                                                          \
+    fixture.destroy(res);                                                      \
   }                                                                            \
   }                                                                            \
   namespace {                                                                  \
@@ -132,13 +134,13 @@ bool matches(nonstd::string_view test_name, nonstd::string_view test_selection);
 /// Similar to DEFINE_TEST, where the test will be placed in TEST_NS,
 /// except that CLASS_NAME will be added to the test name.
 #define TEST_CLASS(TEST_NS, CLASS_NAME, TEST_NAME)                             \
-  _DEFINE_TEST(TEST_NS, _##TEST_NAME, CLASS_NAME::TEST_NAME)
+  _DEFINE_TEST(TEST_NS, _##CLASS_NAME##_##TEST_NAME, CLASS_NAME::TEST_NAME)
 
 #define TEST_WITH_FIXTURE(TEST_NS, TEST_NAME, FIXTURE)                         \
   _DEFINE_TEST_WITH_FIXTURE(TEST_NS, _##TEST_NAME, TEST_NAME, FIXTURE)
 #define TEST_CLASS_WITH_FIXTURE(TEST_NS, CLASS_NAME, TEST_NAME, FIXTURE)       \
-  _DEFINE_TEST_WITH_FIXTURE(TEST_NS, _##TEST_NAME, CLASS_NAME::TEST_NAME,      \
-                            FIXTURE)
+  _DEFINE_TEST_WITH_FIXTURE(TEST_NS, _##CLASS_NAME##_##TEST_NAME,              \
+                            CLASS_NAME::TEST_NAME, FIXTURE)
 
 /// \brief Run an assertion within a test.
 ///

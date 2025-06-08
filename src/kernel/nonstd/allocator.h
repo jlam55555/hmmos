@@ -8,6 +8,11 @@
 
 namespace nonstd {
 
+namespace mem {
+extern uint64_t alloc_count;
+extern uint64_t dealloc_count;
+} // namespace mem
+
 /// Copied from https://en.cppreference.com/w/cpp/named_req/Allocator
 template <class T> struct Mallocator {
   typedef T value_type;
@@ -23,6 +28,7 @@ template <class T> struct Mallocator {
     }
 
     if (auto p = static_cast<T *>(::operator new(n * sizeof(T)))) {
+      ++mem::alloc_count;
       return p;
     }
 
@@ -30,11 +36,10 @@ template <class T> struct Mallocator {
     assert(false);
   }
 
-  void deallocate(T *p, std::size_t n) noexcept { ::operator delete(p); }
+  void deallocate(T *p, std::size_t n) noexcept {
+    ++mem::dealloc_count;
+    ::operator delete(p);
+  }
 };
-
-template <typename T> using queue = std::queue<T, std::deque<T, Mallocator<T>>>;
-using string =
-    std::basic_string<char, std::char_traits<char>, nonstd::Mallocator<char>>;
 
 } // namespace nonstd

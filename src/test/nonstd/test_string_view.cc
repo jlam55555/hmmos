@@ -1,10 +1,30 @@
 #include "../test.h"
+#include "./leak_checker.h"
+#include "nonstd/string.h"
 #include "nonstd/string_view.h"
 
-TEST_CLASS(nonstd, string_view, constexpr) {
+TEST_CLASS_WITH_FIXTURE(nonstd, string_view, iterator, LeakChecker) {
+  constexpr string_view sv = "hello";
+  static_assert(string_view{sv.begin(), sv.end()} == "hello");
+
+  static_assert(*sv.begin() == sv.front());
+  static_assert(*std::prev(sv.end()) == sv.back());
+  static_assert(*sv.rbegin() == sv.back());
+  static_assert(*std::prev(sv.rend()) == sv.front());
+
+  // We can't construct a string_view from a non-contiguous range
+  // (e.g., reverse_iterator), so we'll have to use some other type.
+  TEST_ASSERT(string{sv.rbegin(), sv.rend()} == "olleh");
+}
+
+TEST_CLASS_WITH_FIXTURE(nonstd, string_view, constexpr, LeakChecker) {
   // No need to really define a test but might as well. This should
   // test most of the behavior we want since it all works with
   // constexpr.
+  //
+  // These test cases are a little different than the rest of the
+  // nonstd container tests because (a) lots more constexpr and (b) I
+  // wrote these first and am too lazy to rewrite them.
   constexpr auto sv = "foo::bar"_sv;
   static_assert(sv == "foo::bar");
   static_assert(sv != "foo::baz");
@@ -41,7 +61,7 @@ TEST_CLASS(nonstd, string_view, constexpr) {
   static_assert(!"hello"_sv.contains("helloworld"));
 }
 
-TEST_CLASS(nonstd, string_view, substr) {
+TEST_CLASS_WITH_FIXTURE(nonstd, string_view, substr, LeakChecker) {
   // Again this is constexpr so no need for a real test.  The behavior
   // here is different than the standard, so I isolated it to its own
   // test.
@@ -69,7 +89,7 @@ TEST_CLASS(nonstd, string_view, substr) {
   static_assert("hello"_sv.substr(-1, string_view::npos) == "hello"_sv);
 }
 
-TEST_CLASS(nonstd, string_view, cmp) {
+TEST_CLASS_WITH_FIXTURE(nonstd, string_view, cmp, LeakChecker) {
   static_assert("abcd"_sv == "abcd"_sv);
   static_assert("abcd"_sv <= "abcd"_sv);
   static_assert("abcd"_sv >= "abcd"_sv);
@@ -93,7 +113,7 @@ TEST_CLASS(nonstd, string_view, cmp) {
   static_assert("efgh"_sv >= "abcd"_sv);
 }
 
-TEST_CLASS(nonstd, string_view, non_constexpr) {
+TEST_CLASS_WITH_FIXTURE(nonstd, string_view, non_constexpr, LeakChecker) {
   char const *str1 = "hello";
   char const str2[] = "world!";
 
@@ -104,4 +124,8 @@ TEST_CLASS(nonstd, string_view, non_constexpr) {
   TEST_ASSERT(string_view{str2}.length() == 6);
 
   TEST_ASSERT(string_view{str1, 3} == "hel");
+}
+
+TEST_CLASS_WITH_FIXTURE(nonstd, string_view, empty, LeakChecker) {
+  TEST_ASSERT(string_view{} == "");
 }

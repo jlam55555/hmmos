@@ -45,12 +45,13 @@ void *kmalloc(size_t sz) noexcept {
 }
 
 void kfree(void *data) noexcept {
+  ASSERT(data != nullptr);
   // nop
 }
 
 } // namespace mem
 
-void *operator new(size_t sz) { return ::operator new(sz, std::nothrow); }
+void *operator new(size_t sz) { return ::operator new (sz, std::nothrow_t{}); }
 void *operator new(size_t sz, const std::nothrow_t &tag) noexcept {
   return mem::kmalloc(sz);
 }

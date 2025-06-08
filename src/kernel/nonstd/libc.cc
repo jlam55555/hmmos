@@ -373,4 +373,21 @@ extern "C" void __assert_fail(const char *assertion, const char *file,
   acpi::shutdown();
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// stdlib.h
+////////////////////////////////////////////////////////////////////////////////
+
+extern "C" std::ldiv_t ldiv(long numer, long denom) throw() {
+  std::ldiv_t ret;
+
+  ret.quot = numer / denom;
+  ret.rem = numer - denom * ret.quot;
+  if (ret.quot < 0 && 0 < ret.rem) {
+    ret.quot++;
+    ret.rem -= denom;
+  }
+
+  return ret;
+}
+
 } // namespace nonstd

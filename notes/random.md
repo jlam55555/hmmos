@@ -165,3 +165,12 @@ Luckily, the switch was pretty seamless. Both `tmux` and `screen` use
 commands with an emacs-like prefix-key. I remap this to `C-o` since
 that doesn't conflict with my usual emacs keybindings (as `screen`'s
 `C-a` and `tmux`'s `C-b` both do).
+
+## dinkumware
+I was reading about `std::deque` default block sizes and came across
+[this criticism](https://stackoverflow.com/q/4088999) of
+["dinkumware's" Microsoft C++
+implementation](https://www.reddit.com/r/cpp/comments/1cuua7c/how_bad_is_the_dinkumware_std_implementation/). The
+name does not inspire confidence, nor does that block size (which
+tries to keep to 16 bytes) -- luckily this implementation has dead
+since C++14.

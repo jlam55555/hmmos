@@ -2,6 +2,8 @@
 #include "drivers/ahci.h"
 #include "libc_minimal.h"
 #include "nonstd/allocator.h"
+#include "nonstd/queue.h"
+#include "nonstd/string.h"
 #include "util/assert.h"
 #include <functional>
 
