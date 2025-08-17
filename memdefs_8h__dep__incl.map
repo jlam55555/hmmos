@@ -1,10 +1,11 @@
 <map id="src/common/memdefs.h" name="src/common/memdefs.h">
-<area shape="rect" id="node1" title="Useful definitions related to memory sizing." alt="" coords="266,5,446,31"/>
-<area shape="rect" id="node2" href="$boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="182,79,389,104"/>
-<area shape="rect" id="node8" href="$virt_8h.html" title="Virtual memory mapping." alt="" coords="367,159,521,185"/>
-<area shape="rect" id="node3" href="$boot_2page__table_8h.html" title="Some useful definitions used by page_table.c." alt="" coords="5,159,168,185"/>
-<area shape="rect" id="node6" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="193,152,343,192"/>
-<area shape="rect" id="node4" href="$mbr_8h.html" title="Master Boot Record definitions." alt="" coords="29,247,144,273"/>
-<area shape="rect" id="node5" href="$fat_8h.html" title="FAT32 driver for the bootloader. Only used to locate and load the kernel binary." alt="" coords="33,328,141,353"/>
-<area shape="rect" id="node7" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="193,240,343,280"/>
+<area shape="rect" id="node1" title="Useful definitions related to memory sizing." alt="" coords="345,5,525,31"/>
+<area shape="rect" id="node2" href="$boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="182,86,389,111"/>
+<area shape="rect" id="node8" href="$virt_8h.html" title="Virtual memory mapping." alt="" coords="367,174,521,199"/>
+<area shape="rect" id="node9" href="$fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="473,79,623,119"/>
+<area shape="rect" id="node3" href="$boot_2page__table_8h.html" title="Some useful definitions used by page_table.c." alt="" coords="5,174,168,199"/>
+<area shape="rect" id="node6" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="193,167,343,207"/>
+<area shape="rect" id="node4" href="$mbr_8h.html" title="Master Boot Record definitions." alt="" coords="29,262,144,287"/>
+<area shape="rect" id="node5" href="$fat_8h.html" title="FAT32 driver for the bootloader. Only used to locate and load the kernel binary." alt="" coords="33,343,141,368"/>
+<area shape="rect" id="node7" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="193,255,343,295"/>
 </map>

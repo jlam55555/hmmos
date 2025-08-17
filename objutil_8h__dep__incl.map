@@ -1,5 +1,7 @@
 <map id="src/kernel/util/objutil.h" name="src/kernel/util/objutil.h">
-<area shape="rect" id="node1" title="Utility functions/macros for C++ objects." alt="" coords="5,5,172,31"/>
-<area shape="rect" id="node2" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="13,79,164,119"/>
-<area shape="rect" id="node3" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="13,167,164,207"/>
+<area shape="rect" id="node1" title="Utility functions/macros for C++ objects." alt="" coords="97,5,264,31"/>
+<area shape="rect" id="node2" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="5,79,156,119"/>
+<area shape="rect" id="node4" href="$memory_8h_source.html" title=" " alt="" coords="181,86,383,111"/>
+<area shape="rect" id="node3" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="5,167,156,207"/>
+<area shape="rect" id="node5" href="$fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="207,167,357,207"/>
 </map>

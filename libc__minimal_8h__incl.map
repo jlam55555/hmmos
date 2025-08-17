@@ -1,4 +1,5 @@
 <map id="src/common/libc_minimal.h" name="src/common/libc_minimal.h">
 <area shape="rect" id="node1" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="5,5,208,31"/>
-<area shape="rect" id="node2" title=" " alt="" coords="69,79,144,104"/>
+<area shape="rect" id="node2" title=" " alt="" coords="21,79,96,104"/>
+<area shape="rect" id="node3" title=" " alt="" coords="121,79,191,104"/>
 </map>

@@ -139,15 +139,15 @@ $(function() {
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  uint32_t req_id;</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>} __attribute__((packed));</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="structbp__req__memory__map.html">  129</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structbp__req__memory__map.html">bp_req_memory_map</a> {</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keyword">struct </span><a class="code hl_struct" href="structbp__req__header.html">bp_req_header</a> hdr;</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="keyword">struct </span><a class="code hl_struct" href="structe820__mm__entry.html">e820_mm_entry</a> *memory_map;</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>} __attribute__((packed, aligned(<a class="code hl_define" href="boot__protocol_8h.html#a79d1008de4db1234aaf549049a04e4b0">BP_REQ_ALIGN</a>)));</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="boot__protocol_8h.html#a47712fbaf979e1392e74f80c15575acd">  149</a></span><span class="preprocessor">#define BP_REQ(REQ_ID, VAR)                                                    \</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">  struct _BP_REQ_##REQ_ID VAR = {                                              \</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="preprocessor">      .hdr = {.magic = BP_REQ_MAGIC, .req_id = BP_REQID_##REQ_ID}};</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="structbp__req__memory__map.html">  128</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structbp__req__memory__map.html">bp_req_memory_map</a> {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keyword">struct </span><a class="code hl_struct" href="structbp__req__header.html">bp_req_header</a> hdr;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keyword">struct </span><a class="code hl_struct" href="structe820__mm__entry.html">e820_mm_entry</a> *memory_map;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>} __attribute__((packed, aligned(<a class="code hl_define" href="boot__protocol_8h.html#a79d1008de4db1234aaf549049a04e4b0">BP_REQ_ALIGN</a>)));</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="boot__protocol_8h.html#a47712fbaf979e1392e74f80c15575acd">  148</a></span><span class="preprocessor">#define BP_REQ(REQ_ID, VAR)                                                    \</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="preprocessor">  struct _BP_REQ_##REQ_ID VAR = {                                              \</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">      .hdr = {.magic = BP_REQ_MAGIC, .req_id = BP_REQID_##REQ_ID}};</span></div>
 <div class="ttc" id="aboot__protocol_8h_html_a35754974ef66773440111c2bdd24ea27"><div class="ttname"><a href="boot__protocol_8h.html#a35754974ef66773440111c2bdd24ea27">bp_req_id</a></div><div class="ttdeci">bp_req_id</div><div class="ttdef"><b>Definition:</b> boot_protocol.h:97</div></div>
 <div class="ttc" id="aboot__protocol_8h_html_a35754974ef66773440111c2bdd24ea27aa91fc843033745075c1e450debe7fba8"><div class="ttname"><a href="boot__protocol_8h.html#a35754974ef66773440111c2bdd24ea27aa91fc843033745075c1e450debe7fba8">BP_REQID_MEMORY_MAP</a></div><div class="ttdeci">@ BP_REQID_MEMORY_MAP</div><div class="ttdef"><b>Definition:</b> boot_protocol.h:100</div></div>
 <div class="ttc" id="aboot__protocol_8h_html_a539c68a0b5166670c9ac882503f12142"><div class="ttname"><a href="boot__protocol_8h.html#a539c68a0b5166670c9ac882503f12142">e820_mm_type</a></div><div class="ttdeci">e820_mm_type</div><div class="ttdef"><b>Definition:</b> boot_protocol.h:49</div></div>
@@ -158,7 +158,7 @@ $(function() {
 <div class="ttc" id="aboot__protocol_8h_html_aa0565e413bb83e0539ebc2006482544d"><div class="ttname"><a href="boot__protocol_8h.html#aa0565e413bb83e0539ebc2006482544d">IO_MAP_SZ</a></div><div class="ttdeci">#define IO_MAP_SZ</div><div class="ttdef"><b>Definition:</b> boot_protocol.h:46</div></div>
 <div class="ttc" id="amemdefs_8h_html"><div class="ttname"><a href="memdefs_8h.html">memdefs.h</a></div><div class="ttdoc">Useful definitions related to memory sizing.</div></div>
 <div class="ttc" id="astructbp__req__header_html"><div class="ttname"><a href="structbp__req__header.html">bp_req_header</a></div><div class="ttdef"><b>Definition:</b> boot_protocol.h:107</div></div>
-<div class="ttc" id="astructbp__req__memory__map_html"><div class="ttname"><a href="structbp__req__memory__map.html">bp_req_memory_map</a></div><div class="ttdoc">Memory map bootloader request.</div><div class="ttdef"><b>Definition:</b> boot_protocol.h:129</div></div>
+<div class="ttc" id="astructbp__req__memory__map_html"><div class="ttname"><a href="structbp__req__memory__map.html">bp_req_memory_map</a></div><div class="ttdoc">Memory map bootloader request.</div><div class="ttdef"><b>Definition:</b> boot_protocol.h:128</div></div>
 <div class="ttc" id="astructe820__mm__entry_html"><div class="ttname"><a href="structe820__mm__entry.html">e820_mm_entry</a></div><div class="ttdef"><b>Definition:</b> boot_protocol.h:71</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

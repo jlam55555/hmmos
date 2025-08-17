@@ -11,5 +11,5 @@ var searchData=
   ['enable_5fpaging_8',['enable_paging',['../boot_2page__table_8h.html#a8fe1fe2fbf93eeba6fd39fbd3bdb970c',1,'page_table.h']]],
   ['enumerate_5fpage_5ftables_9',['enumerate_page_tables',['../virt_8h.html#a4573a847019db1cb01868cbab5b6c74d',1,'mem::virt']]],
   ['erase_10',['erase',['../classutil_1_1IntrusiveListHead.html#a9526ed0e326a9a9242caf35408a32c77',1,'util::IntrusiveListHead']]],
-  ['extended_5fbios_5fparameter_5fblock_11',['extended_bios_parameter_block',['../struct__fat32__vbr_1_1extended__bios__parameter__block.html',1,'_fat32_vbr::extended_bios_parameter_block'],['../structextended__bios__parameter__block.html',1,'extended_bios_parameter_block']]]
+  ['extended_5fbios_5fparameter_5fblock_11',['extended_bios_parameter_block',['../struct__fat32__vbr_1_1extended__bios__parameter__block.html',1,'_fat32_vbr::extended_bios_parameter_block'],['../structextended__bios__parameter__block.html',1,'extended_bios_parameter_block'],['../structfs_1_1fat32_1_1VBR_1_1extended__bios__parameter__block.html',1,'fs::fat32::VBR::extended_bios_parameter_block']]]
 ];

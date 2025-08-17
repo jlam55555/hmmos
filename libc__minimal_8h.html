@@ -75,6 +75,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">libc_minimal.h File Reference</div></div>
 </div><!--header-->
@@ -83,13 +84,15 @@ $(function() {
 <p>A small subset of the C standard library that can also be used in the bootloader.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
+<code>#include &lt;stdint.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for libc_minimal.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="libc__minimal_8h__incl.png" border="0" usemap="#asrc_2common_2libc__minimal_8h" alt=""/></div>
 <map name="asrc_2common_2libc__minimal_8h" id="asrc_2common_2libc__minimal_8h">
 <area shape="rect" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="5,5,208,31"/>
-<area shape="rect" title=" " alt="" coords="69,79,144,104"/>
+<area shape="rect" title=" " alt="" coords="21,79,96,104"/>
+<area shape="rect" title=" " alt="" coords="121,79,191,104"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -97,32 +100,44 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="libc__minimal_8h__dep__incl.png" border="0" usemap="#asrc_2common_2libc__minimal_8hdep" alt=""/></div>
 <map name="asrc_2common_2libc__minimal_8hdep" id="asrc_2common_2libc__minimal_8hdep">
-<area shape="rect" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="71,5,274,31"/>
-<area shape="rect" href="page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="5,79,156,119"/>
-<area shape="rect" href="libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="180,86,352,111"/>
+<area shape="rect" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="310,5,513,31"/>
+<area shape="rect" href="page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="108,79,259,119"/>
+<area shape="rect" href="libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="325,86,497,111"/>
+<area shape="rect" href="node__hash__map_8h_source.html" title=" " alt="" coords="521,79,691,119"/>
 <area shape="rect" href="page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="5,167,156,207"/>
-<area shape="rect" href="pci_8h.html" title="Driver for the PCI (Peripheral Component Interconnect) bus." alt="" coords="189,167,324,207"/>
-<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="348,167,523,207"/>
-<area shape="rect" href="test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="380,255,491,280"/>
+<area shape="rect" href="pci_8h.html" title="Driver for the PCI (Peripheral Component Interconnect) bus." alt="" coords="180,167,315,207"/>
+<area shape="rect" href="fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="600,255,751,295"/>
+<area shape="rect" href="libc__symbols_8cc.html" title="Symbols in the std namespace required by std interfaces. If they have a trivial implementation,..." alt="" coords="390,167,550,207"/>
+<area shape="rect" href="memory_8h_source.html" title=" " alt="" coords="574,174,777,199"/>
+<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="801,167,976,207"/>
+<area shape="rect" href="string_8h_source.html" title=" " alt="" coords="785,262,971,287"/>
+<area shape="rect" href="test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="996,262,1107,287"/>
+<area shape="rect" href="leak__checker_8h.html" title="Leak checking utils for nonstd container types." alt="" coords="976,343,1127,383"/>
 </map>
 </div>
 </div>
 <p><a href="libc__minimal_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a96deb7ba5a74848afb710cc4ee6d2c08"><td class="memItemLeft" align="right" valign="top"><a id="a96deb7ba5a74848afb710cc4ee6d2c08" name="a96deb7ba5a74848afb710cc4ee6d2c08"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>__inline</b>&#160;&#160;&#160;static inline</td></tr>
+<tr class="separator:a96deb7ba5a74848afb710cc4ee6d2c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aba088e716bccbc96d42da97e96316df1"><td class="memItemLeft" align="right" valign="top"><a id="aba088e716bccbc96d42da97e96316df1" name="aba088e716bccbc96d42da97e96316df1"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><b>memcpy</b> (void *dest, const void *src, size_t n)</td></tr>
-<tr class="separator:aba088e716bccbc96d42da97e96316df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a313175102214d45434bf045db18dddf0"><td class="memItemLeft" align="right" valign="top"><a id="a313175102214d45434bf045db18dddf0" name="a313175102214d45434bf045db18dddf0"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><b>memset</b> (void *s, int c, size_t n)</td></tr>
-<tr class="separator:a313175102214d45434bf045db18dddf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a340d11725e5c81a874f508fbcdf1c5ef"><td class="memItemLeft" align="right" valign="top"><a id="a340d11725e5c81a874f508fbcdf1c5ef" name="a340d11725e5c81a874f508fbcdf1c5ef"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><b>memmove</b> (void *dest, const void *src, size_t n)</td></tr>
-<tr class="separator:a340d11725e5c81a874f508fbcdf1c5ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e6df54ee04e18a3772335580e2ed872"><td class="memItemLeft" align="right" valign="top"><a id="a9e6df54ee04e18a3772335580e2ed872" name="a9e6df54ee04e18a3772335580e2ed872"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>memcmp</b> (const void *s1, const void *s2, size_t n)</td></tr>
-<tr class="separator:a9e6df54ee04e18a3772335580e2ed872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addce6f02e04f7f89df6fbcbb561ac9ba"><td class="memItemLeft" align="right" valign="top"><a id="addce6f02e04f7f89df6fbcbb561ac9ba" name="addce6f02e04f7f89df6fbcbb561ac9ba"></a>
+__inline void *&#160;</td><td class="memItemRight" valign="bottom"><b>memcpy</b> (void *dest, const void *src, size_t n)</td></tr>
+<tr class="separator:addce6f02e04f7f89df6fbcbb561ac9ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bd606b6aec49d24c27e7b742f3e1e0e"><td class="memItemLeft" align="right" valign="top"><a id="a7bd606b6aec49d24c27e7b742f3e1e0e" name="a7bd606b6aec49d24c27e7b742f3e1e0e"></a>
+__inline void *&#160;</td><td class="memItemRight" valign="bottom"><b>memset</b> (void *s, int c, size_t n)</td></tr>
+<tr class="separator:a7bd606b6aec49d24c27e7b742f3e1e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57b901e1892e7b042eddc5beee071755"><td class="memItemLeft" align="right" valign="top"><a id="a57b901e1892e7b042eddc5beee071755" name="a57b901e1892e7b042eddc5beee071755"></a>
+__inline void *&#160;</td><td class="memItemRight" valign="bottom"><b>memmove</b> (void *dest, const void *src, size_t n)</td></tr>
+<tr class="separator:a57b901e1892e7b042eddc5beee071755"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf382944a50d7013719afc5d0fa66825"><td class="memItemLeft" align="right" valign="top"><a id="abf382944a50d7013719afc5d0fa66825" name="abf382944a50d7013719afc5d0fa66825"></a>
+__inline int&#160;</td><td class="memItemRight" valign="bottom"><b>memcmp</b> (const void *s1, const void *s2, size_t n)</td></tr>
+<tr class="separator:abf382944a50d7013719afc5d0fa66825"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A small subset of the C standard library that can also be used in the bootloader. </p>

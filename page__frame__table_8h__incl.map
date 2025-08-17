@@ -1,21 +1,21 @@
 <map id="src/kernel/mm/page_frame_table.h" name="src/kernel/mm/page_frame_table.h">
 <area shape="rect" id="node1" title="Page frame descriptors and page frame table." alt="" coords="510,5,661,45"/>
-<area shape="rect" id="node2" href="$boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="139,93,261,119"/>
-<area shape="rect" id="node6" href="$libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="313,93,431,119"/>
+<area shape="rect" id="node2" href="$boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="129,93,252,119"/>
+<area shape="rect" id="node6" href="$libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="306,93,425,119"/>
 <area shape="rect" id="node8" href="$assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="427,167,525,192"/>
 <area shape="rect" id="node11" href="$intrusive__list_8h.html" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="514,93,657,119"/>
 <area shape="rect" id="node14" href="$objutil_8h.html" title="Utility functions/macros for C++ objects." alt="" coords="681,93,781,119"/>
 <area shape="rect" id="node18" title=" " alt="" coords="804,93,879,119"/>
 <area shape="rect" id="node19" title=" " alt="" coords="903,93,956,119"/>
-<area shape="rect" id="node3" href="$memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="5,167,101,192"/>
-<area shape="rect" id="node4" title=" " alt="" coords="125,167,208,192"/>
+<area shape="rect" id="node3" href="$memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="112,167,208,192"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,167,88,192"/>
 <area shape="rect" id="node5" title=" " alt="" coords="233,167,303,192"/>
 <area shape="rect" id="node7" title=" " alt="" coords="328,167,403,192"/>
 <area shape="rect" id="node9" href="$perf_8h.html" title="Utilities for performance optimization." alt="" coords="491,240,549,265"/>
 <area shape="rect" id="node10" title=" " alt="" coords="397,240,467,265"/>
 <area shape="rect" id="node12" title=" " alt="" coords="667,240,738,265"/>
 <area shape="rect" id="node13" title=" " alt="" coords="550,167,621,192"/>
-<area shape="rect" id="node15" href="$bw_8h.html" title="Bitwise operations." alt="" coords="747,167,824,192"/>
+<area shape="rect" id="node15" href="$bw_8h.html" title="Bitwise operations, especially on structs." alt="" coords="747,167,824,192"/>
 <area shape="rect" id="node16" title=" " alt="" coords="879,240,945,265"/>
 <area shape="rect" id="node17" title=" " alt="" coords="762,240,854,265"/>
 </map>

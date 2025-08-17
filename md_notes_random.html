@@ -122,7 +122,10 @@ tmux vs. GNU screen</h1>
 <li><code>tmux</code> and <code>screen</code> panes also are a bit different. In <code>screen</code> the panes are attached to a session; each pane displays one window of the session. (Multiple panes can display the same window). In <code>tmux</code> each window contains a set of one or more panes. It's also easy to navigate between panes using the <code>find-window</code> function.</li>
 <li><code>tmux</code> also has the idea of servers and clients, although I haven't figured out how that works yet.</li>
 </ul>
-<p>Luckily, the switch was pretty seamless. Both <code>tmux</code> and <code>screen</code> use commands with an emacs-like prefix-key. I remap this to <code>C-o</code> since that doesn't conflict with my usual emacs keybindings (as <code>screen</code>'s <code>C-a</code> and <code>tmux</code>'s <code>C-b</code> both do). </p>
+<p>Luckily, the switch was pretty seamless. Both <code>tmux</code> and <code>screen</code> use commands with an emacs-like prefix-key. I remap this to <code>C-o</code> since that doesn't conflict with my usual emacs keybindings (as <code>screen</code>'s <code>C-a</code> and <code>tmux</code>'s <code>C-b</code> both do).</p>
+<h1><a class="anchor" id="autotoc_md62"></a>
+dinkumware</h1>
+<p>I was reading about <code>std::deque</code> default block sizes and came across <a href="https://stackoverflow.com/q/4088999">this criticism</a> of <a href="https://www.reddit.com/r/cpp/comments/1cuua7c/how_bad_is_the_dinkumware_std_implementation/">"dinkumware's" Microsoft C++ implementation</a>. The name does not inspire confidence, nor does that block size (which tries to keep to 16 bytes) &ndash; luckily this implementation has dead since C++14. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

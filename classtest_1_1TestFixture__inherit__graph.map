@@ -1,0 +1,4 @@
+<map id="test::TestFixture" name="test::TestFixture">
+<area shape="rect" id="node1" title="For use with TEST*_WITH_FIXTURE()." alt="" coords="5,5,132,31"/>
+<area shape="rect" id="node2" href="$classLeakChecker.html" title="Test fixture that must be used for the net allocation and net construction checks." alt="" coords="16,79,121,104"/>
+</map>

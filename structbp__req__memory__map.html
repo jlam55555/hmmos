@@ -108,12 +108,11 @@ struct <a class="el" href="structe820__mm__entry.html">e820_mm_entry</a> *&#160;
 <li>Non-reclaimable regions:<ul>
 <li>Bootloader/initial kernel stack (typically at 0xC0006000)</li>
 <li>Kernel text region (will be mapped at KERNEL_LOAD_ADDR)</li>
-<li>GDT (copied to end of kernel text region)</li>
 <li>Initial page tables</li>
 </ul>
 </li>
 <li>Bootloader-reclaimable regions:<ul>
-<li>Bootloader text region (includes E820 memory map)</li>
+<li>Bootloader text region (includes E820 memory map and GDT)</li>
 <li>Temporary bootloader dynamic memory </li>
 </ul>
 </li>

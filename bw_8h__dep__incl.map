@@ -1,6 +1,8 @@
 <map id="src/kernel/util/bw.h" name="src/kernel/util/bw.h">
-<area shape="rect" id="node1" title="Bitwise operations." alt="" coords="17,5,161,31"/>
-<area shape="rect" id="node2" href="$objutil_8h.html" title="Utility functions/macros for C++ objects." alt="" coords="5,79,172,104"/>
-<area shape="rect" id="node3" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="13,152,164,192"/>
-<area shape="rect" id="node4" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="13,240,164,280"/>
+<area shape="rect" id="node1" title="Bitwise operations, especially on structs." alt="" coords="109,5,253,31"/>
+<area shape="rect" id="node2" href="$objutil_8h.html" title="Utility functions/macros for C++ objects." alt="" coords="97,79,264,104"/>
+<area shape="rect" id="node3" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="5,152,156,192"/>
+<area shape="rect" id="node5" href="$memory_8h_source.html" title=" " alt="" coords="181,159,383,185"/>
+<area shape="rect" id="node4" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="5,240,156,280"/>
+<area shape="rect" id="node6" href="$fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="207,240,357,280"/>
 </map>

@@ -83,25 +83,35 @@ $(function() {
 
 <p>Simple implementation of C++20/23-ish string_view. Features are implemented as needed.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="libc_8h_source.html">nonstd/libc.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;nonstd/hash_bytes.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="libc_8h_source.html">nonstd/libc.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="perf_8h_source.html">perf.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="assert_8h_source.html">util/assert.h</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for string_view.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="string__view_8h__incl.png" border="0" usemap="#asrc_2kernel_2nonstd_2string__view_8h" alt=""/></div>
 <map name="asrc_2kernel_2nonstd_2string__view_8h" id="asrc_2kernel_2nonstd_2string__view_8h">
-<area shape="rect" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="303,5,477,45"/>
-<area shape="rect" href="libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="184,93,289,119"/>
-<area shape="rect" href="perf_8h.html" title="Utilities for performance optimization." alt="" coords="313,93,371,119"/>
-<area shape="rect" title=" " alt="" coords="395,93,481,119"/>
-<area shape="rect" title=" " alt="" coords="505,93,576,119"/>
-<area shape="rect" href="libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="5,167,124,192"/>
-<area shape="rect" title=" " alt="" coords="75,240,150,265"/>
-<area shape="rect" title=" " alt="" coords="199,167,274,192"/>
-<area shape="rect" title=" " alt="" coords="298,167,381,192"/>
-<area shape="rect" title=" " alt="" coords="405,167,476,192"/>
+<area shape="rect" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="533,5,707,45"/>
+<area shape="rect" href="hash__bytes_8h_source.html" title=" " alt="" coords="67,93,223,119"/>
+<area shape="rect" title=" " alt="" coords="110,167,181,192"/>
+<area shape="rect" href="libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="429,93,534,119"/>
+<area shape="rect" href="perf_8h.html" title="Utilities for performance optimization." alt="" coords="725,167,784,192"/>
+<area shape="rect" href="assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="657,93,756,119"/>
+<area shape="rect" title=" " alt="" coords="780,93,865,119"/>
+<area shape="rect" title=" " alt="" coords="889,93,967,119"/>
+<area shape="rect" title=" " alt="" coords="5,167,85,192"/>
+<area shape="rect" href="libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="205,167,323,192"/>
+<area shape="rect" title=" " alt="" coords="347,167,418,192"/>
+<area shape="rect" title=" " alt="" coords="443,167,520,192"/>
+<area shape="rect" title=" " alt="" coords="544,167,611,192"/>
+<area shape="rect" title=" " alt="" coords="635,167,701,192"/>
+<area shape="rect" title=" " alt="" coords="179,240,253,265"/>
+<area shape="rect" title=" " alt="" coords="278,240,349,265"/>
+<area shape="rect" title=" " alt="" coords="808,167,877,192"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -109,8 +119,11 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="string__view_8h__dep__incl.png" border="0" usemap="#asrc_2kernel_2nonstd_2string__view_8hdep" alt=""/></div>
 <map name="asrc_2kernel_2nonstd_2string__view_8hdep" id="asrc_2kernel_2nonstd_2string__view_8hdep">
-<area shape="rect" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="5,5,180,45"/>
-<area shape="rect" href="test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="37,93,148,119"/>
+<area shape="rect" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="187,5,361,45"/>
+<area shape="rect" href="fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="5,93,156,133"/>
+<area shape="rect" href="string_8h_source.html" title=" " alt="" coords="181,101,367,126"/>
+<area shape="rect" href="test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="392,101,503,126"/>
+<area shape="rect" href="leak__checker_8h.html" title="Leak checking utils for nonstd container types." alt="" coords="372,181,523,221"/>
 </map>
 </div>
 </div>
@@ -121,12 +134,24 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnonstd_1_1string__view.html">nonstd::string_view</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nonstd version of std::string_view.  <a href="classnonstd_1_1string__view.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnonstd_1_1hash_3_01string__view_01_4.html">nonstd::hash&lt; string_view &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnonstd_1_1hash_3_01const_01char_01_5_01_4.html">nonstd::hash&lt; const char * &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnonstd_1_1hash_3_01const_01char_0fN_0e_4.html">nonstd::hash&lt; const char[N]&gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a899a40a93658e96d321087433d413bd4"><td class="memItemLeft" align="right" valign="top"><a id="a899a40a93658e96d321087433d413bd4" name="a899a40a93658e96d321087433d413bd4"></a>
-constexpr <a class="el" href="classnonstd_1_1string__view.html">nonstd::string_view</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator&quot;&quot;_sv</b> (const char *s, size_t len)</td></tr>
-<tr class="separator:a899a40a93658e96d321087433d413bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34198bef77e0a2997e6926d16a8abdbb"><td class="memItemLeft" align="right" valign="top"><a id="a34198bef77e0a2997e6926d16a8abdbb" name="a34198bef77e0a2997e6926d16a8abdbb"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>nonstd::operator==</b> (const string_view &amp;lhs, const string_view &amp;rhs)</td></tr>
+<tr class="separator:a34198bef77e0a2997e6926d16a8abdbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add58d93c4142b39119d21c5c87ddbd11"><td class="memItemLeft" align="right" valign="top"><a id="add58d93c4142b39119d21c5c87ddbd11" name="add58d93c4142b39119d21c5c87ddbd11"></a>
+constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>nonstd::operator&lt;=&gt;</b> (const string_view &amp;lhs, const string_view &amp;rhs)</td></tr>
+<tr class="separator:add58d93c4142b39119d21c5c87ddbd11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a87cdc060e7f2479f52e9fe7fc6db4b"><td class="memItemLeft" align="right" valign="top"><a id="a3a87cdc060e7f2479f52e9fe7fc6db4b" name="a3a87cdc060e7f2479f52e9fe7fc6db4b"></a>
+constexpr <a class="el" href="classnonstd_1_1string__view.html">nonstd::string_view</a>&#160;</td><td class="memItemRight" valign="bottom"><b>nonstd::operator&quot;&quot;_sv</b> (const char *s, size_t len)</td></tr>
+<tr class="separator:a3a87cdc060e7f2479f52e9fe7fc6db4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Simple implementation of C++20/23-ish string_view. Features are implemented as needed. </p>

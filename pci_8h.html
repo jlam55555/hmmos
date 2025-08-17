@@ -95,17 +95,19 @@ Include dependency graph for pci.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="pci_8h__incl.png" border="0" usemap="#asrc_2kernel_2drivers_2pci_8h" alt=""/></div>
 <map name="asrc_2kernel_2drivers_2pci_8h" id="asrc_2kernel_2drivers_2pci_8h">
-<area shape="rect" title="Driver for the PCI (Peripheral Component Interconnect) bus." alt="" coords="252,5,387,45"/>
-<area shape="rect" href="asm_8h.html" title="C wrappers around common asm functions." alt="" coords="63,93,125,119"/>
-<area shape="rect" href="libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="155,93,260,119"/>
-<area shape="rect" title=" " alt="" coords="285,93,354,119"/>
-<area shape="rect" title=" " alt="" coords="378,93,445,119"/>
-<area shape="rect" title=" " alt="" coords="469,93,522,119"/>
-<area shape="rect" title=" " alt="" coords="5,167,76,192"/>
-<area shape="rect" href="libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="100,167,219,192"/>
-<area shape="rect" title=" " alt="" coords="170,240,245,265"/>
-<area shape="rect" title=" " alt="" coords="294,167,369,192"/>
-<area shape="rect" title=" " alt="" coords="393,167,475,192"/>
+<area shape="rect" title="Driver for the PCI (Peripheral Component Interconnect) bus." alt="" coords="428,5,563,45"/>
+<area shape="rect" href="asm_8h.html" title="C wrappers around common asm functions." alt="" coords="163,93,225,119"/>
+<area shape="rect" href="libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="352,93,457,119"/>
+<area shape="rect" title=" " alt="" coords="603,167,670,192"/>
+<area shape="rect" title=" " alt="" coords="533,93,602,119"/>
+<area shape="rect" title=" " alt="" coords="626,93,679,119"/>
+<area shape="rect" title=" " alt="" coords="5,240,76,265"/>
+<area shape="rect" href="libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="79,167,197,192"/>
+<area shape="rect" title=" " alt="" coords="221,167,292,192"/>
+<area shape="rect" title=" " alt="" coords="317,167,394,192"/>
+<area shape="rect" title=" " alt="" coords="419,167,489,192"/>
+<area shape="rect" title=" " alt="" coords="513,167,579,192"/>
+<area shape="rect" title=" " alt="" coords="101,240,175,265"/>
 </map>
 </div>
 </div>
@@ -182,7 +184,8 @@ constexpr unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>drivers
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Driver for the PCI (Peripheral Component Interconnect) bus. </p>
-<p>For simplicity, this doesn't use the new features in PCIe (primarily the memory-mapped configuration space). PCIe is backward-compatible so this should still work. </p>
+<p>For simplicity, this doesn't use the new features in PCIe (primarily the memory-mapped configuration space). PCIe is backward-compatible so this should still work.</p>
+<p>TODO: make this thread-safe </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a4dd4c7c588f3cb8ec481101f144915fc" name="a4dd4c7c588f3cb8ec481101f144915fc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4dd4c7c588f3cb8ec481101f144915fc">&#9670;&#160;</a></span>enumerate_functions()</h2>

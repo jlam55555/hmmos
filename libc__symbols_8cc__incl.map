@@ -1,4 +1,14 @@
 <map id="src/kernel/nonstd/libc_symbols.cc" name="src/kernel/nonstd/libc_symbols.cc">
-<area shape="rect" id="node1" title="Symbols in the std namespace required by std interfaces. If they have a trivial implementation,..." alt="" coords="5,5,165,45"/>
-<area shape="rect" id="node2" title=" " alt="" coords="61,93,110,119"/>
+<area shape="rect" id="node1" title="Symbols in the std namespace required by std interfaces. If they have a trivial implementation,..." alt="" coords="389,5,549,45"/>
+<area shape="rect" id="node2" href="$libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="305,93,410,119"/>
+<area shape="rect" id="node11" title=" " alt="" coords="435,93,504,119"/>
+<area shape="rect" id="node12" title=" " alt="" coords="529,93,578,119"/>
+<area shape="rect" id="node3" href="$libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="31,167,150,192"/>
+<area shape="rect" id="node6" title=" " alt="" coords="174,167,245,192"/>
+<area shape="rect" id="node7" title=" " alt="" coords="269,167,347,192"/>
+<area shape="rect" id="node8" title=" " alt="" coords="371,167,442,192"/>
+<area shape="rect" id="node9" title=" " alt="" coords="467,167,533,192"/>
+<area shape="rect" id="node10" title=" " alt="" coords="558,167,623,192"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,240,80,265"/>
+<area shape="rect" id="node5" title=" " alt="" coords="105,240,175,265"/>
 </map>

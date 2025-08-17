@@ -84,21 +84,25 @@ $(function() {
 <p>Implementation of a small part of the C standard library, for kernel use.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="libc__minimal_8h_source.html">libc_minimal.h</a>&quot;</code><br />
-<code>#include &lt;stdarg.h&gt;</code><br />
-<code>#include &lt;stdbool.h&gt;</code><br />
-<code>#include &lt;stddef.h&gt;</code><br />
-<code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &lt;cstdarg&gt;</code><br />
+<code>#include &lt;cstdbool&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;cstdlib&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for libc.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="libc_8h__incl.png" border="0" usemap="#asrc_2kernel_2nonstd_2libc_8h" alt=""/></div>
 <map name="asrc_2kernel_2nonstd_2libc_8h" id="asrc_2kernel_2nonstd_2libc_8h">
-<area shape="rect" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="151,5,323,31"/>
-<area shape="rect" href="libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="5,79,124,104"/>
-<area shape="rect" title=" " alt="" coords="75,152,150,177"/>
-<area shape="rect" title=" " alt="" coords="199,79,274,104"/>
-<area shape="rect" title=" " alt="" coords="298,79,381,104"/>
-<area shape="rect" title=" " alt="" coords="405,79,476,104"/>
+<area shape="rect" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="271,5,443,31"/>
+<area shape="rect" href="libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="31,79,150,104"/>
+<area shape="rect" title=" " alt="" coords="174,79,245,104"/>
+<area shape="rect" title=" " alt="" coords="269,79,347,104"/>
+<area shape="rect" title=" " alt="" coords="371,79,442,104"/>
+<area shape="rect" title=" " alt="" coords="467,79,533,104"/>
+<area shape="rect" title=" " alt="" coords="558,79,623,104"/>
+<area shape="rect" title=" " alt="" coords="5,152,80,177"/>
+<area shape="rect" title=" " alt="" coords="105,152,175,177"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -106,10 +110,15 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="libc_8h__dep__incl.png" border="0" usemap="#asrc_2kernel_2nonstd_2libc_8hdep" alt=""/></div>
 <map name="asrc_2kernel_2nonstd_2libc_8hdep" id="asrc_2kernel_2nonstd_2libc_8hdep">
-<area shape="rect" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="76,5,248,31"/>
+<area shape="rect" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="209,5,381,31"/>
 <area shape="rect" href="pci_8h.html" title="Driver for the PCI (Peripheral Component Interconnect) bus." alt="" coords="5,79,140,119"/>
-<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="164,79,339,119"/>
-<area shape="rect" href="test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="196,167,307,192"/>
+<area shape="rect" href="fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="425,167,576,207"/>
+<area shape="rect" href="libc__symbols_8cc.html" title="Symbols in the std namespace required by std interfaces. If they have a trivial implementation,..." alt="" coords="215,79,375,119"/>
+<area shape="rect" href="memory_8h_source.html" title=" " alt="" coords="399,86,602,111"/>
+<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="627,79,801,119"/>
+<area shape="rect" href="string_8h_source.html" title=" " alt="" coords="610,174,797,199"/>
+<area shape="rect" href="test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="821,174,932,199"/>
+<area shape="rect" href="leak__checker_8h.html" title="Leak checking utils for nonstd container types." alt="" coords="801,255,952,295"/>
 </map>
 </div>
 </div>
@@ -145,6 +154,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nonstd::vsprintf</b> (
 <tr class="memitem:a1635a9c9d3818be74854da3570adec03"><td class="memItemLeft" align="right" valign="top"><a id="a1635a9c9d3818be74854da3570adec03" name="a1635a9c9d3818be74854da3570adec03"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>nonstd::vsnprintf</b> (char *s, size_t n, const char *fmt, va_list) __attribute__((nothrow))</td></tr>
 <tr class="separator:a1635a9c9d3818be74854da3570adec03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ea92c23aa451f240531da6c72d8dad7"><td class="memItemLeft" align="right" valign="top"><a id="a1ea92c23aa451f240531da6c72d8dad7" name="a1ea92c23aa451f240531da6c72d8dad7"></a>
+std::ldiv_t&#160;</td><td class="memItemRight" valign="bottom"><b>nonstd::ldiv</b> (long numer, long denom)  throw ()</td></tr>
+<tr class="separator:a1ea92c23aa451f240531da6c72d8dad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>

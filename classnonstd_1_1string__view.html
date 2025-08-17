@@ -75,6 +75,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classnonstd_1_1string__view-members.html">List of all members</a>  </div>
@@ -87,41 +89,75 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="string__view_8h_source.html">string_view.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a2c8f646d42293e0592036bdc81c8af9a"><td class="memItemLeft" align="right" valign="top"><a id="a2c8f646d42293e0592036bdc81c8af9a" name="a2c8f646d42293e0592036bdc81c8af9a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>iterator</b> = IterImpl</td></tr>
+<tr class="separator:a2c8f646d42293e0592036bdc81c8af9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a1ffe9d9a5ec0663fa6a9074c7e3328"><td class="memItemLeft" align="right" valign="top"><a id="a5a1ffe9d9a5ec0663fa6a9074c7e3328" name="a5a1ffe9d9a5ec0663fa6a9074c7e3328"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>reverse_iterator</b> = std::reverse_iterator&lt; IterImpl &gt;</td></tr>
+<tr class="separator:a5a1ffe9d9a5ec0663fa6a9074c7e3328"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a0dd01d0f6f5920f1a251939cf3337d9f"><td class="memItemLeft" align="right" valign="top"><a id="a0dd01d0f6f5920f1a251939cf3337d9f" name="a0dd01d0f6f5920f1a251939cf3337d9f"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>string_view</b> (const <a class="el" href="classnonstd_1_1string__view.html">string_view</a> &amp;other)=default</td></tr>
+<tr class="separator:a0dd01d0f6f5920f1a251939cf3337d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05cfa0d5ee871e747ea5fafce154bd84"><td class="memItemLeft" align="right" valign="top"><a id="a05cfa0d5ee871e747ea5fafce154bd84" name="a05cfa0d5ee871e747ea5fafce154bd84"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>string_view</b> (const char *s)</td></tr>
 <tr class="separator:a05cfa0d5ee871e747ea5fafce154bd84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a516451176967e249662b0e4e1d83dfcb"><td class="memItemLeft" align="right" valign="top"><a id="a516451176967e249662b0e4e1d83dfcb" name="a516451176967e249662b0e4e1d83dfcb"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>string_view</b> (const char *s, size_t len)</td></tr>
 <tr class="separator:a516451176967e249662b0e4e1d83dfcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e2cf4eeb953dc0486c3d5c5c66cac43"><td class="memTemplParams" colspan="2"><a id="a0e2cf4eeb953dc0486c3d5c5c66cac43" name="a0e2cf4eeb953dc0486c3d5c5c66cac43"></a>
+template&lt;std::contiguous_iterator InputIt&gt; </td></tr>
+<tr class="memitem:a0e2cf4eeb953dc0486c3d5c5c66cac43"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>string_view</b> (InputIt begin, InputIt end)</td></tr>
+<tr class="separator:a0e2cf4eeb953dc0486c3d5c5c66cac43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac34ade0b62cc58ea71e648aa8d7a1d0e"><td class="memItemLeft" align="right" valign="top"><a id="ac34ade0b62cc58ea71e648aa8d7a1d0e" name="ac34ade0b62cc58ea71e648aa8d7a1d0e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>string_view</b> (std::nullptr_t)=delete</td></tr>
+<tr class="separator:ac34ade0b62cc58ea71e648aa8d7a1d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56f81f656e35cd8ccca3bfb9fafa6041"><td class="memItemLeft" align="right" valign="top"><a id="a56f81f656e35cd8ccca3bfb9fafa6041" name="a56f81f656e35cd8ccca3bfb9fafa6041"></a>
+constexpr <a class="el" href="classnonstd_1_1string__view.html">string_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classnonstd_1_1string__view.html">string_view</a> &amp;rhs)=default</td></tr>
+<tr class="separator:a56f81f656e35cd8ccca3bfb9fafa6041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b14f71e22727aecdebd75dd1f43dc1d"><td class="memItemLeft" align="right" valign="top"><a id="a6b14f71e22727aecdebd75dd1f43dc1d" name="a6b14f71e22727aecdebd75dd1f43dc1d"></a>
+constexpr iterator&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () const</td></tr>
+<tr class="separator:a6b14f71e22727aecdebd75dd1f43dc1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aa3de22a33fc74c833e30dc83c6b9e5"><td class="memItemLeft" align="right" valign="top"><a id="a2aa3de22a33fc74c833e30dc83c6b9e5" name="a2aa3de22a33fc74c833e30dc83c6b9e5"></a>
+constexpr iterator&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const</td></tr>
+<tr class="separator:a2aa3de22a33fc74c833e30dc83c6b9e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c0876f330211fe4780175bf31a38b52"><td class="memItemLeft" align="right" valign="top"><a id="a5c0876f330211fe4780175bf31a38b52" name="a5c0876f330211fe4780175bf31a38b52"></a>
+constexpr reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>rbegin</b> () const</td></tr>
+<tr class="separator:a5c0876f330211fe4780175bf31a38b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a069191cf9c51edf84809052461667c53"><td class="memItemLeft" align="right" valign="top"><a id="a069191cf9c51edf84809052461667c53" name="a069191cf9c51edf84809052461667c53"></a>
+constexpr reverse_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>rend</b> () const</td></tr>
+<tr class="separator:a069191cf9c51edf84809052461667c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae52353a3eb656f02765ee01f82229d6e"><td class="memItemLeft" align="right" valign="top"><a id="ae52353a3eb656f02765ee01f82229d6e" name="ae52353a3eb656f02765ee01f82229d6e"></a>
+constexpr const char&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (size_t pos) const</td></tr>
+<tr class="separator:ae52353a3eb656f02765ee01f82229d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31b4bb59be7d9bdc34aa7590a4e76d78"><td class="memItemLeft" align="right" valign="top"><a id="a31b4bb59be7d9bdc34aa7590a4e76d78" name="a31b4bb59be7d9bdc34aa7590a4e76d78"></a>
+constexpr const char&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (size_t pos) const</td></tr>
+<tr class="separator:a31b4bb59be7d9bdc34aa7590a4e76d78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb784b78271983f29435107077356434"><td class="memItemLeft" align="right" valign="top"><a id="adb784b78271983f29435107077356434" name="adb784b78271983f29435107077356434"></a>
+constexpr const char&#160;</td><td class="memItemRight" valign="bottom"><b>front</b> () const</td></tr>
+<tr class="separator:adb784b78271983f29435107077356434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08f6c132fd092e404453e9fda0db5632"><td class="memItemLeft" align="right" valign="top"><a id="a08f6c132fd092e404453e9fda0db5632" name="a08f6c132fd092e404453e9fda0db5632"></a>
+constexpr const char&#160;</td><td class="memItemRight" valign="bottom"><b>back</b> () const</td></tr>
+<tr class="separator:a08f6c132fd092e404453e9fda0db5632"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bb2af0831c54ec91dff1ae7abee6860"><td class="memItemLeft" align="right" valign="top"><a id="a4bb2af0831c54ec91dff1ae7abee6860" name="a4bb2af0831c54ec91dff1ae7abee6860"></a>
 constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><b>data</b> () const</td></tr>
 <tr class="separator:a4bb2af0831c54ec91dff1ae7abee6860"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab59ff39c03253f786e828c1f16076b39"><td class="memItemLeft" align="right" valign="top"><a id="ab59ff39c03253f786e828c1f16076b39" name="ab59ff39c03253f786e828c1f16076b39"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>length</b> () const</td></tr>
-<tr class="separator:ab59ff39c03253f786e828c1f16076b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a732ef39f9516bc7a6178ad0d92c1c073"><td class="memItemLeft" align="right" valign="top"><a id="a732ef39f9516bc7a6178ad0d92c1c073" name="a732ef39f9516bc7a6178ad0d92c1c073"></a>
 constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
 <tr class="separator:a732ef39f9516bc7a6178ad0d92c1c073"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec30a00ee5cef90e3d15d14e7a34a493"><td class="memItemLeft" align="right" valign="top"><a id="aec30a00ee5cef90e3d15d14e7a34a493" name="aec30a00ee5cef90e3d15d14e7a34a493"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classnonstd_1_1string__view.html">string_view</a> &amp;rhs) const</td></tr>
-<tr class="separator:aec30a00ee5cef90e3d15d14e7a34a493"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6eeea6232bf8b50d60544c60c7b724d9"><td class="memItemLeft" align="right" valign="top"><a id="a6eeea6232bf8b50d60544c60c7b724d9" name="a6eeea6232bf8b50d60544c60c7b724d9"></a>
-constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;=&gt;</b> (const <a class="el" href="classnonstd_1_1string__view.html">string_view</a> &amp;rhs) const</td></tr>
-<tr class="separator:a6eeea6232bf8b50d60544c60c7b724d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67ceb028288becc07c6e80bc8ca641f1"><td class="memItemLeft" align="right" valign="top"><a id="a67ceb028288becc07c6e80bc8ca641f1" name="a67ceb028288becc07c6e80bc8ca641f1"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>find</b> (<a class="el" href="classnonstd_1_1string__view.html">string_view</a> needle) const</td></tr>
-<tr class="separator:a67ceb028288becc07c6e80bc8ca641f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7be3af966ba340f5c64e8a84dba969ea"><td class="memItemLeft" align="right" valign="top"><a id="a7be3af966ba340f5c64e8a84dba969ea" name="a7be3af966ba340f5c64e8a84dba969ea"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>find</b> (char needle) const</td></tr>
-<tr class="separator:a7be3af966ba340f5c64e8a84dba969ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c1c6df8d9dff2b75281e2cd527d63da"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classnonstd_1_1string__view.html">string_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnonstd_1_1string__view.html#a9c1c6df8d9dff2b75281e2cd527d63da">substr</a> (int32_t start, size_t count=npos) const</td></tr>
-<tr class="memdesc:a9c1c6df8d9dff2b75281e2cd527d63da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a substring of the original <a class="el" href="classnonstd_1_1string__view.html" title="Nonstd version of std::string_view.">string_view</a>.  <br /></td></tr>
+<tr class="memitem:ab59ff39c03253f786e828c1f16076b39"><td class="memItemLeft" align="right" valign="top"><a id="ab59ff39c03253f786e828c1f16076b39" name="ab59ff39c03253f786e828c1f16076b39"></a>
+constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>length</b> () const</td></tr>
+<tr class="separator:ab59ff39c03253f786e828c1f16076b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99e91e3b35e6f3ce1baa160abc8cc9ef"><td class="memItemLeft" align="right" valign="top"><a id="a99e91e3b35e6f3ce1baa160abc8cc9ef" name="a99e91e3b35e6f3ce1baa160abc8cc9ef"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</td></tr>
+<tr class="separator:a99e91e3b35e6f3ce1baa160abc8cc9ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c1c6df8d9dff2b75281e2cd527d63da"><td class="memItemLeft" align="right" valign="top"><a id="a9c1c6df8d9dff2b75281e2cd527d63da" name="a9c1c6df8d9dff2b75281e2cd527d63da"></a>
+constexpr <a class="el" href="classnonstd_1_1string__view.html">string_view</a>&#160;</td><td class="memItemRight" valign="bottom"><b>substr</b> (int32_t start, size_t count=npos) const</td></tr>
 <tr class="separator:a9c1c6df8d9dff2b75281e2cd527d63da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac798b89b6976d91522b8e637260c7e6"><td class="memItemLeft" align="right" valign="top"><a id="aac798b89b6976d91522b8e637260c7e6" name="aac798b89b6976d91522b8e637260c7e6"></a>
-constexpr <a class="el" href="classnonstd_1_1string__view.html">string_view</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classnonstd_1_1string__view.html">string_view</a> &amp;rhs)</td></tr>
-<tr class="separator:aac798b89b6976d91522b8e637260c7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae56f09adf0a35a0f85a3e835382b486e"><td class="memItemLeft" align="right" valign="top"><a id="ae56f09adf0a35a0f85a3e835382b486e" name="ae56f09adf0a35a0f85a3e835382b486e"></a>
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>starts_with</b> (<a class="el" href="classnonstd_1_1string__view.html">string_view</a> needle)</td></tr>
 <tr class="separator:ae56f09adf0a35a0f85a3e835382b486e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,6 +170,12 @@ constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>ends_with</
 <tr class="memitem:a82632eaf4296f47a8dd06cbbcdb6df2a"><td class="memItemLeft" align="right" valign="top"><a id="a82632eaf4296f47a8dd06cbbcdb6df2a" name="a82632eaf4296f47a8dd06cbbcdb6df2a"></a>
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>ends_with</b> (char needle)</td></tr>
 <tr class="separator:a82632eaf4296f47a8dd06cbbcdb6df2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67ceb028288becc07c6e80bc8ca641f1"><td class="memItemLeft" align="right" valign="top"><a id="a67ceb028288becc07c6e80bc8ca641f1" name="a67ceb028288becc07c6e80bc8ca641f1"></a>
+constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>find</b> (<a class="el" href="classnonstd_1_1string__view.html">string_view</a> needle) const</td></tr>
+<tr class="separator:a67ceb028288becc07c6e80bc8ca641f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7be3af966ba340f5c64e8a84dba969ea"><td class="memItemLeft" align="right" valign="top"><a id="a7be3af966ba340f5c64e8a84dba969ea" name="a7be3af966ba340f5c64e8a84dba969ea"></a>
+constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>find</b> (char needle) const</td></tr>
+<tr class="separator:a7be3af966ba340f5c64e8a84dba969ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81c0ce3e6ea7baa9f4bf373bbf8c0fcc"><td class="memItemLeft" align="right" valign="top"><a id="a81c0ce3e6ea7baa9f4bf373bbf8c0fcc" name="a81c0ce3e6ea7baa9f4bf373bbf8c0fcc"></a>
 constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>contains</b> (<a class="el" href="classnonstd_1_1string__view.html">string_view</a> needle)</td></tr>
 <tr class="separator:a81c0ce3e6ea7baa9f4bf373bbf8c0fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,47 +188,7 @@ static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>np
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Nonstd version of std::string_view. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9c1c6df8d9dff2b75281e2cd527d63da" name="a9c1c6df8d9dff2b75281e2cd527d63da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c1c6df8d9dff2b75281e2cd527d63da">&#9670;&#160;</a></span>substr()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classnonstd_1_1string__view.html">string_view</a> nonstd::string_view::substr </td>
-          <td>(</td>
-          <td class="paramtype">int32_t&#160;</td>
-          <td class="paramname"><em>start</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>count</em> = <code>npos</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns a substring of the original <a class="el" href="classnonstd_1_1string__view.html" title="Nonstd version of std::string_view.">string_view</a>. </p>
-<p>This is different behavior than the standard, since this doesn't throw if out of bounds. Instead, it silently crops to the bounds. Clearly will also have unwanted behavior if <code>start</code> is a negative signed int. </p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/kernel/nonstd/<a class="el" href="string__view_8h_source.html">string_view.h</a></li>
 </ul>
 </div><!-- contents -->

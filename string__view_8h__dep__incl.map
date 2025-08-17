@@ -1,4 +1,7 @@
 <map id="src/kernel/nonstd/string_view.h" name="src/kernel/nonstd/string_view.h">
-<area shape="rect" id="node1" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="5,5,180,45"/>
-<area shape="rect" id="node2" href="$test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="37,93,148,119"/>
+<area shape="rect" id="node1" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="187,5,361,45"/>
+<area shape="rect" id="node2" href="$fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="5,93,156,133"/>
+<area shape="rect" id="node3" href="$string_8h_source.html" title=" " alt="" coords="181,101,367,126"/>
+<area shape="rect" id="node4" href="$test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="392,101,503,126"/>
+<area shape="rect" id="node5" href="$leak__checker_8h.html" title="Leak checking utils for nonstd container types." alt="" coords="372,181,523,221"/>
 </map>

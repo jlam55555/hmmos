@@ -7,6 +7,8 @@ var searchData=
   ['testfixture_4',['TestFixture',['../classtest_1_1TestFixture.html',1,'test']]],
   ['testinfo_5',['TestInfo',['../structtest_1_1detail_1_1TestInfo.html',1,'test::detail']]],
   ['testscheduler_6',['TestScheduler',['../classsched_1_1TestScheduler.html',1,'sched']]],
-  ['timer_2eh_7',['timer.h',['../timer_8h.html',1,'']]],
-  ['total_5fmem_5fbytes_8',['total_mem_bytes',['../classmem_1_1phys_1_1PageFrameTable.html#a39b5ed0739e6b4c0673281151e4a8d27',1,'mem::phys::PageFrameTable']]]
+  ['teststructtoemplace_7',['TestStructToEmplace',['../structTestStructToEmplace.html',1,'']]],
+  ['timer_2eh_8',['timer.h',['../timer_8h.html',1,'']]],
+  ['total_5fmem_5fbytes_9',['total_mem_bytes',['../classmem_1_1phys_1_1PageFrameTable.html#a39b5ed0739e6b4c0673281151e4a8d27',1,'mem::phys::PageFrameTable']]],
+  ['tss_10',['TSS',['../structarch_1_1gdt_1_1TSS.html',1,'arch::gdt']]]
 ];
