@@ -17,7 +17,7 @@ High-level roadmap for HmmOS:
 - Userspace processes
   - [X] Kernel threads
   - [X] Thread scheduling
-  - [ ] ELF loader
+  - [X] ELF loader
   - [ ] Syscalls
   - [ ] Shared libraries
   - Sample programs
@@ -27,13 +27,14 @@ High-level roadmap for HmmOS:
   - Filesystem drivers
     - [X] FAT32
 	- [ ] ext2
-  - [ ] VFS layer
+  - [X] VFS layer
     - [ ] LRU page cache
 - Device drivers (very simple)
   - [X] Serial port
   - [X] BIOS text mode display
   - [X] ACPI
   - [X] AHCI (SATA)
+  - [ ] TTY
   - [ ] Keyboard
   - [ ] Graphics
   - [ ] UDP

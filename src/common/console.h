@@ -42,6 +42,10 @@ void console_printw(const uint16_t n);
 void console_printl(const uint32_t n);
 void console_printq(const uint64_t n);
 
+/// Used by the kernel; switch the VGA buf to the HHDM-mapped address
+/// since userspace processes don't use the direct low memory map.
+void console_use_hhdm();
+
 #ifdef __cplusplus
 }
 #endif

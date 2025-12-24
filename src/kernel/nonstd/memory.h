@@ -1,3 +1,5 @@
+#pragma once
+
 #include "nonstd/libc.h"
 #include "util/objutil.h"
 namespace nonstd {

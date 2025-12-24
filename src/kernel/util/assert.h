@@ -1,10 +1,11 @@
 #pragma once
-#include "perf.h"
-#include <cassert>
 
 /// \file
 /// \brief Runtime assertion macros. Note that `static_assert` will
 /// remain as it is.
+
+#include "perf.h"
+#include <cassert>
 
 /// \brief Run-time assertion.
 ///
@@ -25,3 +26,6 @@
 #else
 #define DEBUG_ASSERT(...)
 #endif
+
+/// Implication boolean predicate: p => q
+constexpr bool implies(bool p, bool q) { return !p | q; }

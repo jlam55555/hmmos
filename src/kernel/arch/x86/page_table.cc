@@ -3,9 +3,10 @@
 #include "mm/virt.h"
 #include "nonstd/libc.h"
 #include "perf.h"
+#include "util/algorithm.h"
 #include <cstddef>
 
-namespace {
+namespace arch::page_table {
 
 /// 4MB page directory table regular (non-hupepage) entry.
 struct PageDirectoryEntry {
@@ -116,9 +117,6 @@ PageTableEntry *fetch_pte(void *virt) {
   return &pt[pt_idx];
 }
 
-} // namespace
-
-namespace arch::page_table {
 void enumerate_page_table(const PageTableEntry *table,
                           unsigned page_table_idx) {
   uint32_t virt_addr_base = page_table_idx * HUGE_PG_SZ;
@@ -147,13 +145,14 @@ void enumerate_page_tables() {
                      (uint64_t)hugepg.addr * HUGE_PG_SZ);
     } else {
       enumerate_page_table(
-          reinterpret_cast<const PageTableEntry *>(table[i].addr << PG_SZ_BITS),
+          reinterpret_cast<const PageTableEntry *>(
+              mem::virt::direct_to_hhdm(table[i].addr << PG_SZ_BITS)),
           i);
     }
   }
 }
 
-bool map(uint64_t phys, void *virt, bool uncacheable) {
+bool map(uint64_t phys, void *virt, bool u_s, bool r_w, bool uncacheable) {
   assert(PG_ALIGNED(phys));
   assert(PG_ALIGNED((size_t)virt));
 
@@ -166,7 +165,7 @@ bool map(uint64_t phys, void *virt, bool uncacheable) {
   auto &pde = pd[pd_idx];
   if (pde.p) {
     // If page directory entry exists, check that it isn't a hugepage
-    // (not supported by HmmOS).
+    // (not supported by HmmOS for userspace mappings).
     assert(!pde.ps);
   } else {
     // Allocate and clear a new page table.
@@ -179,8 +178,13 @@ bool map(uint64_t phys, void *virt, bool uncacheable) {
     // Initialize page directory entry.
     nonstd::memset(&pde, 0, sizeof pde);
     pde.p = 1;
+
+    // Always mark PD entries as userspace-accessible and
+    // writable. The permissions will be controlled on the page table
+    // level.
     pde.r_w = 1;
-    pde.u_s = 0;
+    pde.u_s = 1;
+
     pde.pwt = 0;
     pde.pcd = 0;
     pde.a = 0;
@@ -201,8 +205,8 @@ bool map(uint64_t phys, void *virt, bool uncacheable) {
 
   nonstd::memset(&pte, 0, sizeof pte);
   pte.p = 1;
-  pte.r_w = 1;
-  pte.u_s = 0;
+  pte.r_w = r_w;
+  pte.u_s = u_s;
   pte.pwt = 0;
   pte.pcd = uncacheable;
   pte.a = 0;
@@ -238,6 +242,41 @@ bool mark_uncacheable(void *virt) {
   pte->pcd = 1;
   __asm__ volatile("invlpg %0" : : "m"(*(unsigned *)virt));
   return true;
+}
+
+PageDirectoryEntry *clone_kernel_page_directory(PageDirectoryEntry *orig) {
+  const PageDirectoryEntry *pd = get_page_directory();
+  PageDirectoryEntry *new_pd =
+      reinterpret_cast<PageDirectoryEntry *>(::operator new(PG_SZ));
+  nonstd::memset(new_pd, 0, PG_SZ);
+
+  static_assert(
+      util::algorithm::aligned_pow2<HUGE_PG_SZ>(mem::virt::hhdm_start));
+  for (unsigned i = mem::virt::hhdm_start / HUGE_PG_SZ;
+       i < directory_table_entries; ++i) {
+    if (!pd[i].p) {
+      continue;
+    }
+
+    if (pd[i].ps) {
+      new_pd[i] = pd[i];
+    } else {
+      PageTableEntry *page_table =
+          reinterpret_cast<PageTableEntry *>(::operator new(PG_SZ));
+      nonstd::memcpy(page_table,
+                     mem::virt::direct_to_hhdm(pd[i].addr << PG_SZ_BITS),
+                     PG_SZ);
+      new_pd[i] = pd[i];
+      new_pd[i].addr = mem::virt::hhdm_to_direct(page_table) >> PG_SZ_BITS;
+    }
+  }
+
+  return new_pd;
+}
+
+void set_page_directory(PageDirectoryEntry *pde) {
+  size_t table_phys = mem::virt::hhdm_to_direct(pde);
+  __asm__("movl %0, %%cr3" ::"r"(table_phys));
 }
 
 } // namespace arch::page_table

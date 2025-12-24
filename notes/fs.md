@@ -110,8 +110,8 @@ PIO-mode (slow but simple) and then implement DMA.
 - [X] implement FAT32 support in the kernel to load userspace programs
 
 Further TODO items
-- [ ] write an ELF loader and store the binaries in ELF format
-- [ ] VFS layer
+- [X] write an ELF loader and store the binaries in ELF format
+- [X] VFS layer
 - [ ] LRU page cache
 - [ ] ext2 support
 - [ ] NVMe support

@@ -41,6 +41,7 @@
 ///
 /// TODO: make this thread safe.
 
+#include "fs/result.h"
 #include "nonstd/allocator.h"
 #include "nonstd/node_hash_map.h"
 #include "nonstd/string.h"
@@ -51,31 +52,6 @@
 #include <optional>
 
 namespace fs {
-
-enum class Result : uint16_t {
-  Ok = 0,
-  Unsupported = 1,
-  IsDirectory = 2,
-  IsFile = 3,
-  FileNotFound = 4,
-  BadFD = 5,
-};
-
-inline const char *result_to_str(Result res) {
-  switch (res) {
-#define X(ENUM)                                                                \
-  case Result::ENUM:                                                           \
-    return #ENUM
-    X(Ok);
-    X(Unsupported);
-    X(IsDirectory);
-    X(IsFile);
-    X(FileNotFound);
-    X(BadFD);
-#undef X
-  }
-  return "<unknown>";
-}
 
 class Inode {
 public:
@@ -201,7 +177,7 @@ constexpr FileDescriptor InvalidFD = -1;
 class File {
 public:
   // Unlike inodes/dentries, Files are owned by a single process.
-  File(Dentry &_dentry, FileDescriptor fd, Result &res) : dentry{&_dentry} {
+  File(Dentry &_dentry, FileDescriptor fd) : dentry{&_dentry} {
     dentry->inc_rc();
   }
   ~File() {
@@ -227,34 +203,24 @@ public:
   FileDescriptor fd = 0;
 };
 
-/// Syscalls are implemented as methods of \ref Process.
-///
-/// TODO: move out of this file
-class Process {
-public:
-  FileDescriptor open(nonstd::string_view path, Result &res);
-  void close(FileDescriptor fd, Result &res);
-  void creat(nonstd::string_view path, Result &res);
-  void truncate(nonstd::string_view path, uint64_t len, Result &res);
-  void mkdir(nonstd::string_view path, Result &res);
-  void rmdir(nonstd::string_view path, Result &res);
-  void link(nonstd::string_view target, nonstd::string_view link, Result &res);
-  void unlink(nonstd::string_view link, Result &res);
-
-  ssize_t read(FileDescriptor fd, void *buf, size_t count, Result &res);
-
-private:
-  FileDescriptor get_next_fd();
-
-  /// nullopt if file is closed.
-  nonstd::vector<std::optional<File>> fds;
-};
-
 class Filesystem {
 public:
   virtual Dentry *get_root_dentry() = 0;
 };
 
 void init(Filesystem &root_fs);
+
+/// The main pathname lookup logic. Start from the filesystem root,
+/// and for each component:
+/// 1. If it is . or .., handle appropriately.
+/// 2. Otherwise, attempt to look up the name in the dcache
+///    hashtable.
+/// 3. If not found, delegate to the filesystem's \a lookup()
+///    method, which will return an inode. We'll create a dentry from
+///    this inode.
+/// 4. If not found, return nullptr and set res to
+///    Result::FileNotFound. Otherwise continue to the next component
+///    (if any).
+Dentry *pathname_lookup(nonstd::string_view path, Result &res);
 
 } // namespace fs

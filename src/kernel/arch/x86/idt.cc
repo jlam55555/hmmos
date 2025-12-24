@@ -30,8 +30,7 @@ void init() {
     // interrupts.
     entry.type = drivers::pic::is_hw_interrupt(i) ? 0x0E : 0x0F;
     entry.rsv1 = 0;
-    // TODO: set DPL 3 for INT 0x80 once we enable syscalls
-    entry.dpl = 0;
+    entry.dpl = i == 0x80 ? 3 : 0;
     entry.p = 1;
   }
 

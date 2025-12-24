@@ -9,6 +9,11 @@
 /// should be expected to work when structs are little-endian and
 /// properly packed.
 ///
+/// TODO: I've since learned about std::bit_cast, which seems to fit
+/// this constexpr-reinterpret-cast need pretty well. Convert this to
+/// use bit_cast.
+///
+
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>

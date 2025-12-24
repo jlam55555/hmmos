@@ -3,39 +3,44 @@
 #include "memdefs.h"
 #include "mm/kmalloc.h"
 #include "nonstd/libc.h"
+#include "nonstd/node_hash_map.h"
 #include "perf.h"
+#include "proc/process.h"
+#include "sched/lock.h"
 #include "stack.h"
 #include "timer.h"
 #include "util/algorithm.h"
 #include "util/assert.h"
 #include <cstddef>
-
-namespace {
-
-/// Thread ID counter.
-sched::ThreadID _tid = 0;
-
-} // namespace
+#include <functional>
+#include <limits>
 
 namespace sched {
 
 KernelThread::KernelThread(Scheduler &_scheduler, void *_stack)
-    : stack{_stack}, scheduler(_scheduler), tid(_tid++) {}
+    : stack{_stack}, scheduler(_scheduler) {}
+
+Scheduler::Scheduler() {
+  // Insert a dummy TID at \a InvalidTID, so no process ever uses it.
+  tid_map.emplace(InvalidTID, nullptr);
+}
 
 ThreadID Scheduler::bootstrap() {
   // Can't call `bootstrap()` on an already-running scheduler.
   ASSERT(running == nullptr);
   running = new KernelThread(*this);
   ASSERT(running != nullptr);
+  assign_next_tid(running);
 
-  // Maybe create dummy runnable task here so that something is always
-  // schedulable. For now we assume that there is always a schedulable
-  // thread, and `schedule()` will crash and burn if there isn't.
+  // \note The kernel should create a dummy runnable task (idle task)
+  // so that something is always schedulable. `schedule()` will crash
+  // and burn if there doesn't exist any schedulable tasks.
 
   return running->tid;
 }
 
-ThreadID Scheduler::new_thread(void (*thunk)()) {
+ThreadID Scheduler::new_thread(proc::Process *proc, void (*fcn)(void *),
+                               void *data) {
   // Allocate a new stack, and set it up so that it looks like we've
   // just called into `switch_task()` with the return address being
   // the beginning of `f()`.
@@ -49,7 +54,10 @@ ThreadID Scheduler::new_thread(void (*thunk)()) {
   stk = (char *)stk + PG_SZ;
 
   auto *thread = new KernelThread(*this);
-  thread->stack = arch::sched::setup_stack(stk, thunk, thread);
+  ASSERT(thread != nullptr);
+  assign_next_tid(thread);
+  thread->stack = arch::sched::setup_stack(stk, thread, fcn, data);
+  thread->proc = proc;
 
   // Add thread to the end of the round-robin space.
   runnable.push_back(*thread);
@@ -75,7 +83,7 @@ const KernelThread *Scheduler::choose_task() const {
 }
 
 void Scheduler::schedule(bool switch_stack) {
-  cli;
+  mutex_lock();
 
   ASSERT(running);
 
@@ -88,7 +96,7 @@ void Scheduler::schedule(bool switch_stack) {
 
   if (new_task == current_task) {
     // Nothing to do here.
-    sti;
+    mutex_unlock();
     return;
   }
 
@@ -99,6 +107,10 @@ void Scheduler::schedule(bool switch_stack) {
   new_task->erase();
   runnable.push_back(*current_task);
   context_switch_start = arch::time::rdtsc();
+
+  if (new_task->proc != nullptr) {
+    new_task->proc->enter_virtual_address_space();
+  }
 
   // Unit tests aren't multithreaded, don't actually switch stacks but
   // do the rest of the bookkeeping.
@@ -135,7 +147,7 @@ void Scheduler::post_context_switch_bookkeeping() {
   }
 
   // TODO: do we need to irqrestore here?
-  sti;
+  mutex_unlock();
 }
 
 void Scheduler::destroy_thread(KernelThread *thread, bool switch_stack) {
@@ -172,6 +184,7 @@ void Scheduler::delete_task(KernelThread *thread) {
   ASSERT(&thread->scheduler == this);
 
   thread->erase();
+  tid_map.erase(thread->tid);
 
   // TODO: use std::byte* in more places rather than void*
   auto *stack_pg =
@@ -180,8 +193,19 @@ void Scheduler::delete_task(KernelThread *thread) {
   delete thread;
 }
 
+void Scheduler::assign_next_tid(KernelThread *new_thread) {
+  // No available IDs. Note that the \ref InvalidTID ThreadID is
+  // already consumed by a dummy entry, so the loop below will skip
+  // this ID.
+  ASSERT(tid_map.size() != std::numeric_limits<ThreadID>::max());
+
+  while (!tid_map.try_emplace(tid_counter++, new_thread).second) {
+  }
+  new_thread->tid = tid_counter - 1;
+}
+
 extern "C" {
-void on_thread_start(KernelThread *thread, void (*thunk)()) {
+void on_thread_start(KernelThread *thread, void (*fcn)(void *), void *data) {
   ASSERT(thread);
   thread->scheduler.post_context_switch_bookkeeping();
 }

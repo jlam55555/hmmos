@@ -17,14 +17,14 @@ public:
   }
 
   ThreadID get_running_tid() const {
-    return running ? running->tid : bad_thread;
+    return running ? running->tid : InvalidTID;
   }
 
   ThreadID choose_task_tid() const {
     if (auto thread = choose_task()) {
       return thread->tid;
     }
-    return bad_thread;
+    return InvalidTID;
   }
 };
 } // namespace sched
@@ -47,9 +47,9 @@ TEST_CLASS(sched, Scheduler, one_runnable_thread) {
 TEST_CLASS(sched, Scheduler, round_robin) {
   TestScheduler scheduler;
   ThreadID tid0 = scheduler.bootstrap();
-  ThreadID tid1 = scheduler.new_thread(nullptr);
-  ThreadID tid2 = scheduler.new_thread(nullptr);
-  ThreadID tid3 = scheduler.new_thread(nullptr);
+  ThreadID tid1 = scheduler.new_thread(nullptr, nullptr, nullptr);
+  ThreadID tid2 = scheduler.new_thread(nullptr, nullptr, nullptr);
+  ThreadID tid3 = scheduler.new_thread(nullptr, nullptr, nullptr);
 
   TEST_ASSERT(scheduler.get_running_tid() == tid0);
   scheduler.schedule();
@@ -77,7 +77,7 @@ TEST_CLASS(sched, Scheduler, round_robin) {
 
   // Create a new thread, see that it gets added to the end of the
   // round-robin order.
-  ThreadID tid4 = scheduler.new_thread(nullptr);
+  ThreadID tid4 = scheduler.new_thread(nullptr, nullptr, nullptr);
   scheduler.schedule();
   TEST_ASSERT(scheduler.get_running_tid() == tid3);
   scheduler.schedule();

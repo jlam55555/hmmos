@@ -6,8 +6,8 @@
 /// The general interface for the scheduler is:
 /// - `Scheduler::bootstrap()`: register the current thread in the
 ///   scheduler.
-/// - `Scheduler::new_thread(thunk)`: add a new task that will start
-///   executing `thunk`. This will be given a 4KB stack.
+/// - `Scheduler::new_thread(fcn)`: add a new task that will start
+///   executing `fcn`. This will be given a 4KB stack.
 /// - `Scheduler::destroy_thread()`: destroy the current running
 ///   thread, and schedule away.
 /// - `Scheduler::schedule()`: context-switch to the next runnable
@@ -16,7 +16,13 @@
 /// TODO: pre-emptive scheduling (timer interrupt) and synchronization
 /// primitives
 
+#include "nonstd/node_hash_map.h"
+#include "util/assert.h"
 #include "util/intrusive_list.h"
+
+namespace proc {
+class Process;
+}
 
 namespace sched {
 
@@ -30,13 +36,13 @@ extern "C" {
 /// bookkeeping tasks can be done (e.g., recording context switch
 /// times).
 ///
-/// This shouldn't need to do anything with the thunk, it's just
+/// This shouldn't need to do anything with the fcn, it's just
 /// provided since it's conveniently available.
-void on_thread_start(KernelThread *, void (*thunk)());
+void on_thread_start(KernelThread *, void (*fcn)(void *), void *data);
 }
 
-using ThreadID = unsigned;
-static constexpr ThreadID bad_thread = -1;
+using ThreadID = uint16_t;
+static constexpr ThreadID InvalidTID = -1;
 
 /// \brief Internal representation of a kernel thread.
 ///
@@ -53,19 +59,23 @@ private:
   Scheduler &scheduler;
   bool runnable = true;
 
-  /// Thread ID; will be automatically assigned.
-  ///
-  /// Assume this is unique; we don't expect to exceed 4 billion new
-  /// threads over the lifetime of the OS.
+  /// Thread ID; will be automatically assigned and unique over the
+  /// lifetime of thread.
   ThreadID tid;
 
+  /// Process that this thread is associated with. Can be nullptr if
+  /// this is a purely kernel thread.
+  proc::Process *proc;
+
   friend class Scheduler;
-  friend void on_thread_start(KernelThread *, void (*)());
+  friend void on_thread_start(KernelThread *, void (*)(void *), void *data);
   friend class TestScheduler;
 };
 
 class Scheduler {
 public:
+  Scheduler();
+
   /// Enter the scheduler. This should be called in live but doesn't
   /// need to be called when unit-testing scheduler functionality.
   ThreadID bootstrap();
@@ -77,8 +87,9 @@ public:
   void schedule() { return schedule(/*switch_stack=*/true); }
 
   /// Create a new thread that will start execution at the given
-  /// thunk.
-  ThreadID new_thread(void (*thunk)());
+  /// fcn. \a proc can be nullptr if this thread is not associated
+  /// with a userspace process.
+  ThreadID new_thread(proc::Process *proc, void (*fcn)(void *), void *data);
 
   /// Print scheduler stats, for debugging purposes.
   void print_stats() const;
@@ -96,8 +107,24 @@ public:
   ///
   /// \param thread the thread to destroy, or nullptr to destroy the
   /// currently-running thread.
-  void destroy_thread(KernelThread *thread = nullptr) {
-    return destroy_thread(thread, /*switch_stack=*/true);
+  void destroy_thread(ThreadID tid) {
+    auto it = tid_map.find(tid);
+    ASSERT(it != tid_map.end() && it->second != nullptr);
+    return destroy_thread(/*thread=*/it->second, /*switch_stack=*/true);
+  }
+
+  proc::Process *curr_proc() const {
+    return curr_proc_override ? curr_proc_override
+                              : (running ? running->proc : nullptr);
+  }
+
+  /// Ugly hack that should only be used in the \ref proc::Process
+  /// constructor. We want to run kernel code from the context of the
+  /// newly created process, but this code should be run immediately
+  /// from the parent process.
+  void override_curr_proc(proc::Process *proc) {
+    ASSERT(implies(proc != nullptr, curr_proc_override == nullptr));
+    curr_proc_override = proc;
   }
 
 private:
@@ -149,6 +176,12 @@ private:
   /// clients should call `destroy_thread()` to safely delete a task.
   void delete_task(KernelThread *thread);
 
+  /// \brief Assigns the next ThreadID that's not in use to the given
+  /// thread.
+  ///
+  /// This will throw if there are no free thread IDs.
+  void assign_next_tid(KernelThread *new_thread);
+
   /// \brief Number of calls to `schedule()`.
   ///
   /// Currently, this doesn't count context switches from a function
@@ -164,7 +197,15 @@ private:
   uint64_t context_switch_cum_cycles = 0;
   uint64_t context_switch_start;
 
-  friend void ::sched::on_thread_start(KernelThread *, void (*)());
+  /// Thread ID management.
+  ThreadID tid_counter = 0;
+  nonstd::node_hash_map<ThreadID, sched::KernelThread *> tid_map;
+
+  /// \see \ref override_curr_proc().
+  proc::Process *curr_proc_override = nullptr;
+
+  friend void ::sched::on_thread_start(KernelThread *, void (*)(void *),
+                                       void *data);
 };
 
 } // namespace sched

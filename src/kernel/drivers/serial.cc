@@ -1,7 +1,7 @@
 #include "serial.h"
 
 #include <cstdint>
-#include <stddef.h>
+#include <cstddef>
 
 namespace serial {
 

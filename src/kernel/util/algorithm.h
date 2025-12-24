@@ -8,7 +8,7 @@
 /// header -- if we need custom implementations they should go in the
 /// nonstd/ directory.
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace util::algorithm {
 

@@ -2,8 +2,8 @@
 
 #include "nonstd/allocator.h"
 #include "nonstd/hash_bytes.h"
+#include "nonstd/string_view.h"
 #include <cstddef>
-#include <nonstd/string_view.h>
 
 namespace nonstd {
 

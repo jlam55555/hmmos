@@ -23,6 +23,11 @@ void switch_stack(void **old_stk, void *new_stk);
 /// from in \ref switch_stack().
 ///
 /// \return the stack with the added stack frame
-void *setup_stack(void *stk, void (*thunk)(), ::sched::KernelThread *kthread);
+void *setup_stack(void *stk, ::sched::KernelThread *kthread,
+                  void (*fcn)(void *), void *data);
+
+/// Bootstrap into userspace mode with the given userspace instruction
+/// pointer and stack pointer.
+__attribute__((noreturn)) void enter_userspace(void *esp3, void *eip3);
 }
 } // namespace arch::sched

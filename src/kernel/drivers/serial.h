@@ -8,8 +8,8 @@
 
 #include "asm.h"
 #include "perf.h"
-#include <assert.h>
-#include <stdint.h>
+#include <cassert>
+#include <cstdint>
 
 namespace serial {
 

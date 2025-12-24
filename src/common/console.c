@@ -1,15 +1,16 @@
 #include "console.h"
 #include "libc_minimal.h"
+#include "memdefs.h"
 #include <stdarg.h>
 #include <stdint.h>
 
 #define CONSOLE_WIDTH 80
 #define CONSOLE_HEIGHT 25
-#define CONSOLE_VGA_BUF ((char *const)0xB8000)
 
 static uint8_t _console_x = 0;
 static uint8_t _console_y = 0;
 static char _console_buf[CONSOLE_WIDTH * CONSOLE_HEIGHT] = {};
+static char *console_vga_buf = (char *)0xB8000;
 
 /// Advance cursor to next line, scrolling if needed.
 static void _console_cursor_down() {
@@ -47,7 +48,7 @@ void console_putchar(char c) {
 
 void console_flush() {
   for (unsigned i = 0; i < sizeof _console_buf; ++i) {
-    CONSOLE_VGA_BUF[i << 1] = _console_buf[i];
+    console_vga_buf[i << 1] = _console_buf[i];
   }
 }
 
@@ -92,3 +93,7 @@ void console_printb(uint8_t n) { _console_printn(n, 1); }
 void console_printw(uint16_t n) { _console_printn(n, 2); }
 void console_printl(uint32_t n) { _console_printn(n, 4); }
 void console_printq(uint64_t n) { _console_printn(n, 8); }
+
+void console_use_hhdm() {
+  console_vga_buf = (char *)(HM_START | (size_t)console_vga_buf);
+}

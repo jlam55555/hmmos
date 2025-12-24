@@ -21,27 +21,28 @@ In no definitive order. Some of these can be copied from
 	- [X] doxygen
 	- [ ] benchmarking utility
 	- [ ] clang-tidy and clang-format configuration
-- [ ] basics
+- [X] basics
 	- [X] printf library
 	- [X] (circular) linked lists like Linux's LIST_HEAD
 - [X] interrupts
 - [ ] memory allocation
 	- [X] page frame allocator
 	- [ ] slub/slab allocator
-	- [ ] virtual memory allocator
-- [ ] scheduling
-	- [ ] kernel threads
-	- [ ] setup TSS (for userspace)
-	- [ ] userspace processes (after userspace)
+	- [X] virtual memory allocator
+- [X] scheduling
+	- [X] kernel threads
+	- [X] setup TSS (for userspace)
+	- [X] userspace processes (after userspace)
 - [ ] enter userspace
 	- [ ] syscalls
 	- [ ] shell
-	- [ ] ELF loader
+	- [X] ELF loader
 	- [ ] try to link in a very simple libc?
 - [ ] drivers
 	- [ ] serial port
 	- [ ] keyboard
-	- [ ] console
-	- [ ] disk
+	- [ ] tty
+	- [X] console
+	- [X] disk
 	- [ ] timer
 	- [ ] graphics (very simple)

@@ -3,7 +3,7 @@
 /// \file
 /// \brief Interrupt (and exception) service routines.
 
-#include <stdint.h>
+#include <cstdint>
 
 /// Interrupt vector, used to initialize the IDT.
 extern void (**isrs)();

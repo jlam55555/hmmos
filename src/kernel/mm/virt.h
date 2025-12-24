@@ -122,7 +122,7 @@ void *io_alloc(unsigned pg);
 /// \param pg Number of pages to allocate
 /// \return true on success
 ///
-bool vmalloc(void *virt, unsigned pg);
+bool vmalloc(void *virt, unsigned pg, bool writable);
 
 /// Maps the (4KB) virtual memory page \a virt to the physical memory
 /// page \a phys.
@@ -136,8 +136,9 @@ bool vmalloc(void *virt, unsigned pg);
 /// \param uncacheable Whether page should be marked uncacheable
 /// \return true on success
 ///
-inline bool map(uint64_t phys, void *virt, bool uncacheable = false) {
-  return arch::page_table::map(phys, virt, uncacheable);
+inline bool map(uint64_t phys, void *virt, bool userspace, bool writable,
+                bool uncacheable = false) {
+  return arch::page_table::map(phys, virt, userspace, writable, uncacheable);
 }
 
 /// Unmaps the (4KB) page containing the given virtual address from

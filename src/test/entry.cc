@@ -8,11 +8,16 @@
 #include "mm/page_frame_allocator.h"
 #include "mm/page_frame_table.h"
 #include "nonstd/libc.h"
+#include "proc/process.h"
 #include "test.h"
 
 static volatile const BP_REQ(MEMORY_MAP, _mem_map_req);
 
 void do_schedule() {}
+proc::Process *curr_proc() {
+  ASSERT(false);
+  __builtin_unreachable();
+};
 
 char test_selection_buf[4096] = {};
 

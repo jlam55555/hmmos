@@ -197,3 +197,31 @@ Upon a userspace process exit, all physical pages mapped to that
 process will be freed. The virtual mappings will automatically get
 discarded once the process's page mapping is discarded (this should
 also be included in the set of physical pages mapped to that process).
+
+### Userspace page management
+
+Pages mapped into userspace fall into one of two categories:
+
+- **Anonymous (non-file-backed) memory mappings**: These come from
+  `mmap()` using `MAP_ANON`, or when a `MAP_PRIVATE` (CoW) file-backed
+  page has been written.
+- **File-backed memory mappings**: These reference pages in the page
+  cache.
+
+As alluded to above, there is another axis for classifying
+memory-mapped pages: shared vs. private (CoW). Both page types require
+a reference count. The reference count for shared pages is simple:
+when the reference count drops to zero, the page can be freed (for
+anonymous mappings), or flushed and cleared from the cache (for
+file-backed mappings).
+
+A reference count is also used for CoW pages: when a process fork()s,
+private mappings are marked read-only and the reference count is
+incremented. Any writes to the CoW page cause the page to be copied
+and the reference count of the original (read-only) page to be
+decremented. If the read-only page has a reference count of 1 at the
+time of the write, no copy needs to be made since this is the last
+process referencing this page.
+
+The private/shared, anonymous/file-backed, and reference count fields
+of a page are recorded in the PFT.

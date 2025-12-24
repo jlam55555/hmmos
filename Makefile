@@ -238,12 +238,15 @@ $(KERNEL_TEST_ELF_WITH_SYMBOLS): $(KERNEL_TEST_OBJS) $(KERNEL_LINKER_SCRIPT)
 
 # This generates the FAT32 filesystem image containing the kernel and
 # userspace executables (KERNEL_FS, KERNEL_FS_TEST).
-$(OUT_DIR)/%_fs.bin: $(OUT_DIR)/%.bin
+$(OUT_DIR)/%_fs.bin: $(OUT_DIR)/%.bin userspace
 	dd if=/dev/zero of=$@ bs=1M count=33
 	/sbin/mkfs.fat -F32 $@
 	mcopy -i $@ $< ::KERNEL.BIN
 	@# Just for fun, copy the source files onto the disk.
 	mcopy -i $@ -s src ::SRC
+	@# Copy userspace executables onto the disk.
+	@# TODO: forward build variants to userspace makefile
+	mcopy -i $@ -s out/userspace ::BIN
 
 $(BOOTABLE_DISK): $(BOOTLOADER) $(KERNEL_FS)
 	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL_FS) -o $@
@@ -269,8 +272,8 @@ runi: $(RUN_TARGET) $(BOOTLOADER_ELF_WITH_SYMBOLS) $(KERNEL_TARGET_ELF_WITH_SYMB
 gdb:
 	gdb -ex 'target remote localhost:1234' \
 	    -ex 'set confirm off' \
-	    -ex 'add-symbol-file $(BOOTLOADER_ELF_WITH_SYMBOLS)' \
 	    -ex 'add-symbol-file $(KERNEL_TARGET_ELF_WITH_SYMBOLS)' \
+	    -ex 'add-symbol-file $(BOOTLOADER_ELF_WITH_SYMBOLS)' \
 	    -ex 'set confirm on' \
 	    -ex 'set print asm-demangle on'
 
@@ -289,3 +292,8 @@ cleanall:
 # Automatic header dependencies.
 DEPS:=$(BOOT_OBJS:.o=.d) $(KERNEL_OBJS:.o=.d) $(KERNEL_TEST_OBJS:.o=.d)
 -include $(DEPS)
+
+# Userspace rules are invoked via recursive make.
+# TODO: forward build variants to userspace makefile
+userspace:
+	$(MAKE) -C src/userspace

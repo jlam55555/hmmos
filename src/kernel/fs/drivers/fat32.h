@@ -16,7 +16,6 @@
 #include "nonstd/string_view.h"
 #include <functional>
 #include <optional>
-#include <sys/types.h>
 
 namespace fs::fat32 {
 

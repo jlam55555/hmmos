@@ -1,5 +1,6 @@
 #include "../crt/crt.h"
 #include "boot_protocol.h"
+#include "console.h"
 #include "drivers/acpi.h"
 #include "drivers/ahci.h"
 #include "drivers/pci.h"
@@ -12,6 +13,7 @@
 #include "mm/page_frame_allocator.h"
 #include "mm/virt.h"
 #include "nonstd/libc.h"
+#include "proc/process.h"
 #include "sched/kthread.h"
 #include <climits>
 #include <concepts>
@@ -24,46 +26,17 @@ void do_schedule() {
     scheduler->schedule();
   }
 }
+proc::Process *curr_proc() {
+  if (likely(scheduler)) {
+    return scheduler->curr_proc();
+  }
+  return nullptr;
+}
 
 namespace {
-// Trying out random C++ features.
 
-template <unsigned n> constexpr uint64_t fac() {
-  uint64_t res = 1;
-  unsigned m = n;
-  while (m) {
-    res *= m--;
-  }
-  return res;
-}
-
-template <typename T>
-concept IsBicycle = requires(T t) {
-  { t.year } -> std::same_as<unsigned &>;
-};
-
-class A {};
-class B {
-public:
-  unsigned year;
-};
-
-static_assert(!IsBicycle<A>, "A is not a bicycle");
-static_assert(IsBicycle<B>, "B is a bicycle");
-
-void foo() {
-  for (;;) {
-    // Cooperative scheduling.
-    // nonstd::printf("In thread foo!\r\n");
-    // hlt;
-    do_schedule();
-  }
-}
-
-} // namespace
-
-__attribute__((section(".text.entry"))) void _entry() {
-  crt::run_global_ctors();
+__attribute__((noreturn)) void entry() {
+  console_use_hhdm();
 
   nonstd::printf("We're in the kernel now!\r\n");
 
@@ -72,7 +45,7 @@ __attribute__((section(".text.entry"))) void _entry() {
   nonstd::printf("Memory map:\r\n");
   uint64_t usable_mem = 0;
   for (ent = _mem_map_req.memory_map; e820_entry_present(ent); ++ent) {
-    nonstd::printf("base=0x%llx len=0x%llx type=%u\r\n", ent->base, ent->len,
+    nonstd::printf("\tbase=0x%llx len=0x%llx type=%u\r\n", ent->base, ent->len,
                    ent->type);
     if (ent->type == E820_MM_TYPE_USABLE) {
       usable_mem += ent->len;
@@ -81,28 +54,19 @@ __attribute__((section(".text.entry"))) void _entry() {
   std::span<e820_mm_entry> mem_map{
       _mem_map_req.memory_map,
       static_cast<size_t>(ent - _mem_map_req.memory_map)};
-  nonstd::printf("Found %u entries in the memory map. Usable=0x%llx\r\n",
+  nonstd::printf("\tFound %u entries in the memory map. Usable=0x%llx\r\n",
                  mem_map.size(), usable_mem);
 
 #ifdef DEBUG
   mem::virt::enumerate_page_tables();
 #endif
 
-  /// Random computation.
-  nonstd::printf("fac(15)=%llu\r\n", fac<15>());
-  nonstd::printf("LLONG_MIN=%lld\r\n", LLONG_MIN);
-
-  /// Print to serial.
-  const char *str = "Cereal hello world!\r\n";
-  while (*str) {
-    serial::get().write(*str++);
-  }
-
+  nonstd::printf("Initializing kernel GDT...\r\n");
   arch::gdt::init();
 
   nonstd::printf("Initializing PFT...\r\n");
   mem::phys::PageFrameTable pft(mem_map);
-  nonstd::printf("Total mem=%llx Usable mem=%llx\r\n", pft.total_mem_bytes,
+  nonstd::printf("\tTotal mem=%llx Usable mem=%llx\r\n", pft.total_mem_bytes,
                  pft.usable_mem_bytes);
 
   nonstd::printf("Initializing PFA...\r\n");
@@ -116,7 +80,7 @@ __attribute__((section(".text.entry"))) void _entry() {
   nonstd::printf("PCI functions:\r\n");
   const auto pci_fn_descs = drivers::pci::enumerate_functions();
   for (const auto &fn_desc : pci_fn_descs) {
-    nonstd::printf("%x:%x.%u [%x]: [%x:%x]\r\n", fn_desc.bus, fn_desc.device,
+    nonstd::printf("\t%x:%x.%u [%x]: [%x:%x]\r\n", fn_desc.bus, fn_desc.device,
                    fn_desc.function, fn_desc._class, fn_desc.vendor_id,
                    fn_desc.device_id);
   }
@@ -129,53 +93,39 @@ __attribute__((section(".text.entry"))) void _entry() {
   auto boot_part_desc = fs::fat32::Filesystem::find_boot_part();
   assert(boot_part_desc.has_value());
   auto filesystem = fs::fat32::Filesystem::from_partition(*boot_part_desc);
+  fs::init(filesystem);
 
   nonstd::printf("Initializing scheduler...\r\n");
   sched::Scheduler scheduler;
   ::scheduler = &scheduler;
   scheduler.bootstrap();
 
-  // TODO: idle task
-  scheduler.new_thread(&foo);
+  nonstd::printf("Spawning the init process...\r\n");
+  fs::Result res{};
+  new proc::Process(scheduler, "/BIN/INIT", res);
+  ASSERT(res == fs::Result::Ok);
 
-  nonstd::printf("Done.\r\n");
-
-  fs::init(filesystem);
-
-  fs::Process proc;
-  fs::Result res;
-  const auto fd = proc.open("/SRC/KERNEL/NONSTD/STACK.H", res);
-  ASSERT(fd != fs::InvalidFD && res == fs::Result::Ok);
-
-  ssize_t rval = 0;
-  auto buf = reinterpret_cast<std::byte *>(mem::kmalloc(4096));
-  while ((rval = proc.read(fd, buf, 4095, res)) > 0 && res == fs::Result::Ok) {
-    // Force the string to be null-terminated. We do own the byte past
-    // the end of the buffer so this is safe.
-    //
-    // TODO: we should support a print specifier to print a given
-    // number of characters (super useful for string_view as well).
-    buf[rval] = std::byte{0};
-    nonstd::printf("%s", (char *)buf);
+  // This becomes the idle task.
+  for (;;) {
+    hlt;
   }
-  ASSERT(rval >= 0 && res == fs::Result::Ok);
+}
 
-  proc.close(fd, res);
+} // namespace
+
+__attribute__((section(".text.entry"), noreturn)) void _entry() {
+  crt::run_global_ctors();
+  entry();
+
+  // We never reach here on normal operation.
+  //
+  // TODO: we need a "proper shutdown sequence" that does call the
+  // global dtors.
+  __builtin_unreachable();
+  ASSERT(false);
 
 #if 0
-  // We should never get here if we call `destroy_thread()` above.
-  // scheduler.destroy_thread();
-  // nonstd::printf("Unreachable");
-
-  // This should round-robin between main and foo.
-  for (;;) {
-    // nonstd::printf("In thread main!\r\n");
-    // hlt;
-    do_schedule();
-  }
-#endif
-
-  // We'll never reach here unless you modify the above loop.
   crt::run_global_dtors();
   acpi::shutdown();
+#endif
 }

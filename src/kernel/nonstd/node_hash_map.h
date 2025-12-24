@@ -93,8 +93,9 @@ public:
   iterator erase(const_iterator pos);
   template <std::equality_comparable_with<K> _K> iterator erase(_K &&key) {
     if (auto it = find(std::forward<_K>(key)); it != end()) {
-      erase(it);
+      return erase(it);
     }
+    return end();
   }
 
   // lookup

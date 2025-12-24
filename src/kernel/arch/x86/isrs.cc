@@ -2,12 +2,20 @@
 
 #include "drivers/acpi.h"
 #include "drivers/pic.h"
+#include "mm/virt.h"
 #include "nonstd/libc.h"
+#include "nonstd/polyfill.h"
+#include "page_table.h"
+#include "proc/process.h"
+#include "proc/syscalls.h"
+#include "util/algorithm.h"
+#include <type_traits>
 
 extern void (*__start_text_isrs)();
 extern void (*__stop_text_isrs)();
 
 extern void do_schedule();
+extern proc::Process *curr_proc();
 
 void (**isrs)() = &__start_text_isrs;
 unsigned num_isrs() { return &__stop_text_isrs - &__start_text_isrs; }
@@ -65,6 +73,106 @@ void isr_pit(uint32_t ivec, RegisterFrame reg_frame, InterruptFrame frame) {
   drivers::pic::eoi(0);
   do_schedule();
 }
+
+void isr_pf(uint32_t ivec, RegisterFrame reg_frame, uint32_t error_code,
+            InterruptFrame frame) {
+  // TODO: CoW support. We'll need to enable WP in CR0
+  // TODO: support file-backed pages
+  // TODO: write frame metadata to the PFT
+  // TODO: use SIGSEGV to kill process rather than _exit
+  size_t faulted_addr;
+  __asm__ volatile("mov %%cr2, %0" : "=r"(faulted_addr));
+
+  // Page faults should only happen in process context.
+  auto *proc = curr_proc();
+  ASSERT(proc != nullptr);
+
+  // Error codes.
+  struct PFErrorCode {
+    bool p : 1 = 0;
+    bool w : 1 = 0;
+    bool u : 1 = 0;
+    bool r : 1 = 0;
+    bool i : 1 = 0;
+    bool pk : 1 = 0;
+    uint8_t rsv0;
+    bool ss : 1 = 0;
+    bool sgx : 1 = 0;
+    uint8_t rsv1;
+  } __attribute__((packed));
+  static_assert(sizeof(PFErrorCode) == sizeof error_code);
+  auto err = std::bit_cast<PFErrorCode>(error_code);
+  if (err.p) {
+    // TODO: handle CoW in this branch.
+    nonstd::printf("Segfault due to permissions issue. w=%d u=%d r=%d i=%d "
+                   "pk=%d ss=%d sgx=%d @ 0x%x. Process killed.\r\n",
+                   err.w, err.u, err.r, err.i, err.pk, err.ss, err.sgx,
+                   faulted_addr);
+    proc->exit(1);
+  }
+
+  // If we've reached here, the page is not present. See if it exists
+  // in the process VMA.
+  //
+  // We technically don't have to check permissions here, since a
+  // permissions error will result in a second page fault, which will
+  // hit the above branch. However, a page fault can be expensive
+  // (e.g., populating a file-backed page from disk), so let's emulate
+  // the permissions check here.
+  for (const auto &vma : proc->get_vmas()) {
+    if (faulted_addr >= vma.addr && faulted_addr < vma.addr + vma.len) {
+      if ((!err.w & !vma.prot.readable) || (err.w & !vma.prot.writable) ||
+          (err.i & !vma.prot.executable)) {
+        if (faulted_addr < mem::virt::hhdm_start && !err.u) {
+          // This is the kernel mapping an ELF binary, allow this exception.
+        } else {
+          nonstd::printf("Segfault due to permissions issue when loading new "
+                         "page. w=%d i=%d @ 0x%x. Process killed.\r\n",
+                         err.w, err.i, faulted_addr);
+          proc->exit(1);
+        }
+      }
+
+      if (vma.flags.map_anon) {
+        mem::virt::vmalloc(
+            (void *)util::algorithm::floor_pow2<PG_SZ>(faulted_addr), 1,
+            /*writable=*/vma.prot.writable);
+        return;
+      } else {
+        nonstd::printf("page fault handler invoked for file-backed page @ "
+                       "0x%x.\r\n",
+                       faulted_addr);
+        isr_dumpregs_errcode(ivec, reg_frame, error_code, frame);
+      }
+      __builtin_unreachable();
+    }
+  }
+
+  nonstd::printf("Segfault @ 0x%x for non-present page. Process killed.\r\n",
+                 faulted_addr);
+  proc->exit(1);
+}
+
+void isr_syscall(uint32_t ivec, RegisterFrame reg_frame, InterruptFrame frame) {
+  // Syscalls should only happen in process context.
+  auto proc = curr_proc();
+  ASSERT(proc != nullptr);
+
+  // note: narrowing conversion
+  const auto syscall =
+      proc::Syscall{(std::underlying_type_t<proc::Syscall>)reg_frame.eax};
+
+  // TODO: move syscall handling into its own file, or into Process class
+  switch (syscall) {
+  case proc::Syscall::Exit:
+    nonstd::printf("Processing exit syscall w/ retcode %u\r\n", reg_frame.ebx);
+    proc->exit(reg_frame.ebx);
+    return;
+  default:
+    nonstd::printf("Unknown syscall %u\r\n", nonstd::to_underlying(syscall));
+    ASSERT(false);
+  }
+}
 }
 
 // Helper function; don't use directly.
@@ -116,7 +224,7 @@ ISRE(0x0A, isr_dumpregs_errcode); // #TS Invalid TSS
 ISRE(0x0B, isr_dumpregs_errcode); // #NP Segment not present
 ISRE(0x0C, isr_dumpregs_errcode); // #SS Stack-segment fault
 ISRE(0x0D, isr_dumpregs_errcode); // #GP General protection fault
-ISRE(0x0E, isr_dumpregs_errcode); // #PF Page fault
+ISRE(0x0E, isr_pf);               // #PF Page fault
 ISR(0x0F, isr_dumpregs);          // reserved
 ISR(0x10, isr_dumpregs);          // #MF x87 floating-point exception
 ISRE(0x11, isr_dumpregs_errcode); // #AC Alignment check
@@ -234,7 +342,7 @@ ISR(0x7C, isr_dumpregs);
 ISR(0x7D, isr_dumpregs);
 ISR(0x7E, isr_dumpregs);
 ISR(0x7F, isr_dumpregs);
-ISR(0x80, isr_dumpregs); // x86 syscall (SW interrupt)
+ISR(0x80, isr_syscall); // x86 syscall (SW interrupt)
 ISR(0x81, isr_dumpregs);
 ISR(0x82, isr_dumpregs);
 ISR(0x83, isr_dumpregs);
