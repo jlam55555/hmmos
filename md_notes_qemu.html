@@ -74,7 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>I had a few notes about QEMU scattered throughout, now that we've gotten a little more intimate I think this deserves its own page</p>
-<h1><a class="anchor" id="autotoc_md49"></a>
+<h1><a class="anchor" id="autotoc_md51"></a>
 x86 quirks</h1>
 <p>Both of the following make my life easier when running in QEMU, but make it harder for me to handle the expected case for real hardware.</p>
 <ul>
@@ -82,7 +82,7 @@ x86 quirks</h1>
 <li><em>No data segment offset limit checks</em>: In real mode, I noticed I can write to 0x0000:0xB8000 without having to use unreal mode. Similarly, when in protected mode/unreal mode, I was unable to trigger the segment check (which should cause a <a href="https://wiki.osdev.org/Exceptions#General_Protection_Fault">GPF</a>) even if I manually set the limits low. It seems that QEMU doesn't perform the limit checks (<a href="https://lists.gnu.org/archive/html/qemu-devel/2019-02/msg06518.html">at least as of 2019</a>). I do get GPFs for the code segment though.</li>
 <li><em>PCI vendor ID 0x1234</em>: According to <a href="https://web.archive.org/web/20200416081308/https://www.kraxel.org/blog/2020/01/qemu-pci-ids/">this blog post</a>. Indeed 0x1234 doesn't show up on the <a href="https://devicehunt.com/all-pci-vendors">list of PCI vendors</a>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md50"></a>
+<h1><a class="anchor" id="autotoc_md52"></a>
 QEMU/KVM bugs/weirdness</h1>
 <ul>
 <li>See "hmm.md#slow\_memory\_speed" for a QEMU emulation performance issue.</li>
@@ -90,11 +90,11 @@ QEMU/KVM bugs/weirdness</h1>
 <li>See "demos.md#locking" which demonstrates that increment (a++) appears to be atomic in QEMU emulation</li>
 </ul>
 <p>Probably if I tried hard enough both of these can be linked to QEMU/KVM code but I haven't found the time to look deeper.</p>
-<h1><a class="anchor" id="autotoc_md51"></a>
+<h1><a class="anchor" id="autotoc_md53"></a>
 default QEMU setup</h1>
 <p>The default OS setup uses a Q35 architecture (based on <a href="https://wiki.qemu.org/Features/Q35">Intel's ~2009 ICH9 architecture</a>), which treats drivers as AHCI/SATA by default rather than IDE.</p>
 <p>We use QEMU emulation by default unless you pass <code>-accel kvm</code> (<code>make run KVM=1</code>). It's good to test with both emulation modes to shake out differences in emulation (just as running with both GCC and clang is a good idea).</p>
-<h1><a class="anchor" id="autotoc_md52"></a>
+<h1><a class="anchor" id="autotoc_md54"></a>
 useful debugging flags</h1>
 <p>These all feature in some form in the Makefile:</p>
 <ul>

@@ -1,7 +1,27 @@
 var searchData=
 [
-  ['objutil_2eh_0',['objutil.h',['../objutil_8h.html',1,'']]],
-  ['on_5fthread_5fstart_1',['on_thread_start',['../classsched_1_1KernelThread.html#a5621a413b7f3cbc7f45016db3b1a3944',1,'sched::KernelThread']]],
-  ['or_5f_2',['or_',['../bw_8h.html#afb94caf9be810e00abd98e46e5f8fc43',1,'bw']]],
-  ['overall_20kernel_20implementation_20notes_3',['overall kernel implementation notes',['../md_notes_kernel.html',1,'']]]
+  ['page_5fdirectory_5fentry_0',['page_directory_entry',['../structpage__directory__entry.html',1,'']]],
+  ['page_5fdirectory_5fentry_5f4mb_1',['page_directory_entry_4mb',['../structpage__directory__entry__4mb.html',1,'']]],
+  ['page_5fframe_5fallocator_2eh_2',['page_frame_allocator.h',['../page__frame__allocator_8h.html',1,'']]],
+  ['page_5fframe_5ftable_2eh_3',['page_frame_table.h',['../page__frame__table_8h.html',1,'']]],
+  ['page_5ftable_2eh_4',['page_table.h',['../boot_2page__table_8h.html',1,'(Global Namespace)'],['../kernel_2arch_2x86_2page__table_8h.html',1,'(Global Namespace)']]],
+  ['page_5ftable_5fentry_5',['page_table_entry',['../structpage__table__entry.html',1,'']]],
+  ['pagedirectoryentry_6',['PageDirectoryEntry',['../structarch_1_1page__table_1_1PageDirectoryEntry.html',1,'arch::page_table']]],
+  ['pagedirectoryhugepageentry_7',['PageDirectoryHugepageEntry',['../structarch_1_1page__table_1_1PageDirectoryHugepageEntry.html',1,'arch::page_table']]],
+  ['pageframeallocator_8',['PageFrameAllocator',['../classmem_1_1phys_1_1PageFrameAllocator.html',1,'mem::phys::PageFrameAllocator'],['../classmem_1_1phys_1_1PageFrameAllocator.html#adbcaf323670877588a25a1d4a554e45a',1,'mem::phys::PageFrameAllocator::PageFrameAllocator()'],['../classmem_1_1phys_1_1PageFrameTable.html#aca181ff532c001076be5cb89c1dc1387',1,'mem::phys::PageFrameTable::PageFrameAllocator()']]],
+  ['pageframedescriptor_9',['PageFrameDescriptor',['../classmem_1_1phys_1_1PageFrameDescriptor.html',1,'mem::phys']]],
+  ['pageframetable_10',['PageFrameTable',['../classmem_1_1phys_1_1PageFrameTable.html',1,'mem::phys::PageFrameTable'],['../classmem_1_1phys_1_1PageFrameTable.html#a3682d364b8ce5ef25d7bfafcfd360d92',1,'mem::phys::PageFrameTable::PageFrameTable(std::span&lt; e820_mm_entry &gt; mm, std::optional&lt; std::span&lt; PageFrameDescriptor &gt; &gt; pft)'],['../classmem_1_1phys_1_1PageFrameTable.html#a56dc9eff1402b1fd2c5177467a3d9797',1,'mem::phys::PageFrameTable::PageFrameTable(std::span&lt; e820_mm_entry &gt; mm)']]],
+  ['pagetableentry_11',['PageTableEntry',['../structarch_1_1page__table_1_1PageTableEntry.html',1,'arch::page_table']]],
+  ['pci_2eh_12',['pci.h',['../pci_8h.html',1,'']]],
+  ['perf_2eh_13',['perf.h',['../perf_8h.html',1,'']]],
+  ['phentry_14',['PHEntry',['../structproc_1_1elf_1_1PHEntry.html',1,'proc::elf']]],
+  ['pic_2eh_15',['pic.h',['../pic_8h.html',1,'']]],
+  ['polyfill_2eh_16',['polyfill.h',['../polyfill_8h.html',1,'']]],
+  ['port_17',['Port',['../pci_8h.html#ae964de9ce7b596a7b749d59718de4e53',1,'drivers::pci']]],
+  ['print_5fstats_18',['print_stats',['../classsched_1_1Scheduler.html#abf50e8c93dd234e37c34215261f013b1',1,'sched::Scheduler']]],
+  ['process_19',['Process',['../classproc_1_1Process.html',1,'proc']]],
+  ['process_2eh_20',['process.h',['../process_8h.html',1,'']]],
+  ['pt_5fsetup_21',['pt_setup',['../boot_2page__table_8h.html#ae3b8a382f6d1560eb6a3dee01eb5b076',1,'page_table.c']]],
+  ['push_5fback_22',['push_back',['../classutil_1_1IntrusiveListHead.html#a464d74e49752f91df053b38f5d67d959',1,'util::IntrusiveListHead']]],
+  ['push_5ffront_23',['push_front',['../classutil_1_1IntrusiveListHead.html#a496596d93802f33809e560f9bd1a7099',1,'util::IntrusiveListHead']]]
 ];

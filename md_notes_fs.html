@@ -128,7 +128,26 @@ disk interfaces</h1>
 <li><b>FIS (Frame Information Structure)</b>: The packets used to communicate between the CPU and the HBA.</li>
 </ul>
 <p>For HmmOS, we'll start with a simple AHCI driver. We can start with PIO-mode (slow but simple) and then implement DMA.</p>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
+Linux fs implementations</h1>
+<ul>
+<li>syscall implementations: include/linux/syscalls.h</li>
+<li>VHS implementations:<ul>
+<li>fs/namei.c (name lookup)</li>
+<li>fs/readdir.c (getdents)</li>
+<li>fs/inode.c (inode helpers)</li>
+<li>include/linux/fs.h (inode defs)</li>
+<li>include/linux/dcache.h (dentry defs)</li>
+</ul>
+</li>
+<li>fs implementations:<ul>
+<li>fat/namei.c (fat_lookup)</li>
+<li>fat/dir.c (fat_readdir)</li>
+<li>fat/inode.c (fat inode helpers)</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md27"></a>
 TODO</h2>
 <ul>
 <li>[X] write the HmmOS kernel to a FAT32 filesystem</li>
@@ -137,8 +156,8 @@ TODO</h2>
 <li>[X] implement FAT32 support in the kernel to load userspace programs</li>
 </ul>
 <p>Further TODO items</p><ul>
-<li>[ ] write an ELF loader and store the binaries in ELF format</li>
-<li>[ ] VFS layer</li>
+<li>[X] write an ELF loader and store the binaries in ELF format</li>
+<li>[X] VFS layer</li>
 <li>[ ] LRU page cache</li>
 <li>[ ] ext2 support</li>
 <li>[ ] NVMe support </li>

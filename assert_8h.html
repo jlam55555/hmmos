@@ -75,7 +75,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">assert.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -99,25 +100,28 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="assert_8h__dep__incl.png" border="0" usemap="#asrc_2kernel_2util_2assert_8hdep" alt=""/></div>
 <map name="asrc_2kernel_2util_2assert_8hdep" id="asrc_2kernel_2util_2assert_8hdep">
-<area shape="rect" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="615,5,781,31"/>
-<area shape="rect" href="mbr_8h.html" title="Master Boot Record definitions." alt="" coords="26,86,141,111"/>
-<area shape="rect" href="serial_8h.html" title="Very simple serial driver." alt="" coords="189,79,324,119"/>
-<area shape="rect" href="page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="753,167,904,207"/>
-<area shape="rect" href="deque_8h_source.html" title=" " alt="" coords="349,86,538,111"/>
-<area shape="rect" href="list_8h_source.html" title=" " alt="" coords="613,86,783,111"/>
-<area shape="rect" href="node__hash__map_8h_source.html" title=" " alt="" coords="560,167,729,207"/>
-<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="1296,79,1471,119"/>
-<area shape="rect" href="vector_8h_source.html" title=" " alt="" coords="1053,86,1242,111"/>
-<area shape="rect" href="intrusive__list_8h.html" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="858,79,1029,119"/>
+<area shape="rect" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="405,5,572,31"/>
+<area shape="rect" href="mbr_8h.html" title="Master Boot Record definitions." alt="" coords="27,86,142,111"/>
+<area shape="rect" href="page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="137,167,288,207"/>
+<area shape="rect" href="deque_8h_source.html" title=" " alt="" coords="1571,86,1761,111"/>
+<area shape="rect" href="list_8h_source.html" title=" " alt="" coords="527,86,696,111"/>
+<area shape="rect" href="node__hash__map_8h_source.html" title=" " alt="" coords="465,167,635,207"/>
+<area shape="rect" href="kthread_8h.html" title="Kernel thread and thread scheduler implementation." alt="" coords="332,262,525,287"/>
+<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="847,79,1021,119"/>
+<area shape="rect" href="vector_8h_source.html" title=" " alt="" coords="1307,174,1497,199"/>
+<area shape="rect" href="intrusive__list_8h.html" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="230,79,401,119"/>
 <area shape="rect" href="fat_8h.html" title="FAT32 driver for the bootloader. Only used to locate and load the kernel binary." alt="" coords="5,174,113,199"/>
-<area shape="rect" href="page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="753,255,904,295"/>
-<area shape="rect" href="queue_8h_source.html" title=" " alt="" coords="138,174,327,199"/>
-<area shape="rect" href="nonstd_2stack_8h_source.html" title=" " alt="" coords="351,174,535,199"/>
-<area shape="rect" href="fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="1145,167,1296,207"/>
-<area shape="rect" href="string_8h_source.html" title=" " alt="" coords="1321,174,1507,199"/>
-<area shape="rect" href="test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="1532,174,1643,199"/>
-<area shape="rect" href="leak__checker_8h.html" title="Leak checking utils for nonstd container types." alt="" coords="1512,255,1663,295"/>
-<area shape="rect" href="kthread_8h.html" title="Kernel thread and thread scheduler implementation." alt="" coords="928,174,1121,199"/>
+<area shape="rect" href="page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="137,255,288,295"/>
+<area shape="rect" href="queue_8h_source.html" title=" " alt="" coords="1571,174,1761,199"/>
+<area shape="rect" href="nonstd_2stack_8h_source.html" title=" " alt="" coords="1785,174,1969,199"/>
+<area shape="rect" href="fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="597,343,748,383"/>
+<area shape="rect" href="vfs_8h.html" title="Virtual filesystem." alt="" coords="604,262,741,287"/>
+<area shape="rect" href="elf_8h.html" title="ELF file parser." alt="" coords="1327,350,1477,375"/>
+<area shape="rect" href="process_8h.html" title="Process abstraction (a.k.a. userspace thread)." alt="" coords="364,350,547,375"/>
+<area shape="rect" href="string_8h_source.html" title=" " alt="" coords="710,174,897,199"/>
+<area shape="rect" href="pathutil_8h_source.html" title=" " alt="" coords="1107,174,1283,199"/>
+<area shape="rect" href="test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="972,174,1083,199"/>
+<area shape="rect" href="leak__checker_8h.html" title="Leak checking utils for nonstd container types." alt="" coords="972,255,1123,295"/>
 </map>
 </div>
 </div>
@@ -132,6 +136,13 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>DEBUG_ASSERT</b>(...)</td></tr>
 <tr class="memdesc:a49b0c4ba8ba6a8ffa89bb4c8b91a38f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile-out debug macro in non-debug builds. <br /></td></tr>
 <tr class="separator:a49b0c4ba8ba6a8ffa89bb4c8b91a38f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ac429d7f89c303e31f63a904996dc797e"><td class="memItemLeft" align="right" valign="top"><a id="ac429d7f89c303e31f63a904996dc797e" name="ac429d7f89c303e31f63a904996dc797e"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>implies</b> (bool p, bool q)</td></tr>
+<tr class="memdesc:ac429d7f89c303e31f63a904996dc797e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implication boolean predicate: p =&gt; q. <br /></td></tr>
+<tr class="separator:ac429d7f89c303e31f63a904996dc797e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Runtime assertion macros. Note that <code>static_assert</code> will remain as it is. </p>
@@ -154,7 +165,8 @@ Macros</h2></td></tr>
 
 <p>Run-time assertion. </p>
 <p>This is to make <code>assert()</code> more similar to the DEBUG_ASSERT and TEST_ASSERT macros.</p>
-<p>The extra pair of parens is due to <code>assert</code> failing to accept an argument with commas. </p>
+<p>The extra pair of parens is due to <code>assert</code> failing to accept an argument with commas.</p>
+<p>For the actual assert behavior, see __assert_fail() in nonstd/libc. </p>
 
 </div>
 </div>

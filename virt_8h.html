@@ -125,10 +125,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt::enumerate_
 <tr class="separator:ae23dbe5992b6206fe2837617b46f7d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e76d4f30425f2797ed9bd2de8804e1d"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8cc.html#a4e76d4f30425f2797ed9bd2de8804e1d">mem::virt::io_alloc</a> (unsigned pg)</td></tr>
 <tr class="separator:a4e76d4f30425f2797ed9bd2de8804e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a576507b16ed2f190608c7eda2f14ff40"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8cc.html#a576507b16ed2f190608c7eda2f14ff40">mem::virt::vmalloc</a> (void *virt, unsigned pg)</td></tr>
-<tr class="separator:a576507b16ed2f190608c7eda2f14ff40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b6e7e9db5f4a9712a0e826bc7fd99e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8h.html#a4b6e7e9db5f4a9712a0e826bc7fd99e5">mem::virt::map</a> (uint64_t phys, void *virt, bool uncacheable=false)</td></tr>
-<tr class="separator:a4b6e7e9db5f4a9712a0e826bc7fd99e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0569594e438bf4c5baef93619d1377ed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8cc.html#a0569594e438bf4c5baef93619d1377ed">mem::virt::vmalloc</a> (void *virt, unsigned pg, bool writable)</td></tr>
+<tr class="separator:a0569594e438bf4c5baef93619d1377ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef7fde8c64e553a34b2f451aced249e6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8h.html#aef7fde8c64e553a34b2f451aced249e6">mem::virt::map</a> (uint64_t phys, void *virt, bool userspace, bool writable, bool uncacheable=false)</td></tr>
+<tr class="separator:aef7fde8c64e553a34b2f451aced249e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e569e14df5582858423480c98916b79"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8h.html#a2e569e14df5582858423480c98916b79">mem::virt::unmap</a> (void *virt)</td></tr>
 <tr class="separator:a2e569e14df5582858423480c98916b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8641db06d1acd8f2621861528f187a3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="virt_8h.html#ab8641db06d1acd8f2621861528f187a3">mem::virt::mark_uncacheable</a> (void *virt)</td></tr>
@@ -235,8 +235,8 @@ constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt
 
 </div>
 </div>
-<a id="a4b6e7e9db5f4a9712a0e826bc7fd99e5" name="a4b6e7e9db5f4a9712a0e826bc7fd99e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b6e7e9db5f4a9712a0e826bc7fd99e5">&#9670;&#160;</a></span>map()</h2>
+<a id="aef7fde8c64e553a34b2f451aced249e6" name="aef7fde8c64e553a34b2f451aced249e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef7fde8c64e553a34b2f451aced249e6">&#9670;&#160;</a></span>map()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,6 +255,18 @@ constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt
           <td></td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>virt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>userspace</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>writable</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -343,8 +355,8 @@ constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt
 
 </div>
 </div>
-<a id="a576507b16ed2f190608c7eda2f14ff40" name="a576507b16ed2f190608c7eda2f14ff40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a576507b16ed2f190608c7eda2f14ff40">&#9670;&#160;</a></span>vmalloc()</h2>
+<a id="a0569594e438bf4c5baef93619d1377ed" name="a0569594e438bf4c5baef93619d1377ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0569594e438bf4c5baef93619d1377ed">&#9670;&#160;</a></span>vmalloc()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -359,7 +371,13 @@ constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>mem::virt
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>pg</em>&#160;</td>
+          <td class="paramname"><em>pg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>writable</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

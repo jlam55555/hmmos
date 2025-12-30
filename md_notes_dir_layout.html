@@ -84,13 +84,16 @@ $(function() {
 <li><b>test</b>: kernel test code</li>
 <li><b>kernel</b>: kernel code<ul>
 <li><b>arch</b>: architecture-specific code. Right now it's all x86, but if this project ever branches to other architectures, only the code for the correct architecture will actually be compiled</li>
+<li><b>fs</b>: VHS and filesystem drivers</li>
 <li><b>drivers</b>: support for particular HW devices</li>
 <li><b>mm</b>: physical and virtual memory management</li>
 <li><b>nonstd</b>: imitating standard library code</li>
+<li><b>proc</b>: process abstraction</li>
 <li><b>sched</b>: kernel thread scheduling and synchronization</li>
-<li><b>util</b>: miscellaneous utility functions </li>
+<li><b>util</b>: miscellaneous utility functions</li>
 </ul>
 </li>
+<li><b>userspace</b>: userspace code. Will be compiled separately into ELF images separate from the bootloader/kernel code. </li>
 </ul>
 </li>
 </ul>

@@ -112,8 +112,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Scheduler</b></td></
 <tr class="memitem:a3f66197b429debd9f0020f16dbcdf4f6"><td class="memItemLeft" align="right" valign="top"><a id="a3f66197b429debd9f0020f16dbcdf4f6" name="a3f66197b429debd9f0020f16dbcdf4f6"></a>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>TestScheduler</b></td></tr>
 <tr class="separator:a3f66197b429debd9f0020f16dbcdf4f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5621a413b7f3cbc7f45016db3b1a3944"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsched_1_1KernelThread.html#a5621a413b7f3cbc7f45016db3b1a3944">on_thread_start</a> (<a class="el" href="classsched_1_1KernelThread.html">KernelThread</a> *, void(*)())</td></tr>
-<tr class="separator:a5621a413b7f3cbc7f45016db3b1a3944"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc0d0b8140e22ecd3e46eaa624e8716e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsched_1_1KernelThread.html#acc0d0b8140e22ecd3e46eaa624e8716e">on_thread_start</a> (<a class="el" href="classsched_1_1KernelThread.html">KernelThread</a> *, void(*)(void *), void *data)</td></tr>
+<tr class="separator:acc0d0b8140e22ecd3e46eaa624e8716e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -191,8 +191,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr
 <div class="textblock"><p>Internal representation of a kernel thread. </p>
 <p>This is an internal data structure; threads can be identified by TID. This only need be defined in the header for the intrusive list head in <a class="el" href="classsched_1_1Scheduler.html">Scheduler</a>; External clients do not have any way to construct/get access to a valid <a class="el" href="classsched_1_1KernelThread.html" title="Internal representation of a kernel thread.">KernelThread</a> object via the <a class="el" href="classsched_1_1Scheduler.html">Scheduler</a> interface.. </p>
 </div><h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="a5621a413b7f3cbc7f45016db3b1a3944" name="a5621a413b7f3cbc7f45016db3b1a3944"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5621a413b7f3cbc7f45016db3b1a3944">&#9670;&#160;</a></span>on_thread_start</h2>
+<a id="acc0d0b8140e22ecd3e46eaa624e8716e" name="acc0d0b8140e22ecd3e46eaa624e8716e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc0d0b8140e22ecd3e46eaa624e8716e">&#9670;&#160;</a></span>on_thread_start</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -209,8 +209,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">void(*)()&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype">void(*)(void *)&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -225,7 +231,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr
 </table>
 </div><div class="memdoc">
 <p>This is a free function with C linkage as it is called via asm code. This code is injected at each thread's startup so bookkeeping tasks can be done (e.g., recording context switch times).</p>
-<p>This shouldn't need to do anything with the thunk, it's just provided since it's conveniently available. </p>
+<p>This shouldn't need to do anything with the fcn, it's just provided since it's conveniently available. </p>
 
 </div>
 </div>

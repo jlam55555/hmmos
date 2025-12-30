@@ -1,0 +1,4 @@
+<map id="src/kernel/sched/kthread.h" name="src/kernel/sched/kthread.h">
+<area shape="rect" id="node1" title="Kernel thread and thread scheduler implementation." alt="" coords="5,5,199,31"/>
+<area shape="rect" id="node2" href="$process_8h.html" title="Process abstraction (a.k.a. userspace thread)." alt="" coords="11,79,193,104"/>
+</map>

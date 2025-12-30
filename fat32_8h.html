@@ -85,46 +85,61 @@ $(function() {
 <p>FAT32 filesystem driver.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="ahci_8h_source.html">drivers/ahci.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="vfs_8h_source.html">fs/vfs.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="libc__minimal_8h_source.html">libc_minimal.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="memdefs_8h_source.html">memdefs.h</a>&quot;</code><br />
+<code>#include &quot;nonstd/allocator.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="libc_8h_source.html">nonstd/libc.h</a>&quot;</code><br />
 <code>#include &quot;nonstd/memory.h&quot;</code><br />
+<code>#include &quot;nonstd/node_hash_map.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="string__view_8h_source.html">nonstd/string_view.h</a>&quot;</code><br />
 <code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;optional&gt;</code><br />
-<code>#include &lt;sys/types.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for fat32.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="fat32_8h__incl.png" border="0" usemap="#asrc_2kernel_2fs_2drivers_2fat32_8h" alt=""/></div>
 <map name="asrc_2kernel_2fs_2drivers_2fat32_8h" id="asrc_2kernel_2fs_2drivers_2fat32_8h">
-<area shape="rect" title="FAT32 filesystem driver." alt="" coords="539,5,689,45"/>
-<area shape="rect" href="ahci_8h.html" title="AHCI driver for SATA devices." alt="" coords="5,240,116,265"/>
-<area shape="rect" href="memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="609,93,705,119"/>
-<area shape="rect" href="libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="468,240,573,265"/>
-<area shape="rect" href="memory_8h_source.html" title=" " alt="" coords="348,93,483,119"/>
-<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="693,167,849,192"/>
-<area shape="rect" title=" " alt="" coords="729,93,816,119"/>
-<area shape="rect" title=" " alt="" coords="841,93,915,119"/>
-<area shape="rect" title=" " alt="" coords="939,93,1035,119"/>
-<area shape="rect" title=" " alt="" coords="300,313,371,339"/>
-<area shape="rect" title=" " alt="" coords="93,313,159,339"/>
-<area shape="rect" title=" " alt="" coords="15,313,69,339"/>
-<area shape="rect" href="libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="681,313,800,339"/>
-<area shape="rect" title=" " alt="" coords="395,313,465,339"/>
-<area shape="rect" title=" " alt="" coords="490,313,567,339"/>
-<area shape="rect" title=" " alt="" coords="592,313,657,339"/>
-<area shape="rect" title=" " alt="" coords="654,387,729,412"/>
-<area shape="rect" title=" " alt="" coords="753,387,824,412"/>
-<area shape="rect" href="objutil_8h.html" title="Utility functions/macros for C++ objects." alt="" coords="256,167,356,192"/>
-<area shape="rect" href="bw_8h.html" title="Bitwise operations, especially on structs." alt="" coords="191,240,269,265"/>
-<area shape="rect" title=" " alt="" coords="184,313,276,339"/>
-<area shape="rect" href="hash__bytes_8h_source.html" title=" " alt="" coords="636,240,792,265"/>
-<area shape="rect" href="perf_8h.html" title="Utilities for performance optimization." alt="" coords="927,313,986,339"/>
-<area shape="rect" href="assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="867,240,966,265"/>
-<area shape="rect" title=" " alt="" coords="990,240,1075,265"/>
-<area shape="rect" title=" " alt="" coords="1099,240,1177,265"/>
-<area shape="rect" title=" " alt="" coords="823,313,903,339"/>
-<area shape="rect" title=" " alt="" coords="1010,313,1079,339"/>
+<area shape="rect" title="FAT32 filesystem driver." alt="" coords="1581,5,1732,45"/>
+<area shape="rect" href="ahci_8h.html" title="AHCI driver for SATA devices." alt="" coords="240,313,351,339"/>
+<area shape="rect" href="vfs_8h.html" title="Virtual filesystem." alt="" coords="1311,93,1381,119"/>
+<area shape="rect" href="allocator_8h_source.html" title=" " alt="" coords="1882,313,2021,339"/>
+<area shape="rect" href="node__hash__map_8h_source.html" title=" " alt="" coords="1563,167,1751,192"/>
+<area shape="rect" href="libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="2001,387,2120,412"/>
+<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="863,240,1019,265"/>
+<area shape="rect" href="libc_8h.html" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="111,313,216,339"/>
+<area shape="rect" title=" " alt="" coords="1974,167,2049,192"/>
+<area shape="rect" href="memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="2174,93,2270,119"/>
+<area shape="rect" href="memory_8h_source.html" title=" " alt="" coords="184,167,319,192"/>
+<area shape="rect" title=" " alt="" coords="2295,93,2381,119"/>
+<area shape="rect" title=" " alt="" coords="760,387,831,412"/>
+<area shape="rect" title=" " alt="" coords="406,387,473,412"/>
+<area shape="rect" title=" " alt="" coords="293,387,346,412"/>
+<area shape="rect" href="result_8h.html" title="Result enum, a two&#45;byte enum akin to errno." alt="" coords="488,167,575,192"/>
+<area shape="rect" href="string_8h_source.html" title=" " alt="" coords="1029,167,1148,192"/>
+<area shape="rect" href="vector_8h_source.html" title=" " alt="" coords="1363,240,1486,265"/>
+<area shape="rect" href="intrusive__list_8h.html" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="1196,240,1339,265"/>
+<area shape="rect" href="objutil_8h.html" title="Utility functions/macros for C++ objects." alt="" coords="485,240,585,265"/>
+<area shape="rect" title=" " alt="" coords="1653,387,1722,412"/>
+<area shape="rect" title=" " alt="" coords="1918,387,1977,412"/>
+<area shape="rect" href="hash__bytes_8h_source.html" title=" " alt="" coords="883,313,1039,339"/>
+<area shape="rect" href="list_8h_source.html" title=" " alt="" coords="1561,240,1664,265"/>
+<area shape="rect" href="assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="1375,313,1474,339"/>
+<area shape="rect" title=" " alt="" coords="1696,313,1807,339"/>
+<area shape="rect" title=" " alt="" coords="1114,313,1199,339"/>
+<area shape="rect" title=" " alt="" coords="1841,240,1896,265"/>
+<area shape="rect" title=" " alt="" coords="855,387,947,412"/>
+<area shape="rect" title=" " alt="" coords="1974,460,2049,485"/>
+<area shape="rect" title=" " alt="" coords="2073,460,2144,485"/>
+<area shape="rect" title=" " alt="" coords="971,387,1051,412"/>
+<area shape="rect" title=" " alt="" coords="1148,387,1208,412"/>
+<area shape="rect" title=" " alt="" coords="1499,313,1569,339"/>
+<area shape="rect" href="perf_8h.html" title="Utilities for performance optimization." alt="" coords="1325,387,1383,412"/>
+<area shape="rect" title=" " alt="" coords="730,313,807,339"/>
+<area shape="rect" title=" " alt="" coords="5,387,76,412"/>
+<area shape="rect" title=" " alt="" coords="101,387,178,412"/>
+<area shape="rect" title=" " alt="" coords="203,387,268,412"/>
+<area shape="rect" href="bw_8h.html" title="Bitwise operations, especially on structs." alt="" coords="477,313,554,339"/>
 </map>
 </div>
 </div>
@@ -134,9 +149,9 @@ Include dependency graph for fat32.h:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs_1_1fat32_1_1MBRPartition.html">fs::fat32::MBRPartition</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfs_1_1fat32_1_1Filesystem.html">fs::fat32::Filesystem</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfs_1_1fat32_1_1Inode.html">fs::fat32::Inode</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs_1_1fat32_1_1Filesystem_1_1FileDescriptor.html">fs::fat32::Filesystem::FileDescriptor</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfs_1_1fat32_1_1Filesystem.html">fs::fat32::Filesystem</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -166,7 +181,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>first_sector_lba<
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>sector_count</b></td></tr>
 <tr class="separator:a50947f9a42bbaa2d68d6e5079150d7bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74e5e232e14c351af40f9ca383d6e9f5"><td class="memItemLeft" align="right" valign="top"><a id="a74e5e232e14c351af40f9ca383d6e9f5" name="a74e5e232e14c351af40f9ca383d6e9f5"></a>
-class <a class="el" href="classfs_1_1fat32_1_1Filesystem.html">fs::fat32::Filesystem</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fs::fat32::__attribute__</b></td></tr>
+<a class="el" href="classfs_1_1fat32_1_1Inode.html">fs::fat32::Inode</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fs::fat32::__attribute__</b></td></tr>
 <tr class="separator:a74e5e232e14c351af40f9ca383d6e9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>

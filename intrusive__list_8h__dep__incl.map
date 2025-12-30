@@ -1,6 +1,10 @@
 <map id="src/kernel/util/intrusive_list.h" name="src/kernel/util/intrusive_list.h">
-<area shape="rect" id="node1" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="93,5,263,45"/>
-<area shape="rect" id="node2" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="5,93,156,133"/>
-<area shape="rect" id="node4" href="$kthread_8h.html" title="Kernel thread and thread scheduler implementation." alt="" coords="180,101,373,126"/>
-<area shape="rect" id="node3" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="5,181,156,221"/>
+<area shape="rect" id="node1" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="359,5,530,45"/>
+<area shape="rect" id="node2" href="$vfs_8h.html" title="Virtual filesystem." alt="" coords="187,101,324,126"/>
+<area shape="rect" id="node6" href="$page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="565,93,716,133"/>
+<area shape="rect" id="node8" href="$kthread_8h.html" title="Kernel thread and thread scheduler implementation." alt="" coords="348,101,541,126"/>
+<area shape="rect" id="node3" href="$fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="5,181,156,221"/>
+<area shape="rect" id="node4" href="$elf_8h.html" title="ELF file parser." alt="" coords="181,189,330,214"/>
+<area shape="rect" id="node5" href="$process_8h.html" title="Process abstraction (a.k.a. userspace thread)." alt="" coords="355,189,537,214"/>
+<area shape="rect" id="node7" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="565,181,716,221"/>
 </map>

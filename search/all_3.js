@@ -1,17 +1,19 @@
 var searchData=
 [
-  ['base_0',['Base',['../serial_8h.html#af8118e0fde607a81d597dad070fe9948',1,'serial']]],
-  ['bitfieldlike_1',['BitfieldLike',['../conceptbw_1_1BitfieldLike.html',1,'bw']]],
-  ['boot_2emd_2',['boot.md',['../md_notes_boot.html',1,'']]],
-  ['boot_5fprotocol_2eh_3',['boot_protocol.h',['../boot__protocol_8h.html',1,'']]],
-  ['bootstrap_4',['bootstrap',['../classsched_1_1Scheduler.html#a3eae557ef68e1eaa17896a2c1dc5b48e',1,'sched::Scheduler']]],
-  ['bp_5freq_5',['BP_REQ',['../boot__protocol_8h.html#a47712fbaf979e1392e74f80c15575acd',1,'boot_protocol.h']]],
-  ['bp_5freq_5falign_6',['BP_REQ_ALIGN',['../boot__protocol_8h.html#a79d1008de4db1234aaf549049a04e4b0',1,'boot_protocol.h']]],
-  ['bp_5freq_5fheader_7',['bp_req_header',['../structbp__req__header.html',1,'']]],
-  ['bp_5freq_5fid_8',['bp_req_id',['../boot__protocol_8h.html#a35754974ef66773440111c2bdd24ea27',1,'boot_protocol.h']]],
-  ['bp_5freq_5fmagic_9',['BP_REQ_MAGIC',['../boot__protocol_8h.html#ad78dc1d4a1d0d5cf33838872fd90afcc',1,'boot_protocol.h']]],
-  ['bp_5freq_5fmemory_5fmap_10',['bp_req_memory_map',['../structbp__req__memory__map.html',1,'']]],
-  ['bp_5freqid_5fmemory_5fmap_11',['BP_REQID_MEMORY_MAP',['../boot__protocol_8h.html#a35754974ef66773440111c2bdd24ea27aa91fc843033745075c1e450debe7fba8',1,'boot_protocol.h']]],
-  ['buf_12',['buf',['../structfat32__desc.html#a4d11f7829b9636b7ce06a015eaa4ed96',1,'fat32_desc']]],
-  ['bw_2eh_13',['bw.h',['../bw_8h.html',1,'']]]
+  ['children_0',['children',['../classfs_1_1Dentry.html#a0d3b6721a7c3013e455694fd2e242e80',1,'fs::Dentry']]],
+  ['clear_1',['clear',['../classutil_1_1IntrusiveListHead.html#afb40db6ff52d8e64babe6627a6cb34ae',1,'util::IntrusiveListHead']]],
+  ['close_2',['close',['../classproc_1_1Process.html#ac31d2e46bb77fe27c3e69eb2884af292',1,'proc::Process']]],
+  ['common_5ftype_3c_20rcwrapper_3c_20t_20_3e_2c_20u_20_3e_3',['common_type&lt; RCWrapper&lt; T &gt;, U &gt;',['../structstd_1_1common__type_3_01RCWrapper_3_01T_01_4_00_01U_01_4.html',1,'std']]],
+  ['common_5ftype_3c_20u_2c_20rcwrapper_3c_20t_20_3e_20_3e_4',['common_type&lt; U, RCWrapper&lt; T &gt; &gt;',['../structstd_1_1common__type_3_01U_00_01RCWrapper_3_01T_01_4_01_4.html',1,'std']]],
+  ['console_2eh_5',['console.h',['../console_8h.html',1,'']]],
+  ['console_5fflush_6',['console_flush',['../console_8h.html#af78d78b74d7a667208a636196951abfb',1,'console.c']]],
+  ['console_5fputchar_7',['console_putchar',['../console_8h.html#ac156aa97dae8b45e5aea8f6534d38946',1,'console.c']]],
+  ['console_5fputs_8',['console_puts',['../console_8h.html#a871a10ba7d8015c42d4888874d3c6d07',1,'console.c']]],
+  ['console_5fputs2_9',['console_puts2',['../console_8h.html#a8a66a08a58e59e1f2faee141a582db73',1,'console.c']]],
+  ['console_5fuse_5fhhdm_10',['console_use_hhdm',['../console_8h.html#a2fa6a60f6d82bc0f2a20f4810f25d85c',1,'console.c']]],
+  ['copy_5ffrom_5fvolatile_11',['copy_from_volatile',['../objutil_8h.html#a2783582ab4727e87204faf4c87616ae1',1,'objutil']]],
+  ['copy_5fto_5fvolatile_12',['copy_to_volatile',['../objutil_8h.html#a4aa2a1e30fd22434ff885da41ae37004',1,'objutil']]],
+  ['cpuid_5ffeatures_13',['cpuid_features',['../structcpuid__features.html',1,'']]],
+  ['crt_2eh_14',['crt.h',['../crt_8h.html',1,'']]],
+  ['cur_15',['Cur',['../process_8h.html#a55530c885711bab9338a188ba8ca6649add4b1ecca171981542c71a705aa93f3e',1,'proc']]]
 ];

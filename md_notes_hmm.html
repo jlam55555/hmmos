@@ -74,7 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Interesting observations and debugging sessions</p>
-<h1><a class="anchor" id="autotoc_md28"></a>
+<h1><a class="anchor" id="autotoc_md29"></a>
 slow memory speed</h1>
 <p>When I was first experimenting with my kernel thread implementation, I came across an <strike>frustrating</strike> interesting result: some threads were absurdly faster than others at doing the same deterministic tasks.</p>
 <p>It turns out only the initial kernel thread was slow. It was slow due to operations on its stack. The stack was allocated in the bootloader, unlike the stack for other kernel threads which is allocated via a simple sequential arena. The kernel stack is allocated just under the MBR bootloader load address (physical address 0x7C00, HHDM virt address 0xC0007C00), while other threads' stacks are allocated on some higher page-aligned memory address.</p>
@@ -448,7 +448,7 @@ slow memory speed</h1>
 <p>The solution to my original problem is to move the stack and (writable) data regions of the kernel onto different pages.</p>
 <p>This unexpectedly ended up solving a different but related performance problem. Previously, setting up the page frame array was very slow. Compiling with -O1 helped tremendously (runtime went from ~1min to &lt;1s) and I figured this was due to optimizing the memcpy/memset functions. However, it turns out this operation was simply slow due to the abundance of stack operations &ndash; compiling with -O1 probably avoided writing an intermediate value to the stack in one of these functions. By moving the bootloader stack to a different page, I am able to get similar performance without -O1.</p>
 <p>Nice!</p>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 slowness after hlt</h2>
 <p>Another issue I noticed when turning on pre-emptive scheduling is that the <code>schedule()</code> call was much slower when pre-emptive scheduling (from the timer interrupt) as opposed to co-operative scheduling (which was essentially being done in a tight loop from the code).</p>
 <p>My guess is that the icache gets cold after not accessing it for some time. This is confirmed via a simple experiment:</p>
@@ -513,7 +513,7 @@ slowness after hlt</h2>
 <div class="line">cycles=30476</div>
 <div class="line">hlt</div>
 </div><!-- fragment --><p>I'm not sure exactly what's going on that causes the icache to get cold &ndash; no other code is running on the OS in the meantime. I imagine QEMU shares the icache with the guest system and it gets cold when the guest system <code>hlt</code>s. With the QEMU (non-KVM) runtime, I imagine there's enough other code running to cause the icache to become even more stale.</p>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md31"></a>
 KVM memory invalidation heisenbug</h1>
 <p>I thought QEMU used KVM virtualization by default until recently when I learned it has its <a href="https://airbus-seclab.github.io/qemu_blog/tcg_p1.html">own translation layers</a>. When I tried to turn on KVM (<code>-accel kvm</code>), I got some weird issues with the page mapping.</p>
 <p>There's a check in the bootloader that the HHDM is set up properly. This checks that the 1MB of memory starting from 0xC0000000 (high-half direct mapping) matches the 1MB starting from 0x0 (direct mapping). We can only check up to 1MB since the lower-half direct mapping is only 1MB for bootstrapping from real mode. We actually do this check twice: once before the page table is set up (check should fail) and once afterwards (check should succeed).</p>
@@ -646,7 +646,7 @@ KVM memory invalidation heisenbug</h1>
 <div class="line">// the future, IDK.</div>
 <div class="line">volatile int _ = *(int *)0x2000;</div>
 </div><!-- fragment --><p>This works if I dereference any address in the range <code>0x1FFD</code> through <code>0x2FFF</code>, which is an almost-page-oriented behavior. I have no idea why the last 12 bytes of the 0x1000 page works here, but it seems to be consistent behavior.</p>
-<h1><a class="anchor" id="autotoc_md31"></a>
+<h1><a class="anchor" id="autotoc_md32"></a>
 A fun memset</h1>
 <p>Overwriting stack memory or the GDT can lead to fun errors! Both of the following happened on the same <code>memset()</code> call, leading to double the f(r)u(stratio)n!</p>
 <p>Clobbering the stack: I'd misplaced it via a bad asm instruction :/ Memory corruption is a fun thing. Led to a page fault within <code>memset()</code> (not the source/destination memory regions, but the text region :/).</p>

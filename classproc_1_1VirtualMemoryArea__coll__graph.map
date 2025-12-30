@@ -1,0 +1,10 @@
+<map id="proc::VirtualMemoryArea" name="proc::VirtualMemoryArea">
+<area shape="rect" id="node1" title=" " alt="" coords="215,211,400,236"/>
+<area shape="rect" id="node2" href="$structproc_1_1VirtualMemoryArea_1_1Access.html" title=" " alt="" coords="5,108,191,148"/>
+<area shape="rect" id="node3" href="$structproc_1_1VirtualMemoryArea_1_1Flags.html" title=" " alt="" coords="215,108,400,148"/>
+<area shape="rect" id="node4" href="$classfs_1_1Dentry.html" title=" " alt="" coords="424,115,511,141"/>
+<area shape="rect" id="node5" href="$classutil_1_1IntrusiveListHead.html" title=" " alt="" coords="197,13,330,38"/>
+<area shape="rect" id="node6" href="$classfs_1_1Inode.html" title=" " alt="" coords="355,13,433,38"/>
+<area shape="rect" id="node7" href="$classutil_1_1IntrusiveListHead.html" title=" " alt="" coords="458,5,623,45"/>
+<area shape="rect" id="node8" href="$classnonstd_1_1string.html" title=" " alt="" coords="648,13,759,38"/>
+</map>

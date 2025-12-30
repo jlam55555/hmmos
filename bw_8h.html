@@ -104,12 +104,15 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="bw_8h__dep__incl.png" border="0" usemap="#asrc_2kernel_2util_2bw_8hdep" alt=""/></div>
 <map name="asrc_2kernel_2util_2bw_8hdep" id="asrc_2kernel_2util_2bw_8hdep">
-<area shape="rect" title="Bitwise operations, especially on structs." alt="" coords="109,5,253,31"/>
-<area shape="rect" href="objutil_8h.html" title="Utility functions/macros for C++ objects." alt="" coords="97,79,264,104"/>
-<area shape="rect" href="page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="5,152,156,192"/>
-<area shape="rect" href="memory_8h_source.html" title=" " alt="" coords="181,159,383,185"/>
-<area shape="rect" href="page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="5,240,156,280"/>
-<area shape="rect" href="fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="207,240,357,280"/>
+<area shape="rect" title="Bitwise operations, especially on structs." alt="" coords="392,5,536,31"/>
+<area shape="rect" href="objutil_8h.html" title="Utility functions/macros for C++ objects." alt="" coords="381,79,547,104"/>
+<area shape="rect" href="vfs_8h.html" title="Virtual filesystem." alt="" coords="201,159,338,185"/>
+<area shape="rect" href="page__frame__table_8h.html" title="Page frame descriptors and page frame table." alt="" coords="590,152,741,192"/>
+<area shape="rect" href="memory_8h_source.html" title=" " alt="" coords="363,159,565,185"/>
+<area shape="rect" href="fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="387,240,538,280"/>
+<area shape="rect" href="elf_8h.html" title="ELF file parser." alt="" coords="5,247,155,273"/>
+<area shape="rect" href="process_8h.html" title="Process abstraction (a.k.a. userspace thread)." alt="" coords="179,247,362,273"/>
+<area shape="rect" href="page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="590,240,741,280"/>
 </map>
 </div>
 </div>
@@ -171,7 +174,8 @@ requires (sizeof...(Bs) &gt; 0)</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Bitwise operations, especially on structs. </p>
-<p>It would be nice if these could be constexpr, but alas we are doing some sketchy stuff here (reinterpret_cast&lt;&gt; is not allowed in constexpr contexts and probably for good reason). However, this should be expected to work when structs are little-endian and properly packed. </p>
+<p>It would be nice if these could be constexpr, but alas we are doing some sketchy stuff here (reinterpret_cast&lt;&gt; is not allowed in constexpr contexts and probably for good reason). However, this should be expected to work when structs are little-endian and properly packed.</p>
+<p>TODO: I've since learned about std::bit_cast, which seems to fit this constexpr-reinterpret-cast need pretty well. Convert this to use bit_cast. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a236a2e9e06b4abde3e60f01fc6ebada3" name="a236a2e9e06b4abde3e60f01fc6ebada3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a236a2e9e06b4abde3e60f01fc6ebada3">&#9670;&#160;</a></span>and_()</h2>
@@ -227,7 +231,7 @@ requires (sizeof...(Bs) &gt; 0)</div>
 <div class="line"><span class="keywordtype">bool</span> check_some_flags =</div>
 <div class="line">    bw::and_(my_bitfield, MyBitfield{.flag_1=1, .flag_3=1});</div>
 <div class="line">uint8_t field_5 = <a class="code hl_function" href="bw_8h.html#a236a2e9e06b4abde3e60f01fc6ebada3">bw::and_</a>(my_bitfield, MyBitfield{.field_5}) &gt;&gt; 4;</div>
-<div class="ttc" id="abw_8h_html_a236a2e9e06b4abde3e60f01fc6ebada3"><div class="ttname"><a href="bw_8h.html#a236a2e9e06b4abde3e60f01fc6ebada3">bw::and_</a></div><div class="ttdeci">auto and_(B &amp;&amp;b, Bs &amp;&amp;...bs)</div><div class="ttdef"><b>Definition:</b> bw.h:125</div></div>
+<div class="ttc" id="abw_8h_html_a236a2e9e06b4abde3e60f01fc6ebada3"><div class="ttname"><a href="bw_8h.html#a236a2e9e06b4abde3e60f01fc6ebada3">bw::and_</a></div><div class="ttdeci">auto and_(B &amp;&amp;b, Bs &amp;&amp;...bs)</div><div class="ttdef"><b>Definition:</b> bw.h:130</div></div>
 </div><!-- fragment --><p>Whether this actually helps with maintainability is something to find out, but to me this seems readable. I think the "old" method is fine if the struct is defined with opaque integer bitfields, but this new method makes sense if the struct is already defined as a bitfield and you don't want to duplicate the field definitions as constants. </p>
 
 </div>

@@ -84,19 +84,45 @@ $(function() {
 
 <p>Kernel thread and thread scheduler implementation.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="intrusive__list_8h_source.html">util/intrusive_list.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;nonstd/node_hash_map.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="assert_8h_source.html">util/assert.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="intrusive__list_8h_source.html">util/intrusive_list.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for kthread.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="kthread_8h__incl.png" border="0" usemap="#asrc_2kernel_2sched_2kthread_8h" alt=""/></div>
 <map name="asrc_2kernel_2sched_2kthread_8h" id="asrc_2kernel_2sched_2kthread_8h">
-<area shape="rect" title="Kernel thread and thread scheduler implementation." alt="" coords="91,5,285,31"/>
-<area shape="rect" href="intrusive__list_8h.html" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="117,79,259,104"/>
-<area shape="rect" href="assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="29,152,128,177"/>
-<area shape="rect" title=" " alt="" coords="153,152,223,177"/>
-<area shape="rect" title=" " alt="" coords="247,152,318,177"/>
-<area shape="rect" href="perf_8h.html" title="Utilities for performance optimization." alt="" coords="5,225,64,251"/>
-<area shape="rect" title=" " alt="" coords="88,225,157,251"/>
+<area shape="rect" title="Kernel thread and thread scheduler implementation." alt="" coords="63,5,257,31"/>
+<area shape="rect" href="node__hash__map_8h_source.html" title=" " alt="" coords="443,79,631,104"/>
+<area shape="rect" href="assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="5,225,104,251"/>
+<area shape="rect" href="intrusive__list_8h.html" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="89,152,231,177"/>
+<area shape="rect" href="libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="891,152,1010,177"/>
+<area shape="rect" href="allocator_8h_source.html" title=" " alt="" coords="461,225,600,251"/>
+<area shape="rect" href="hash__bytes_8h_source.html" title=" " alt="" coords="601,152,757,177"/>
+<area shape="rect" href="list_8h_source.html" title=" " alt="" coords="371,152,474,177"/>
+<area shape="rect" title=" " alt="" coords="326,225,437,251"/>
+<area shape="rect" title=" " alt="" coords="781,152,867,177"/>
+<area shape="rect" title=" " alt="" coords="1034,152,1089,177"/>
+<area shape="rect" title=" " alt="" coords="255,152,347,177"/>
+<area shape="rect" title=" " alt="" coords="1011,225,1085,251"/>
+<area shape="rect" title=" " alt="" coords="915,225,986,251"/>
+<area shape="rect" title=" " alt="" coords="209,299,279,324"/>
+<area shape="rect" title=" " alt="" coords="329,299,399,324"/>
+<area shape="rect" title=" " alt="" coords="713,299,780,324"/>
+<area shape="rect" title=" " alt="" coords="501,299,560,324"/>
+<area shape="rect" title=" " alt="" coords="760,225,840,251"/>
+<area shape="rect" title=" " alt="" coords="625,225,685,251"/>
+<area shape="rect" title=" " alt="" coords="179,225,250,251"/>
+<area shape="rect" href="perf_8h.html" title="Utilities for performance optimization." alt="" coords="25,299,84,324"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="kthread_8h__dep__incl.png" border="0" usemap="#asrc_2kernel_2sched_2kthread_8hdep" alt=""/></div>
+<map name="asrc_2kernel_2sched_2kthread_8hdep" id="asrc_2kernel_2sched_2kthread_8hdep">
+<area shape="rect" title="Kernel thread and thread scheduler implementation." alt="" coords="5,5,199,31"/>
+<area shape="rect" href="process_8h.html" title="Process abstraction (a.k.a. userspace thread)." alt="" coords="11,79,193,104"/>
 </map>
 </div>
 </div>
@@ -112,27 +138,27 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ae8985d4337ce8dbabf99b7085af8fe2f"><td class="memItemLeft" align="right" valign="top"><a id="ae8985d4337ce8dbabf99b7085af8fe2f" name="ae8985d4337ce8dbabf99b7085af8fe2f"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>sched::ThreadID</b> = unsigned</td></tr>
-<tr class="separator:ae8985d4337ce8dbabf99b7085af8fe2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5ba15bbfde248bcd84c292df2fd3c5b"><td class="memItemLeft" align="right" valign="top"><a id="ae5ba15bbfde248bcd84c292df2fd3c5b" name="ae5ba15bbfde248bcd84c292df2fd3c5b"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>sched::ThreadID</b> = uint16_t</td></tr>
+<tr class="separator:ae5ba15bbfde248bcd84c292df2fd3c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6fb680df895ce1cb83816fa0430e47fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kthread_8cc.html#a6fb680df895ce1cb83816fa0430e47fd">sched::on_thread_start</a> (KernelThread *thread, void(*thunk)())</td></tr>
-<tr class="separator:a6fb680df895ce1cb83816fa0430e47fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77ab365937f0f8097cec5aaeecd1a51a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kthread_8cc.html#a77ab365937f0f8097cec5aaeecd1a51a">sched::on_thread_start</a> (KernelThread *thread, void(*fcn)(void *), void *data)</td></tr>
+<tr class="separator:a77ab365937f0f8097cec5aaeecd1a51a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Kernel thread and thread scheduler implementation. </p>
 <p>The general interface for the scheduler is:</p><ul>
 <li><code>Scheduler::bootstrap()</code>: register the current thread in the scheduler.</li>
-<li><code>Scheduler::new_thread(thunk)</code>: add a new task that will start executing <code>thunk</code>. This will be given a 4KB stack.</li>
+<li><code>Scheduler::new_thread(fcn)</code>: add a new task that will start executing <code>fcn</code>. This will be given a 4KB stack.</li>
 <li><code>Scheduler::destroy_thread()</code>: destroy the current running thread, and schedule away.</li>
 <li><code>Scheduler::schedule()</code>: context-switch to the next runnable task in a round-robin manner.</li>
 </ul>
 <p>TODO: pre-emptive scheduling (timer interrupt) and synchronization primitives </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a6fb680df895ce1cb83816fa0430e47fd" name="a6fb680df895ce1cb83816fa0430e47fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6fb680df895ce1cb83816fa0430e47fd">&#9670;&#160;</a></span>on_thread_start()</h2>
+<a id="a77ab365937f0f8097cec5aaeecd1a51a" name="a77ab365937f0f8097cec5aaeecd1a51a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77ab365937f0f8097cec5aaeecd1a51a">&#9670;&#160;</a></span>on_thread_start()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -146,8 +172,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">void(*)()&#160;</td>
-          <td class="paramname"><em>thunk</em>&#160;</td>
+          <td class="paramtype">void(*)(void *)&#160;</td>
+          <td class="paramname"><em>fcn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -157,7 +189,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This is a free function with C linkage as it is called via asm code. This code is injected at each thread's startup so bookkeeping tasks can be done (e.g., recording context switch times).</p>
-<p>This shouldn't need to do anything with the thunk, it's just provided since it's conveniently available. </p>
+<p>This shouldn't need to do anything with the fcn, it's just provided since it's conveniently available. </p>
 
 </div>
 </div>

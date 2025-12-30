@@ -75,17 +75,17 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p>Notes about compliance with the standard C++ library (libstdc++ in most cases).</p>
 <p>The general guideline is header-only symbols are allowable due to <code>-nostdlib</code>.</p>
-<h1><a class="anchor" id="autotoc_md75"></a>
+<h1><a class="anchor" id="autotoc_md78"></a>
 Concepts and type traits</h1>
 <p>Always usable.</p>
-<h1><a class="anchor" id="autotoc_md76"></a>
+<h1><a class="anchor" id="autotoc_md79"></a>
 Types</h1>
 <p>Scalar typedefs (<code>std::size_t</code>, <code>std::uintptr_t</code>, etc.) and allocation-/policy-free types (<code>std::pair</code>, <code>std::array</code>, <code>std::initializer_list</code>, etc.) are fine. The standard doesn't define that these types don't allocate, but any reasonable implementation won't.</p>
 <p>Types that throw are generally unsupported. These generally call into hooks like <code>__throw_length_error()</code> that are defined in object files. We <em>could</em> define these stubs (to abort rather than throw &ndash; see <a class="el" href="libc__symbols_8cc.html" title="Symbols in the std namespace required by std interfaces. If they have a trivial implementation,...">libc_symbols.cc</a> for examples), but in general this practice is not portable since these are not defined in the standard. The <code>std::allocator</code> class is a prominent example, as well as many dynamic-allocation container classes (discussed below).</p>
 <p>Similarly, I try to stay away from types that require complicated policy classes or function hooks. Both for simplicity and for the learning experience, I opt to implement these classes myself. For example, for <code>std::unordered_map</code> requires you to implement <code>std::hash</code> for key types (this is unavoidable), as well as hashing policy methods such as <code>std::__detail::_Prime_rehash_policy::_M_next_bucket(unsigned)</code> and <code>std::__detail::_Prime_rehash_policy::_M_need_rehash(unsigned,
 unsigned, unsigned) const</code>. For this reason I've decided to provide simple implementations of the major allocating container types (<code>list</code>, <code>vector</code>, <code>string</code>, <code>unordered_map</code>, <code>deque</code>, etc.) that we care about.</p>
 <p>These guidelines are not strict. For example, <code>std::string_view</code> is a non-allocating header-only type, but I defined a simple implementation (1) for the educational value; (2) to use C++23 <code>std::string_view::contains</code> with a non-C++23 compiler; (3) to simplify by not templating on <code>CharT</code> and depending on <code>std::char_traits&lt;CharT&gt;</code>, since we don't care about wide chars in the kernel. Another exemption is <code>std::function</code>, which can throw (<code>__throw_bad_function_call()</code>), but we use it anyways because we can use the rest of it as-is.</p>
-<h2><a class="anchor" id="autotoc_md77"></a>
+<h2><a class="anchor" id="autotoc_md80"></a>
 Self-implemented stdlib containers</h2>
 <ul>
 <li><code>string_view</code></li>
@@ -100,7 +100,7 @@ Self-implemented stdlib containers</h2>
 <li>TODO: <code>forward_list</code></li>
 <li>TODO: <code>deque</code> (and <code>stack</code>, <code>queue</code>)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md78"></a>
+<h1><a class="anchor" id="autotoc_md81"></a>
 Algorithms</h1>
 <p>Header-only libraries (that don't throw) generally can be used. This includes most templated algorithms, such as <code>std::max</code>, <code>std::swap</code>, and even <code>std::sort</code>. I haven't encountered issues with stdlib algorithm functions requiring symbols defined in object files. </p>
 </div></div><!-- contents -->

@@ -125,6 +125,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>console_printl</b> (c
 <tr class="memitem:a4a0ecdd293aa42c0e0b0c1d4cd467794"><td class="memItemLeft" align="right" valign="top"><a id="a4a0ecdd293aa42c0e0b0c1d4cd467794" name="a4a0ecdd293aa42c0e0b0c1d4cd467794"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>console_printq</b> (const uint64_t n)</td></tr>
 <tr class="separator:a4a0ecdd293aa42c0e0b0c1d4cd467794"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fa6a60f6d82bc0f2a20f4810f25d85c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8h.html#a2fa6a60f6d82bc0f2a20f4810f25d85c">console_use_hhdm</a> ()</td></tr>
+<tr class="separator:a2fa6a60f6d82bc0f2a20f4810f25d85c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Very simple printing utilities via BIOS text screen memory. </p>
@@ -159,6 +161,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>console_printq</b> (c
 
 <p>Call console_puts on each of its string arguments. </p>
 <p>(The first string argument is only present since we can't have variadic functions with zero non-variadic arguments.) </p>
+
+</div>
+</div>
+<a id="a2fa6a60f6d82bc0f2a20f4810f25d85c" name="a2fa6a60f6d82bc0f2a20f4810f25d85c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fa6a60f6d82bc0f2a20f4810f25d85c">&#9670;&#160;</a></span>console_use_hhdm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void console_use_hhdm </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Used by the kernel; switch the VGA buf to the HHDM-mapped address since userspace processes don't use the direct low memory map. </p>
 
 </div>
 </div>

@@ -73,11 +73,11 @@ $(function() {
   <div class="headertitle"><div class="title">overall kernel implementation notes </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md33"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md34"></a>
 Testing setup</h1>
 <p>The approach I took in laos was not so good, so I'd like to reformulate it here. There, you would compile the kernel with <code>-DRUNTEST=&lt;test_selection_criteria</code>, and this would only compile in the tests you want. This means that running a different set of tests means recompiling the kernel.</p>
 <p>There's no reason this can't be done at runtime, so the new idea is to build a test runner kernel that reads the test selection at runtime (via serial port).</p>
-<h1><a class="anchor" id="autotoc_md34"></a>
+<h1><a class="anchor" id="autotoc_md35"></a>
 kernel TODO</h1>
 <p>In no definitive order. Some of these can be copied from <a href="https://github.com/jlam55555/laos">laos</a>.</p>
 <ul>
@@ -89,7 +89,7 @@ kernel TODO</h1>
 <li>[ ] clang-tidy and clang-format configuration</li>
 </ul>
 </li>
-<li>[ ] basics<ul>
+<li>[X] basics<ul>
 <li>[X] printf library</li>
 <li>[X] (circular) linked lists like Linux's LIST_HEAD</li>
 </ul>
@@ -98,27 +98,28 @@ kernel TODO</h1>
 <li>[ ] memory allocation<ul>
 <li>[X] page frame allocator</li>
 <li>[ ] slub/slab allocator</li>
-<li>[ ] virtual memory allocator</li>
+<li>[X] virtual memory allocator</li>
 </ul>
 </li>
-<li>[ ] scheduling<ul>
-<li>[ ] kernel threads</li>
-<li>[ ] setup TSS (for userspace)</li>
-<li>[ ] userspace processes (after userspace)</li>
+<li>[X] scheduling<ul>
+<li>[X] kernel threads</li>
+<li>[X] setup TSS (for userspace)</li>
+<li>[X] userspace processes (after userspace)</li>
 </ul>
 </li>
 <li>[ ] enter userspace<ul>
 <li>[ ] syscalls</li>
 <li>[ ] shell</li>
-<li>[ ] ELF loader</li>
+<li>[X] ELF loader</li>
 <li>[ ] try to link in a very simple libc?</li>
 </ul>
 </li>
 <li>[ ] drivers<ul>
 <li>[ ] serial port</li>
 <li>[ ] keyboard</li>
-<li>[ ] console</li>
-<li>[ ] disk</li>
+<li>[ ] tty</li>
+<li>[X] console</li>
+<li>[X] disk</li>
 <li>[ ] timer</li>
 <li>[ ] graphics (very simple) </li>
 </ul>

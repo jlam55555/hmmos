@@ -1,7 +1,11 @@
 <map id="src/kernel/nonstd/string_view.h" name="src/kernel/nonstd/string_view.h">
-<area shape="rect" id="node1" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="187,5,361,45"/>
-<area shape="rect" id="node2" href="$fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="5,93,156,133"/>
-<area shape="rect" id="node3" href="$string_8h_source.html" title=" " alt="" coords="181,101,367,126"/>
-<area shape="rect" id="node4" href="$test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="392,101,503,126"/>
-<area shape="rect" id="node5" href="$leak__checker_8h.html" title="Leak checking utils for nonstd container types." alt="" coords="372,181,523,221"/>
+<area shape="rect" id="node1" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="279,5,453,45"/>
+<area shape="rect" id="node2" href="$fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="5,255,156,295"/>
+<area shape="rect" id="node3" href="$vfs_8h.html" title="Virtual filesystem." alt="" coords="203,174,340,199"/>
+<area shape="rect" id="node4" href="$elf_8h.html" title="ELF file parser." alt="" coords="387,262,537,287"/>
+<area shape="rect" id="node6" href="$string_8h_source.html" title=" " alt="" coords="207,93,394,119"/>
+<area shape="rect" id="node7" href="$pathutil_8h_source.html" title=" " alt="" coords="469,93,645,119"/>
+<area shape="rect" id="node8" href="$test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="669,93,780,119"/>
+<area shape="rect" id="node5" href="$process_8h.html" title="Process abstraction (a.k.a. userspace thread)." alt="" coords="180,262,363,287"/>
+<area shape="rect" id="node9" href="$leak__checker_8h.html" title="Leak checking utils for nonstd container types." alt="" coords="649,167,800,207"/>
 </map>

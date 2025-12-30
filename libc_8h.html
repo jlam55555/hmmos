@@ -112,13 +112,17 @@ This graph shows which files directly or indirectly include this file:</div>
 <map name="asrc_2kernel_2nonstd_2libc_8hdep" id="asrc_2kernel_2nonstd_2libc_8hdep">
 <area shape="rect" title="Implementation of a small part of the C standard library, for kernel use." alt="" coords="209,5,381,31"/>
 <area shape="rect" href="pci_8h.html" title="Driver for the PCI (Peripheral Component Interconnect) bus." alt="" coords="5,79,140,119"/>
-<area shape="rect" href="fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="425,167,576,207"/>
+<area shape="rect" href="fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="277,328,428,368"/>
 <area shape="rect" href="libc__symbols_8cc.html" title="Symbols in the std namespace required by std interfaces. If they have a trivial implementation,..." alt="" coords="215,79,375,119"/>
-<area shape="rect" href="memory_8h_source.html" title=" " alt="" coords="399,86,602,111"/>
-<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="627,79,801,119"/>
-<area shape="rect" href="string_8h_source.html" title=" " alt="" coords="610,174,797,199"/>
-<area shape="rect" href="test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="821,174,932,199"/>
-<area shape="rect" href="leak__checker_8h.html" title="Leak checking utils for nonstd container types." alt="" coords="801,255,952,295"/>
+<area shape="rect" href="memory_8h_source.html" title=" " alt="" coords="223,247,426,273"/>
+<area shape="rect" href="string__view_8h.html" title="Simple implementation of C++20/23&#45;ish string_view. Features are implemented as needed." alt="" coords="557,79,732,119"/>
+<area shape="rect" href="vfs_8h.html" title="Virtual filesystem." alt="" coords="505,247,643,273"/>
+<area shape="rect" href="elf_8h.html" title="ELF file parser." alt="" coords="694,335,843,361"/>
+<area shape="rect" href="string_8h_source.html" title=" " alt="" coords="551,167,738,192"/>
+<area shape="rect" href="pathutil_8h_source.html" title=" " alt="" coords="813,167,989,192"/>
+<area shape="rect" href="test_8h.html" title="Simple C++&#45;oriented test runner. Based off the laos test runner." alt="" coords="1013,167,1124,192"/>
+<area shape="rect" href="process_8h.html" title="Process abstraction (a.k.a. userspace thread)." alt="" coords="483,335,665,361"/>
+<area shape="rect" href="leak__checker_8h.html" title="Leak checking utils for nonstd container types." alt="" coords="993,240,1144,280"/>
 </map>
 </div>
 </div>
@@ -137,6 +141,12 @@ constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>nonstd::strc
 <tr class="memitem:ab5713f4364c16a9bef11fec4266383c1"><td class="memItemLeft" align="right" valign="top"><a id="ab5713f4364c16a9bef11fec4266383c1" name="ab5713f4364c16a9bef11fec4266383c1"></a>
 constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>nonstd::strncmp</b> (const char *s1, const char *s2, size_t n)</td></tr>
 <tr class="separator:ab5713f4364c16a9bef11fec4266383c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57e0965706cad8ff75f6abecde5c82a0"><td class="memItemLeft" align="right" valign="top"><a id="a57e0965706cad8ff75f6abecde5c82a0" name="a57e0965706cad8ff75f6abecde5c82a0"></a>
+constexpr char *&#160;</td><td class="memItemRight" valign="bottom"><b>nonstd::strcpy</b> (char *dst, const char *src)</td></tr>
+<tr class="separator:a57e0965706cad8ff75f6abecde5c82a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f78b19726c343bc6e786f0ec94ba078"><td class="memItemLeft" align="right" valign="top"><a id="a8f78b19726c343bc6e786f0ec94ba078" name="a8f78b19726c343bc6e786f0ec94ba078"></a>
+constexpr char *&#160;</td><td class="memItemRight" valign="bottom"><b>nonstd::strncpy</b> (char *dst, const char *src, size_t n)</td></tr>
+<tr class="separator:a8f78b19726c343bc6e786f0ec94ba078"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2ccd6802873b3e902ca4e67fd9c7277"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="libc_8cc.html#ac2ccd6802873b3e902ca4e67fd9c7277">nonstd::printf</a> (const char *fmt,...)</td></tr>
 <tr class="separator:ac2ccd6802873b3e902ca4e67fd9c7277"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d371ae0e7ed1e55768addc8f8e3babc"><td class="memItemLeft" align="right" valign="top"><a id="a3d371ae0e7ed1e55768addc8f8e3babc" name="a3d371ae0e7ed1e55768addc8f8e3babc"></a>

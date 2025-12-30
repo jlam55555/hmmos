@@ -1,11 +1,20 @@
 var searchData=
 [
-  ['leak_5fchecker_2eh_0',['leak_checker.h',['../leak__checker_8h.html',1,'']]],
-  ['leakchecker_1',['LeakChecker',['../classLeakChecker.html',1,'']]],
-  ['libc_2eh_2',['libc.h',['../libc_8h.html',1,'']]],
-  ['libc_5fminimal_2eh_3',['libc_minimal.h',['../libc__minimal_8h.html',1,'']]],
-  ['libc_5fsymbols_2ecc_4',['libc_symbols.cc',['../libc__symbols_8cc.html',1,'']]],
-  ['list_5',['list',['../classnonstd_1_1list.html',1,'nonstd']]],
-  ['list_3c_20node_20_3e_6',['list&lt; Node &gt;',['../classnonstd_1_1list.html',1,'nonstd']]],
-  ['lookup_5ffile_7',['lookup_file',['../classfs_1_1fat32_1_1Filesystem.html#a48cb7ea4b94eef260f2a29b375ae904d',1,'fs::fat32::Filesystem']]]
+  ['mallocator_0',['Mallocator',['../structnonstd_1_1Mallocator.html',1,'nonstd']]],
+  ['map_1',['map',['../virt_8h.html#aef7fde8c64e553a34b2f451aced249e6',1,'mem::virt']]],
+  ['mark_5funcacheable_2',['mark_uncacheable',['../virt_8h.html#ab8641db06d1acd8f2621861528f187a3',1,'mem::virt']]],
+  ['matches_3',['matches',['../test_8h.html#a1d3ad2c5121402ae3287f76cc845feed',1,'test::detail']]],
+  ['max_5fbuses_4',['max_buses',['../pci_8h.html#a9564455eff486ea688e40c15364bc97d',1,'drivers::pci']]],
+  ['max_5fdevices_5',['max_devices',['../pci_8h.html#a71a65bc95cfcc3e97b57188be87760f4',1,'drivers::pci']]],
+  ['max_5fenumerated_5ffunctions_6',['max_enumerated_functions',['../pci_8h.html#a9a1a4ffc9df028675adea3bc10ce1338',1,'drivers::pci']]],
+  ['max_5ffunctions_7',['max_functions',['../pci_8h.html#a65a206f8510c2e26059b242bd5a5ccea',1,'drivers::pci']]],
+  ['max_5fregisters_8',['max_registers',['../pci_8h.html#a585481888e186cffa9fa564fced4f569',1,'drivers::pci']]],
+  ['mbr_2eh_9',['mbr.h',['../mbr_8h.html',1,'']]],
+  ['mbr_5fpartition_5fdesc_10',['mbr_partition_desc',['../structmbr__partition__desc.html',1,'']]],
+  ['mbr_5fsector_5fsz_11',['MBR_SECTOR_SZ',['../mbr_8h.html#a18e3540a6d6f5fb8e285a627f25dfc5f',1,'mbr.h']]],
+  ['mbr_5fstart_12',['mbr_start',['../boot_2page__table_8h.html#a089222c5e969faed37631ac0c1681f8e',1,'page_table.h']]],
+  ['mbrpartition_13',['MBRPartition',['../structfs_1_1fat32_1_1MBRPartition.html',1,'fs::fat32']]],
+  ['mem_5flimit_14',['mem_limit',['../classmem_1_1phys_1_1PageFrameTable.html#a2c2e1744eb0943183f5198f619a8e23a',1,'mem::phys::PageFrameTable']]],
+  ['memdefs_2eh_15',['memdefs.h',['../memdefs_8h.html',1,'']]],
+  ['memory_16',['Memory',['../md_notes_mem.html',1,'']]]
 ];

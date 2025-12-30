@@ -1,26 +1,7 @@
 var searchData=
 [
-  ['id_0',['id',['../bw_8h.html#ada56c27ae8f59e85fb76697b7b650d5e',1,'bw']]],
-  ['idt_2eh_1',['idt.h',['../idt_8h.html',1,'']]],
-  ['idtentry_2',['IDTEntry',['../structarch_1_1idt_1_1IDTEntry.html',1,'arch::idt']]],
-  ['idtr_3',['IDTR',['../structarch_1_1idt_1_1IDTR.html',1,'arch::idt']]],
-  ['insert_5fback_4',['insert_back',['../classutil_1_1IntrusiveListHead.html#a645f614962fe510cf19f9f4bdf34b9a9',1,'util::IntrusiveListHead']]],
-  ['interruptframe_5',['InterruptFrame',['../structInterruptFrame.html',1,'']]],
-  ['intrusive_5flist_2eh_6',['intrusive_list.h',['../intrusive__list_8h.html',1,'']]],
-  ['intrusivelisthead_7',['IntrusiveListHead',['../classutil_1_1IntrusiveListHead.html#ad2e3ceefda805851ba14ac68f09fd156',1,'util::IntrusiveListHead::IntrusiveListHead()=default'],['../classutil_1_1IntrusiveListHead.html#a86e41b8dce1fbb8bb3b5b2d8419947c2',1,'util::IntrusiveListHead::IntrusiveListHead(const It &amp;begin, const It &amp;end)'],['../classutil_1_1IntrusiveListHead.html',1,'util::IntrusiveListHead&lt; Parent, Tag &gt;']]],
-  ['intrusivelisthead_3c_20kernelthread_20_3e_8',['IntrusiveListHead&lt; KernelThread &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
-  ['intrusivelisthead_3c_20mem_3a_3aphys_3a_3apageframeallocator_20_3e_9',['IntrusiveListHead&lt; mem::phys::PageFrameAllocator &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
-  ['intrusivelisthead_3c_20pageframeallocator_20_3e_10',['IntrusiveListHead&lt; PageFrameAllocator &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
-  ['intrusivelisthead_3c_20sched_3a_3akernelthread_20_3e_11',['IntrusiveListHead&lt; sched::KernelThread &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
-  ['inttypeimpl_12',['IntTypeImpl',['../structbw_1_1detail_1_1IntTypeImpl.html',1,'bw::detail']]],
-  ['inttypeimpl_3c_201_20_3e_13',['IntTypeImpl&lt; 1 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_011_01_4.html',1,'bw::detail']]],
-  ['inttypeimpl_3c_202_20_3e_14',['IntTypeImpl&lt; 2 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_012_01_4.html',1,'bw::detail']]],
-  ['inttypeimpl_3c_204_20_3e_15',['IntTypeImpl&lt; 4 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_014_01_4.html',1,'bw::detail']]],
-  ['inttypeimpl_3c_208_20_3e_16',['IntTypeImpl&lt; 8 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_018_01_4.html',1,'bw::detail']]],
-  ['io_5fmap_5fsz_17',['IO_MAP_SZ',['../boot__protocol_8h.html#aa0565e413bb83e0539ebc2006482544d',1,'boot_protocol.h']]],
-  ['is_5fhw_5finterrupt_18',['is_hw_interrupt',['../pic_8h.html#a4dac3248e363d52a771765aef0d4a68e',1,'drivers::pic']]],
-  ['isprint_19',['isprint',['../libc_8h.html#a269dea890ca909302472c9d4f9c4c5f9',1,'nonstd']]],
-  ['isrs_20',['isrs',['../isrs_8h.html#a5c6057994b1f4b2e8fdb8d6108b4adff',1,'isrs.cc']]],
-  ['isrs_2eh_21',['isrs.h',['../isrs_8h.html',1,'']]],
-  ['iterimpl_22',['IterImpl',['../structutil_1_1IntrusiveListHead_1_1IterImpl.html',1,'util::IntrusiveListHead']]]
+  ['kernel_5fload_5faddr_0',['KERNEL_LOAD_ADDR',['../boot__protocol_8h.html#a8cf50ce50e5c69c8f5893969eec156ef',1,'boot_protocol.h']]],
+  ['kernelthread_1',['KernelThread',['../classsched_1_1KernelThread.html',1,'sched']]],
+  ['kmalloc_2eh_2',['kmalloc.h',['../kmalloc_8h.html',1,'']]],
+  ['kthread_2eh_3',['kthread.h',['../kthread_8h.html',1,'']]]
 ];

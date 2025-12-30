@@ -73,20 +73,20 @@ $(function() {
   <div class="headertitle"><div class="title">style guide </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md80"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md83"></a>
 Assembly</h1>
 <p>As noted in random.md, I'm not using an asm formatter. The formatting is pretty manual. Directives, comments, and instructions are indented with a single tab character, labels are not.</p>
-<h1><a class="anchor" id="autotoc_md81"></a>
+<h1><a class="anchor" id="autotoc_md84"></a>
 C structs</h1>
 <p>Reserved (must be zero) and ignored/available (don't care) (bit)fields are explicitly named with <code>rsv&lt;n&gt;</code> or <code>ign&lt;n&gt;</code>, where <code>&lt;n&gt;</code> is a number to make such fields unique. As a result, we shouldn't have any anonymous bitfields.</p>
-<h1><a class="anchor" id="autotoc_md82"></a>
+<h1><a class="anchor" id="autotoc_md85"></a>
 Line length</h1>
 <p>For most things (c code, asm code, markdown, git commit summaries), I'm using emacs' default <code>fill-line</code> (<code>M-q</code>) logic, which breaks lines to roughly 70 chars. clang also breaks long lines to 80 chars.</p>
-<h1><a class="anchor" id="autotoc_md83"></a>
+<h1><a class="anchor" id="autotoc_md86"></a>
 C++ naming convention</h1>
 <p>C style is pretty simple; we'll use underscore_case for all regular symbols, and CAPITAL_CASED macros. (This also goes for <code>extern "C"</code> compatibility C++ code.)</p>
 <p>In C++ this gets a little more complicated. For now I'll try to keep underscore case for filenames and most symbols except datatypes (PascalCase), but there's a chance I may change my mind about this in the future. (This is similar to our Python casing conventions at work, interestingly.)</p>
-<h1><a class="anchor" id="autotoc_md84"></a>
+<h1><a class="anchor" id="autotoc_md87"></a>
 Other C++ shenanigans</h1>
 <p>C++ encapsulation should be fairly open for testing purposes. Implementation details should usually be put into a <code>detail</code> sub-namespace rather than an anonymous namespace. </p>
 </div></div><!-- contents -->

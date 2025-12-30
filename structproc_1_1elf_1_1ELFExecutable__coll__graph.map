@@ -1,0 +1,5 @@
+<map id="proc::elf::ELFExecutable" name="proc::elf::ELFExecutable">
+<area shape="rect" id="node1" title="Parsed ELF executable image." alt="" coords="77,93,253,119"/>
+<area shape="rect" id="node2" href="$structproc_1_1elf_1_1ELFHeader.html" title="File header." alt="" coords="5,5,157,31"/>
+<area shape="rect" id="node3" href="$structproc_1_1elf_1_1PHEntry.html" title=" " alt="" coords="182,5,317,31"/>
+</map>

@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['testfixture_0',['TestFixture',['../classtest_1_1TestFixture.html',1,'test']]],
-  ['testinfo_1',['TestInfo',['../structtest_1_1detail_1_1TestInfo.html',1,'test::detail']]],
-  ['testscheduler_2',['TestScheduler',['../classsched_1_1TestScheduler.html',1,'sched']]],
-  ['teststructtoemplace_3',['TestStructToEmplace',['../structTestStructToEmplace.html',1,'']]],
-  ['tss_4',['TSS',['../structarch_1_1gdt_1_1TSS.html',1,'arch::gdt']]]
+  ['scheduler_0',['Scheduler',['../classsched_1_1Scheduler.html',1,'sched']]],
+  ['serial_1',['Serial',['../classserial_1_1Serial.html',1,'serial']]],
+  ['simplepfa_2',['SimplePFA',['../classmem_1_1phys_1_1SimplePFA.html',1,'mem::phys']]],
+  ['stack_3',['stack',['../classnonstd_1_1stack.html',1,'nonstd']]],
+  ['string_4',['string',['../classnonstd_1_1string.html',1,'nonstd']]],
+  ['string_5fview_5',['string_view',['../classnonstd_1_1string__view.html',1,'nonstd']]]
 ];

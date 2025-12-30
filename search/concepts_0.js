@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['isbicycle_0',['IsBicycle',['../concept_0d36_1_1IsBicycle.html',1,'@36']]]
+  ['bitfieldlike_0',['BitfieldLike',['../conceptbw_1_1BitfieldLike.html',1,'bw']]]
 ];

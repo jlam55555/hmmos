@@ -94,7 +94,7 @@ $(function() {
 <li>Userspace processes<ul>
 <li>[X] Kernel threads</li>
 <li>[X] Thread scheduling</li>
-<li>[ ] ELF loader</li>
+<li>[X] ELF loader</li>
 <li>[ ] Syscalls</li>
 <li>[ ] Shared libraries</li>
 <li>Sample programs<ul>
@@ -110,7 +110,7 @@ $(function() {
 <li>[ ] ext2</li>
 </ul>
 </li>
-<li>[ ] VFS layer<ul>
+<li>[X] VFS layer<ul>
 <li>[ ] LRU page cache</li>
 </ul>
 </li>
@@ -121,6 +121,7 @@ $(function() {
 <li>[X] BIOS text mode display</li>
 <li>[X] ACPI</li>
 <li>[X] AHCI (SATA)</li>
+<li>[ ] TTY</li>
 <li>[ ] Keyboard</li>
 <li>[ ] Graphics</li>
 <li>[ ] UDP</li>
@@ -140,7 +141,7 @@ $(function() {
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md86"></a>
+<h1><a class="anchor" id="autotoc_md89"></a>
 Setup</h1>
 <p>This project is mainly built with clang/LLVM toolchains in mind. This includes <code>clang</code>, <code>lld</code>, <code>clangd</code>, and <code>clang-format</code>. You'll need at least version 14.</p>
 <p>GNU <code>binutils</code> is needed where LLVM is lacking (i.e. <code>as</code> for GNU AT&amp;T asm syntax + <code>objdump</code> and friends). GNU <code>mtools</code> is also required to build the binary.</p>
@@ -169,7 +170,7 @@ Setup</h1>
 <div class="line">$</div>
 <div class="line">$ uname -a</div>
 <div class="line">Linux jebian 6.1.0-27-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.115-1 (2024-11-01) x86_64 GNU/Linux</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md87"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md90"></a>
 Getting started</h1>
 <p>Build the bootloader and run it in QEMU. Make sure to have <code>qemu</code> and GNU <code>make</code> installed, and <code>doxygen</code> if you want to generate documentation. </p><div class="fragment"><div class="line">$ # Run the kernel</div>
 <div class="line">$ make run</div>
@@ -180,7 +181,7 @@ Getting started</h1>
 <div class="line">$</div>
 <div class="line">$ # Generate documentation</div>
 <div class="line">$ make docs</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md88"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md91"></a>
 Debugging in GDB</h2>
 <div class="fragment"><div class="line">$ # Compile with debug symbols enabled and start running in QEMU.</div>
 <div class="line">$ # This doesn&#39;t actually start until `make gdb` is called.</div>
@@ -191,7 +192,7 @@ Debugging in GDB</h2>
 <div class="line">$ # run this with the same compile options (e.g., OPT=*, DEBUG=*) as</div>
 <div class="line">$ # in `make runi`.</div>
 <div class="line">$ make gdb</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md89"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md92"></a>
 Misc.</h1>
 <p>Name courtesy of @Victoooooor. </p>
 </div></div><!-- PageDoc -->

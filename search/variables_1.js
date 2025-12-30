@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['e820_5fmm_5fmax_5fentries_0',['e820_mm_max_entries',['../boot_2page__table_8h.html#ac300cbc416ba89ced14dd764db2a2ea9',1,'page_table.h']]]
+  ['children_0',['children',['../classfs_1_1Dentry.html#a0d3b6721a7c3013e455694fd2e242e80',1,'fs::Dentry']]]
 ];

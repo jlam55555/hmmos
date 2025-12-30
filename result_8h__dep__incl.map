@@ -1,0 +1,7 @@
+<map id="src/kernel/fs/result.h" name="src/kernel/fs/result.h">
+<area shape="rect" id="node1" title="Result enum, a two&#45;byte enum akin to errno." alt="" coords="177,5,332,31"/>
+<area shape="rect" id="node2" href="$vfs_8h.html" title="Virtual filesystem." alt="" coords="186,79,323,104"/>
+<area shape="rect" id="node4" href="$elf_8h.html" title="ELF file parser." alt="" coords="5,159,155,185"/>
+<area shape="rect" id="node5" href="$process_8h.html" title="Process abstraction (a.k.a. userspace thread)." alt="" coords="354,159,537,185"/>
+<area shape="rect" id="node3" href="$fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="179,152,330,192"/>
+</map>

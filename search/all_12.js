@@ -1,12 +1,20 @@
 var searchData=
 [
-  ['random_20notes_0',['random notes',['../md_notes_random.html',1,'']]],
-  ['range_5foverlaps_1',['range_overlaps',['../algorithm_8h.html#ab927f5abc4ee239a59ef76ad2ea2d457',1,'util::algorithm']]],
-  ['range_5foverlaps2_2',['range_overlaps2',['../algorithm_8h.html#a8ca43081adf63ba901e115af6f4667db',1,'util::algorithm']]],
-  ['range_5fsubsumes_3',['range_subsumes',['../algorithm_8h.html#a8e24809d6020a1c146dd02e01456a7c1',1,'util::algorithm']]],
-  ['read_4',['read',['../classfs_1_1fat32_1_1Filesystem.html#abcdb9e35a9e6ca8358af792ad89f06a2',1,'fs::fat32::Filesystem']]],
-  ['registerframe_5',['RegisterFrame',['../structRegisterFrame.html',1,'']]],
-  ['resources_6',['Resources',['../md_notes_resources.html',1,'']]],
-  ['root_5ffd_7',['root_fd',['../classfs_1_1fat32_1_1Filesystem.html#a4e9032490e88259fccbceb5c8914cd44',1,'fs::fat32::Filesystem']]],
-  ['run_5fglobal_5fctors_8',['run_global_ctors',['../crt_8h.html#a65a6c466ebaf18e0d365d5e5adad81ad',1,'crt']]]
+  ['schedule_0',['schedule',['../classsched_1_1Scheduler.html#a30e50d61e74f44008edbc0e317a43cc3',1,'sched::Scheduler']]],
+  ['scheduler_1',['Scheduler',['../classsched_1_1Scheduler.html',1,'sched']]],
+  ['seek_2',['Seek',['../process_8h.html#a55530c885711bab9338a188ba8ca6649',1,'proc']]],
+  ['serial_3',['Serial',['../classserial_1_1Serial.html',1,'serial']]],
+  ['serial_2eh_4',['serial.h',['../serial_8h.html',1,'']]],
+  ['setup_5fstack_5',['setup_stack',['../arch_2x86_2stack_8h.html#a640da971a670958de7c6e46743c5a5e3',1,'arch::sched']]],
+  ['simplepfa_6',['SimplePFA',['../classmem_1_1phys_1_1SimplePFA.html',1,'mem::phys']]],
+  ['size_7',['size',['../classutil_1_1IntrusiveListHead.html#a4294a44adc540a19bbaa5bb27f7ad4c9',1,'util::IntrusiveListHead']]],
+  ['stack_8',['stack',['../classnonstd_1_1stack.html',1,'nonstd']]],
+  ['stack_2eh_9',['stack.h',['../arch_2x86_2stack_8h.html',1,'']]],
+  ['stdlib_2emd_10',['stdlib.md',['../md_notes_stdlib.html',1,'']]],
+  ['string_11',['string',['../classnonstd_1_1string.html',1,'nonstd']]],
+  ['string_5fview_12',['string_view',['../classnonstd_1_1string__view.html',1,'nonstd']]],
+  ['string_5fview_2eh_13',['string_view.h',['../string__view_8h.html',1,'']]],
+  ['style_20guide_14',['style guide',['../md_notes_style_guide.html',1,'']]],
+  ['switch_5fstack_15',['switch_stack',['../arch_2x86_2stack_8h.html#a97119a4e8358699c7ce32dcec807db70',1,'arch::sched']]],
+  ['syscalls_2eh_16',['syscalls.h',['../syscalls_8h.html',1,'']]]
 ];

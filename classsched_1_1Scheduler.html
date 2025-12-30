@@ -98,15 +98,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a30e50d61e74f44008edbc0e317a43cc3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsched_1_1Scheduler.html#a30e50d61e74f44008edbc0e317a43cc3">schedule</a> ()</td></tr>
 <tr class="memdesc:a30e50d61e74f44008edbc0e317a43cc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select the next runnable process in round-robin order, and actually switch stacks.  <br /></td></tr>
 <tr class="separator:a30e50d61e74f44008edbc0e317a43cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10ff373026e4255fe40ddc8a61ed0503"><td class="memItemLeft" align="right" valign="top">ThreadID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsched_1_1Scheduler.html#a10ff373026e4255fe40ddc8a61ed0503">new_thread</a> (void(*thunk)())</td></tr>
-<tr class="separator:a10ff373026e4255fe40ddc8a61ed0503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1de099834b6ba092fa99becdcbc5468"><td class="memItemLeft" align="right" valign="top">ThreadID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsched_1_1Scheduler.html#ac1de099834b6ba092fa99becdcbc5468">new_thread</a> (<a class="el" href="classproc_1_1Process.html">proc::Process</a> *proc, void(*fcn)(void *), void *data)</td></tr>
+<tr class="separator:ac1de099834b6ba092fa99becdcbc5468"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf50e8c93dd234e37c34215261f013b1"><td class="memItemLeft" align="right" valign="top"><a id="abf50e8c93dd234e37c34215261f013b1" name="abf50e8c93dd234e37c34215261f013b1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>print_stats</b> () const</td></tr>
 <tr class="memdesc:abf50e8c93dd234e37c34215261f013b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print scheduler stats, for debugging purposes. <br /></td></tr>
 <tr class="separator:abf50e8c93dd234e37c34215261f013b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71c46d162d4205d4425105e7a446f7cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsched_1_1Scheduler.html#a71c46d162d4205d4425105e7a446f7cb">destroy_thread</a> (<a class="el" href="classsched_1_1KernelThread.html">KernelThread</a> *thread=nullptr)</td></tr>
-<tr class="memdesc:a71c46d162d4205d4425105e7a446f7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a thread.  <br /></td></tr>
-<tr class="separator:a71c46d162d4205d4425105e7a446f7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cce6adda77c0c6d1f7f2ae46b6c2e9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsched_1_1Scheduler.html#a1cce6adda77c0c6d1f7f2ae46b6c2e9d">destroy_thread</a> (ThreadID tid)</td></tr>
+<tr class="memdesc:a1cce6adda77c0c6d1f7f2ae46b6c2e9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a thread.  <br /></td></tr>
+<tr class="separator:a1cce6adda77c0c6d1f7f2ae46b6c2e9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ac234f0168275884b4f94eb8450122f"><td class="memItemLeft" align="right" valign="top"><a id="a6ac234f0168275884b4f94eb8450122f" name="a6ac234f0168275884b4f94eb8450122f"></a>
+<a class="el" href="classproc_1_1Process.html">proc::Process</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>curr_proc</b> () const</td></tr>
+<tr class="separator:a6ac234f0168275884b4f94eb8450122f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9179d5c418fde1086bc9d52a8a6bdab2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsched_1_1Scheduler.html#a9179d5c418fde1086bc9d52a8a6bdab2">override_curr_proc</a> (<a class="el" href="classproc_1_1Process.html">proc::Process</a> *proc)</td></tr>
+<tr class="separator:a9179d5c418fde1086bc9d52a8a6bdab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -133,8 +138,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>TestScheduler</b></t
 
 </div>
 </div>
-<a id="a71c46d162d4205d4425105e7a446f7cb" name="a71c46d162d4205d4425105e7a446f7cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71c46d162d4205d4425105e7a446f7cb">&#9670;&#160;</a></span>destroy_thread()</h2>
+<a id="a1cce6adda77c0c6d1f7f2ae46b6c2e9d" name="a1cce6adda77c0c6d1f7f2ae46b6c2e9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cce6adda77c0c6d1f7f2ae46b6c2e9d">&#9670;&#160;</a></span>destroy_thread()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -145,8 +150,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>TestScheduler</b></t
         <tr>
           <td class="memname">void sched::Scheduler::destroy_thread </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classsched_1_1KernelThread.html">KernelThread</a> *&#160;</td>
-          <td class="paramname"><em>thread</em> = <code>nullptr</code></td><td>)</td>
+          <td class="paramtype">ThreadID&#160;</td>
+          <td class="paramname"><em>tid</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -169,8 +174,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>TestScheduler</b></t
 
 </div>
 </div>
-<a id="a10ff373026e4255fe40ddc8a61ed0503" name="a10ff373026e4255fe40ddc8a61ed0503"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10ff373026e4255fe40ddc8a61ed0503">&#9670;&#160;</a></span>new_thread()</h2>
+<a id="ac1de099834b6ba092fa99becdcbc5468" name="ac1de099834b6ba092fa99becdcbc5468"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1de099834b6ba092fa99becdcbc5468">&#9670;&#160;</a></span>new_thread()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,13 +183,56 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>TestScheduler</b></t
         <tr>
           <td class="memname">ThreadID sched::Scheduler::new_thread </td>
           <td>(</td>
-          <td class="paramtype">void(*)()&#160;</td>
-          <td class="paramname"><em>thunk</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classproc_1_1Process.html">proc::Process</a> *&#160;</td>
+          <td class="paramname"><em>proc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">void(*)(void *)&#160;</td>
+          <td class="paramname"><em>fcn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create a new thread that will start execution at the given thunk. </p>
+<p>Create a new thread that will start execution at the given fcn. <em>proc</em> can be nullptr if this thread is not associated with a userspace process. </p>
+
+</div>
+</div>
+<a id="a9179d5c418fde1086bc9d52a8a6bdab2" name="a9179d5c418fde1086bc9d52a8a6bdab2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9179d5c418fde1086bc9d52a8a6bdab2">&#9670;&#160;</a></span>override_curr_proc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sched::Scheduler::override_curr_proc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classproc_1_1Process.html">proc::Process</a> *&#160;</td>
+          <td class="paramname"><em>proc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Ugly hack that should only be used in the <a class="el" href="classproc_1_1Process.html">proc::Process</a> constructor. We want to run kernel code from the context of the newly created process, but this code should be run immediately from the parent process. </p>
 
 </div>
 </div>

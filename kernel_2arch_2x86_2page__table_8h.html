@@ -100,15 +100,27 @@ Functions</h2></td></tr>
 <tr class="memitem:af2507d429a3d65c2cf0567b5151a28a3"><td class="memItemLeft" align="right" valign="top"><a id="af2507d429a3d65c2cf0567b5151a28a3" name="af2507d429a3d65c2cf0567b5151a28a3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>arch::page_table::enumerate_page_tables</b> ()</td></tr>
 <tr class="separator:af2507d429a3d65c2cf0567b5151a28a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6a269741332391bd4b4bbd4fe0f632a"><td class="memItemLeft" align="right" valign="top"><a id="ac6a269741332391bd4b4bbd4fe0f632a" name="ac6a269741332391bd4b4bbd4fe0f632a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>arch::page_table::map</b> (uint64_t phys, void *virt, bool uncacheable)</td></tr>
-<tr class="separator:ac6a269741332391bd4b4bbd4fe0f632a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad395fdb95919b5d440bf8403134d5974"><td class="memItemLeft" align="right" valign="top"><a id="ad395fdb95919b5d440bf8403134d5974" name="ad395fdb95919b5d440bf8403134d5974"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>arch::page_table::map</b> (uint64_t phys, void *virt, bool u_s, bool r_w, bool uncacheable)</td></tr>
+<tr class="separator:ad395fdb95919b5d440bf8403134d5974"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2610de4183c6b9f4c89aa0abd1f9f1a7"><td class="memItemLeft" align="right" valign="top"><a id="a2610de4183c6b9f4c89aa0abd1f9f1a7" name="a2610de4183c6b9f4c89aa0abd1f9f1a7"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>arch::page_table::unmap</b> (void *virt)</td></tr>
 <tr class="separator:a2610de4183c6b9f4c89aa0abd1f9f1a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68be9dcc18274a522d4d694b295b5841"><td class="memItemLeft" align="right" valign="top"><a id="a68be9dcc18274a522d4d694b295b5841" name="a68be9dcc18274a522d4d694b295b5841"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>arch::page_table::mark_uncacheable</b> (void *virt)</td></tr>
 <tr class="separator:a68be9dcc18274a522d4d694b295b5841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad87ca18e8aba025e5440b083665b24ee"><td class="memItemLeft" align="right" valign="top"><a id="ad87ca18e8aba025e5440b083665b24ee" name="ad87ca18e8aba025e5440b083665b24ee"></a>
+PageDirectoryEntry *&#160;</td><td class="memItemRight" valign="bottom"><b>arch::page_table::get_page_directory</b> ()</td></tr>
+<tr class="memdesc:ad87ca18e8aba025e5440b083665b24ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the page table hierarchy. <br /></td></tr>
+<tr class="separator:ad87ca18e8aba025e5440b083665b24ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c5bf6ff322b9916268fc075e0f07775"><td class="memItemLeft" align="right" valign="top"><a id="a3c5bf6ff322b9916268fc075e0f07775" name="a3c5bf6ff322b9916268fc075e0f07775"></a>
+PageDirectoryEntry *&#160;</td><td class="memItemRight" valign="bottom"><b>arch::page_table::clone_kernel_page_directory</b> (PageDirectoryEntry *orig)</td></tr>
+<tr class="memdesc:a3c5bf6ff322b9916268fc075e0f07775"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the page table hierarchy. <br /></td></tr>
+<tr class="separator:a3c5bf6ff322b9916268fc075e0f07775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e4bfb229c7acfcdbe71ed49c6b6e8bf"><td class="memItemLeft" align="right" valign="top"><a id="a5e4bfb229c7acfcdbe71ed49c6b6e8bf" name="a5e4bfb229c7acfcdbe71ed49c6b6e8bf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>arch::page_table::set_page_directory</b> (PageDirectoryEntry *pde)</td></tr>
+<tr class="memdesc:a5e4bfb229c7acfcdbe71ed49c6b6e8bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switch to a new virtual address space. <br /></td></tr>
+<tr class="separator:a5e4bfb229c7acfcdbe71ed49c6b6e8bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>x86 page table implementation </p>

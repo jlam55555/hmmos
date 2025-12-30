@@ -74,19 +74,19 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Probably incomplete since it's impossible to link everything. I'm not going to bother linking OSDev wikis since those are implied.</p>
-<h1><a class="anchor" id="autotoc_md64"></a>
+<h1><a class="anchor" id="autotoc_md66"></a>
 General OS theory</h1>
 <ul>
 <li><em>Operating Systems: Three Easy Pieces</em> (OSTEP): <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">https://pages.cs.wisc.edu/~remzi/OSTEP/</a></li>
 <li><em>Linux Device Drivers, third ed.</em> (LDD3): <a href="https://lwn.net/Kernel/LDD3/">https://lwn.net/Kernel/LDD3/</a></li>
 <li><em>Writing Device Drivers</em> (Oracle): <a href="https://docs.oracle.com/cd/E18752_01/html/816-4854/index.html">https://docs.oracle.com/cd/E18752_01/html/816-4854/index.html</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md65"></a>
+<h1><a class="anchor" id="autotoc_md67"></a>
 x86, x86-64 architectures</h1>
 <ul>
 <li>Intel Software Developer Manual (SDM): <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md66"></a>
+<h1><a class="anchor" id="autotoc_md68"></a>
 Bootloader</h1>
 <ul>
 <li>OSDev Rolling your own bootloader: <a href="https://wiki.osdev.org/Rolling_Your_Own_Bootloader">https://wiki.osdev.org/Rolling_Your_Own_Bootloader</a></li>
@@ -100,21 +100,25 @@ Bootloader</h1>
 <li>Ralph Brown's Interrupt List (RBIL): <a href="http://www.cs.cmu.edu/~ralf/files.html">http://www.cs.cmu.edu/~ralf/files.html</a></li>
 <li>Grub boot stages: <a href="https://www.system-rescue.org/disk-partitioning/Grub-boot-stages/">https://www.system-rescue.org/disk-partitioning/Grub-boot-stages/</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md67"></a>
-Memory</h1>
+<h1><a class="anchor" id="autotoc_md69"></a>
+Memory mapping</h1>
 <ul>
 <li>Paging strategy for x86: <a href="https://forum.osdev.org/viewtopic.php?p=312121#p312121">https://forum.osdev.org/viewtopic.php?p=312121#p312121</a></li>
 <li><em>Understanding the Linux Virtual Memory Manager</em> by Mel Gorman</li>
 <li><em>A Primer on Memory Consistency and Cache Coherence</em> by Nagarajan et al.</li>
 <li>ioremap()/memremap(): <a href="https://lwn.net/Articles/653585/">https://lwn.net/Articles/653585/</a></li>
+<li>Strategy for mapping segments from ELF file: <a href="https://f.osdev.org/viewtopic.php?p=260156&sid=19fe00f2a5ad12c8db036ef0668be8a1#p260156">https://f.osdev.org/viewtopic.php?p=260156&amp;sid=19fe00f2a5ad12c8db036ef0668be8a1#p260156</a></li>
+<li>rmap: <a href="https://stackoverflow.com/questions/16581490/how-does-kernel-know-which-pages-in-the-virtual-address-space-correspond-to-a-s">https://stackoverflow.com/questions/16581490/how-does-kernel-know-which-pages-in-the-virtual-address-space-correspond-to-a-s</a></li>
+<li>"private anonymous memory" vs. "shared anonymous memory": <a href="https://lore.kernel.org/linux-mm/af7f036d-a131-985f-edd7-2ab93353b373@redhat.com/">https://lore.kernel.org/linux-mm/af7f036d-a131-985f-edd7-2ab93353b373@redhat.com/</a></li>
+<li>"dirty cow attack": <a href="https://spectralops.io/blog/what-is-the-dirty-cow-exploit-and-how-to-prevent-it/">https://spectralops.io/blog/what-is-the-dirty-cow-exploit-and-how-to-prevent-it/</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md68"></a>
+<h1><a class="anchor" id="autotoc_md70"></a>
 MBR</h1>
 <ul>
 <li>CHS decoding: <a href="https://thestarman.pcministry.com/asm/mbr/PartTables.htm#Decoding">https://thestarman.pcministry.com/asm/mbr/PartTables.htm#Decoding</a></li>
 <li>fdisk CHS decoding: <a href="https://superuser.com/a/1733477">https://superuser.com/a/1733477</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md69"></a>
+<h1><a class="anchor" id="autotoc_md71"></a>
 Build system</h1>
 <ul>
 <li>Advanced auto dependency generation: <a href="https://make.mad-scientist.net/papers/advanced-auto-dependency-generation/">https://make.mad-scientist.net/papers/advanced-auto-dependency-generation/</a><ul>
@@ -122,12 +126,12 @@ Build system</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md70"></a>
+<h1><a class="anchor" id="autotoc_md72"></a>
 C/C++ runtime</h1>
 <ul>
 <li>Mini FAQ about the misc libc/gcc crt files: <a href="https://dev.gentoo.org/~vapier/crt.txt">https://dev.gentoo.org/~vapier/crt.txt</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md71"></a>
+<h1><a class="anchor" id="autotoc_md73"></a>
 QEMU</h1>
 <ul>
 <li>QEMU internals blog: <a href="https://airbus-seclab.github.io/qemu_blog/">https://airbus-seclab.github.io/qemu_blog/</a></li>
@@ -135,18 +139,32 @@ QEMU</h1>
 <li>Q35/ICH9 architecture: <a href="https://wiki.qemu.org/Features/Q35">https://wiki.qemu.org/Features/Q35</a></li>
 <li>Attaching QEMU monitor to running VM instance: <a href="https://unix.stackexchange.com/a/476617">https://unix.stackexchange.com/a/476617</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md72"></a>
+<h1><a class="anchor" id="autotoc_md74"></a>
 filesystem</h1>
 <ul>
 <li><code>mtools</code> to manipulate filesystem image without mounting: <a href="https://stackoverflow.com/a/29798605">https://stackoverflow.com/a/29798605</a></li>
 <li>design of the FAT filesystem: <a href="https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system">https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system</a></li>
+<li>inode number assignment for FAT in Linux: <a href="https://unix.stackexchange.com/questions/642313/how-does-linux-assign-inode-numbers-on-filesystems-not-based-on-inodes">https://unix.stackexchange.com/questions/642313/how-does-linux-assign-inode-numbers-on-filesystems-not-based-on-inodes</a></li>
+<li>in-memory vs. on-disk file tables: <a href="https://unix.stackexchange.com/questions/21325/is-the-file-table-in-the-filesystem-or-in-memory">https://unix.stackexchange.com/questions/21325/is-the-file-table-in-the-filesystem-or-in-memory</a></li>
+<li>inode object: <a href="https://litux.nl/mirror/kerneldevelopment/0672327201/ch12lev1sec6.html">https://litux.nl/mirror/kerneldevelopment/0672327201/ch12lev1sec6.html</a></li>
+<li>overview of the linux virtual file system: <a href="https://www.kernel.org/doc/html/v6.3/filesystems/vfs.html">https://www.kernel.org/doc/html/v6.3/filesystems/vfs.html</a></li>
+<li>file system drivers: <a href="https://linux-kernel-labs.github.io/refs/heads/master/labs/filesystems_part2.html">https://linux-kernel-labs.github.io/refs/heads/master/labs/filesystems_part2.html</a></li>
+<li>readdir ordering: <a href="https://stackoverflow.com/a/8977490">https://stackoverflow.com/a/8977490</a></li>
+<li>struct file: <a href="https://litux.nl/mirror/kerneldevelopment/0672327201/ch12lev1sec8.html">https://litux.nl/mirror/kerneldevelopment/0672327201/ch12lev1sec8.html</a></li>
+<li>path lookup: <a href="https://www.kernel.org/doc/html/v5.0/filesystems/path-lookup.html">https://www.kernel.org/doc/html/v5.0/filesystems/path-lookup.html</a></li>
+<li>recovering an unlinked in-use file: <a href="https://unix.stackexchange.com/a/758186">https://unix.stackexchange.com/a/758186</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md73"></a>
+<h1><a class="anchor" id="autotoc_md75"></a>
 AHCI</h1>
 <ul>
 <li>ATA/ATAPI command spec: <a href="https://people.freebsd.org/~imp/asiabsdcon2015/works/d2161r5-ATAATAPI_Command_Set_-_3.pdf">https://people.freebsd.org/~imp/asiabsdcon2015/works/d2161r5-ATAATAPI_Command_Set_-_3.pdf</a></li>
 <li>SATA AHCI spec: <a href="https://www.intel.com/content/www/us/en/io/serial-ata/serial-ata-ahci-spec-rev1-3-1.html">https://www.intel.com/content/www/us/en/io/serial-ata/serial-ata-ahci-spec-rev1-3-1.html</a></li>
-<li>PIO, third-party DMA, and bus mastering (first-party DMA). A good first introduction to DMA: <a href="http://www.tweak3d.net/articles/howbusmaster/">http://www.tweak3d.net/articles/howbusmaster/</a> </li>
+<li>PIO, third-party DMA, and bus mastering (first-party DMA). A good first introduction to DMA: <a href="http://www.tweak3d.net/articles/howbusmaster/">http://www.tweak3d.net/articles/howbusmaster/</a></li>
+</ul>
+<h1><a class="anchor" id="autotoc_md76"></a>
+Process/timesharing abstraction</h1>
+<ul>
+<li>The Evolution of the Unix Time-sharing System: <a href="https://www.read.seas.harvard.edu/~kohler/class/aosref/ritchie84evolution.pdf">https://www.read.seas.harvard.edu/~kohler/class/aosref/ritchie84evolution.pdf</a> </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
