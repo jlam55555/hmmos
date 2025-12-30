@@ -246,7 +246,7 @@ $(OUT_DIR)/%_fs.bin: $(OUT_DIR)/%.bin userspace
 	mcopy -i $@ -s src ::SRC
 	@# Copy userspace executables onto the disk.
 	@# TODO: forward build variants to userspace makefile
-	mcopy -i $@ -s out/userspace ::BIN
+	mcopy -i $@ -s $(OUT_DIR)/userspace/bin ::BIN
 
 $(BOOTABLE_DISK): $(BOOTLOADER) $(KERNEL_FS)
 	scripts/install_bootloader.py -b $(BOOTLOADER) -k $(KERNEL_FS) -o $@
@@ -294,6 +294,6 @@ DEPS:=$(BOOT_OBJS:.o=.d) $(KERNEL_OBJS:.o=.d) $(KERNEL_TEST_OBJS:.o=.d)
 -include $(DEPS)
 
 # Userspace rules are invoked via recursive make.
-# TODO: forward build variants to userspace makefile
+# TODO: forward more variables to userspace makefile
 userspace:
-	$(MAKE) -C src/userspace
+	$(MAKE) -C src/userspace OUT_DIR=$(shell realpath $(OUT_DIR))

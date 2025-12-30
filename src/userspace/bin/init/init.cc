@@ -1,3 +1,6 @@
+/// \file init.cc
+/// \brief Initial process.
+
 extern "C" {
 
 // DATA REGION
