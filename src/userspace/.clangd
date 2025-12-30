@@ -1,0 +1,19 @@
+# -*- mode: yaml -*-
+# Add common C/C++ flags. Annoyingly, -I is relative to the file being
+# compiled rather than the project root, so this is a bit heuristic.
+#
+# Eventually we'll probably want to auto-generate a compilation
+# database and use that to get the compile flags, but this will do for
+# now.
+CompileFlags:
+    Add:
+      - -xc++
+      - -m32
+      - -std=c++2a
+      - -fno-rtti
+      - -fno-exceptions
+      - -ffreestanding
+      - -nostdlib
+      - -I../lib
+      - -I../../lib
+      - -I../../../lib

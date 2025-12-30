@@ -1,3 +1,8 @@
+/// \file init.cc
+/// \brief Initial process.
+
+#include "jlibc/unistd.h"
+
 extern "C" {
 
 // DATA REGION
@@ -13,12 +18,9 @@ void _start() {
     rval += bss[i];
   }
 
-  // _exit(rval);
-  __asm__("mov $0x01, %%eax;"
-          "mov %0, %%ebx;"
-          "int $0x80"
-          :
-          : "rm"(rval));
+  rval += data[0];
+
+  exit(rval);
 }
 
 } // namespace "C"

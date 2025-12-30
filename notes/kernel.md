@@ -34,12 +34,12 @@ In no definitive order. Some of these can be copied from
 	- [X] setup TSS (for userspace)
 	- [X] userspace processes (after userspace)
 - [ ] enter userspace
-	- [ ] syscalls
+	- [X] syscalls
 	- [ ] shell
 	- [X] ELF loader
 	- [ ] try to link in a very simple libc?
 - [ ] drivers
-	- [ ] serial port
+	- [X] serial port
 	- [ ] keyboard
 	- [ ] tty
 	- [X] console
