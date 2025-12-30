@@ -11,9 +11,12 @@ OUT_DIR:=../../out/userspace
 CXX=clang++
 CXXFLAGS:=-ffreestanding -nostdlib -static -m32
 
-all: $(OUT_DIR)/init
+all: $(OUT_DIR)/init $(OUT_DIR)/josh
 
-# Init process.
 $(OUT_DIR)/init: init.cc
+	@mkdir -p $(OUT_DIR)
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+$(OUT_DIR)/josh: josh.cc
 	@mkdir -p $(OUT_DIR)
 	$(CXX) $(CXXFLAGS) $< -o $@
