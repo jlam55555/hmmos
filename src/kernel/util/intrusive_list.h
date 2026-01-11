@@ -5,6 +5,7 @@
 /// LIST_HEAD
 
 #include "util/assert.h"
+#include "util/objutil.h"
 #include <cstddef>
 #include <iterator>
 
@@ -76,6 +77,10 @@ namespace util {
 ///
 template <typename Parent, typename Tag = void> class IntrusiveListHead {
   using ListHead = IntrusiveListHead<Parent, Tag>;
+
+  // Moving would break pointers. We could probably fix them up on
+  // move but let's defer that to when we need it.
+  NON_MOVABLE(IntrusiveListHead);
 
 public:
   template <bool Const> struct IterImpl {
@@ -230,6 +235,7 @@ public:
   }
 
   /// Length of this list, not including the sentinel node.
+  /// \note Complexity is O(N)
   size_t size() const {
     size_t rval = 0;
     const auto *ptr = this, *start = ptr;

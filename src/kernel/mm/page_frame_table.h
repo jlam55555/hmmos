@@ -29,6 +29,8 @@ namespace mem::phys {
 ///
 /// For now, make this 64B, same as in the Linux kernel.
 class PageFrameDescriptor {
+  NON_MOVABLE(PageFrameDescriptor);
+
 public:
   bool allocated : 1 = false;
 

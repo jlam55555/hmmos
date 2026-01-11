@@ -5,6 +5,7 @@
 ///
 /// TODO: make this thread-safe
 ///
+#include "mm/virt.h"
 #include <cstddef>
 #include <cstdint>
 #include <span>
@@ -34,7 +35,9 @@ bool init(const std::span<const pci::FuncDescriptor> &pci_fn_descriptors);
 /// Synchronously read \a count (512-byte) sectors from LBA \a
 /// starth:starta to \a buf on port \a port_idx.
 ///
+/// \note The destination buffer \a dest_paddr is a **physical**
+/// address. AHCI doesn't know about physical address translation.
 bool read_blocking(uint8_t port_idx, uint32_t startl, uint32_t starth,
-                   uint32_t count, uint16_t *buf);
+                   uint32_t count, uint64_t dest_paddr);
 
 } // namespace drivers::ahci

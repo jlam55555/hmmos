@@ -19,6 +19,7 @@ namespace phys {
 class SimplePFA;
 }
 void set_pfa(phys::SimplePFA *pfa);
+phys::SimplePFA *get_pfa();
 
 // These functions will return HHDM virtual addresses.
 void *kmalloc(size_t sz) noexcept;

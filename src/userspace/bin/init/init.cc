@@ -13,13 +13,12 @@ extern "C" {
 
 void _start() {
   int rval = 0;
-  for (int i = 0; i < sizeof(bss); ++i) {
-    bss[i] = i % 128;
+  for (int i = 0; i < sizeof data; ++i) {
+    rval += data[i];
+  }
+  for (int i = 0; i < sizeof bss; ++i) {
     rval += bss[i];
   }
-
-  rval += data[0];
-
   exit(rval);
 }
 

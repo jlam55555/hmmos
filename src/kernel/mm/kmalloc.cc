@@ -13,6 +13,7 @@ mem::phys::SimplePFA *pfa = nullptr;
 namespace mem {
 
 void set_pfa(phys::SimplePFA *_pfa) { pfa = _pfa; }
+phys::SimplePFA *get_pfa() { return pfa; }
 
 void *kmalloc(size_t sz) noexcept {
   if (unlikely(pfa == nullptr)) {
@@ -25,6 +26,9 @@ void *kmalloc(size_t sz) noexcept {
     // 1GB of memory (that are reachable via the HHDM). Otherwise the
     // allocated memory is not accessible to the kernel and
     // direct_to_hhdm() will throw.
+    //
+    // vmalloc should use a separate allocator starting at a different
+    // offset. This goes down to the page frame allocator.
     auto page_frame = pfa->alloc(util::algorithm::ceil_pow2<PG_SZ>(sz) / PG_SZ);
     arena = page_frame ? virt::direct_to_hhdm(*page_frame) : nullptr;
   }

@@ -2,6 +2,9 @@
 
 #include "drivers/acpi.h"
 #include "drivers/pic.h"
+#include "fs/page_cache.h"
+#include "mm/kmalloc.h"
+#include "mm/page_frame_allocator.h"
 #include "mm/virt.h"
 #include "nonstd/libc.h"
 #include "nonstd/polyfill.h"
@@ -120,32 +123,39 @@ void isr_pf(uint32_t ivec, RegisterFrame reg_frame, uint32_t error_code,
   // (e.g., populating a file-backed page from disk), so let's emulate
   // the permissions check here.
   for (const auto &vma : proc->get_vmas()) {
-    if (faulted_addr >= vma.addr && faulted_addr < vma.addr + vma.len) {
-      if ((!err.w & !vma.prot.readable) || (err.w & !vma.prot.writable) ||
-          (err.i & !vma.prot.executable)) {
-        if (faulted_addr < mem::virt::hhdm_start && !err.u) {
-          // This is the kernel mapping an ELF binary, allow this exception.
-        } else {
-          nonstd::printf("Segfault due to permissions issue when loading new "
-                         "page. w=%d i=%d @ 0x%x. Process killed.\r\n",
-                         err.w, err.i, faulted_addr);
-          proc->exit(1);
-        }
-      }
-
-      if (vma.flags.map_anon) {
-        mem::virt::vmalloc(
-            (void *)util::algorithm::floor_pow2<PG_SZ>(faulted_addr), 1,
-            /*writable=*/vma.prot.writable);
-        return;
-      } else {
-        nonstd::printf("page fault handler invoked for file-backed page @ "
-                       "0x%x.\r\n",
-                       faulted_addr);
-        isr_dumpregs_errcode(ivec, reg_frame, error_code, frame);
-      }
-      __builtin_unreachable();
+    if (faulted_addr < vma.addr || faulted_addr >= vma.addr + vma.len) {
+      continue;
     }
+
+    if ((!err.w & !vma.prot.readable) | (err.w & !vma.prot.writable) |
+        (err.i & !vma.prot.executable)) {
+      if (faulted_addr < mem::virt::hhdm_start && !err.u) {
+        // This is the kernel mapping an ELF binary (readonly
+        // userspace mapping written in kernel mode), allow this
+        // exception.
+      } else {
+        nonstd::printf("Segfault due to permissions issue when loading new "
+                       "page. w=%d i=%d @ 0x%x. Process killed.\r\n",
+                       err.w, err.i, faulted_addr);
+        proc->exit(1);
+      }
+    }
+
+    if (vma.flags.map_anon & vma.flags.map_private) {
+      // Map private anonymous page.
+      mem::virt::vmalloc(
+          (void *)util::algorithm::floor_pow2<PG_SZ>(faulted_addr), 1,
+          /*writable=*/vma.prot.writable);
+    } else {
+      // Map file-backed (or anonymous shared) page.
+      auto lease = fs::cache::get(
+          vma.dentry->inode, util::algorithm::floor_pow2<PG_SZ>(vma.offset));
+      const uint64_t paddr = mem::get_pfa()->get_paddr(*lease.value().page);
+      mem::virt::map(paddr,
+                     (void *)util::algorithm::floor_pow2<PG_SZ>(faulted_addr),
+                     /*userspace=*/true, vma.prot.writable);
+    }
+    return;
   }
 
   nonstd::printf("Segfault @ 0x%x for non-present page. Process killed.\r\n",

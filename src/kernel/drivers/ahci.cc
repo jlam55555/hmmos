@@ -759,9 +759,11 @@ bool init(const std::span<const pci::FuncDescriptor> &pci_fn_descriptors) {
 }
 
 bool read_blocking(uint8_t port_idx, uint32_t startl, uint32_t starth,
-                   uint32_t count, uint16_t *buf) {
+                   uint32_t count, uint64_t dest_paddr) {
+  nonstd::printf("NOCOMMIT DISK I/O @ 0x%x:%x\r\n", starth, startl);
+
   // Output buffer must be sector_aligned.
-  assert(util::algorithm::aligned_pow2<512>((size_t)buf));
+  assert(util::algorithm::aligned_pow2<512>((size_t)dest_paddr));
 
   assert(abar != nullptr);
   auto &port = abar->ports[port_idx];
@@ -800,25 +802,22 @@ bool read_blocking(uint8_t port_idx, uint32_t startl, uint32_t starth,
   // \note 8KB is chosen somewhat arbitrarily, copied from OSDev. It
   // can be up to 4MB at a time.
   //
-  // \note For now, assume \a buf is a virtual address in the HHDM. If
-  // this assumption ever breaks, hhdm_to_direct() will throw. (And
-  // we'll need to either support different virt->phys addr
-  // translations or have this function just take a phys addr).
-  //
   // TODO: actually change this to 4MB chunks
   //
   int i;
   for (i = 0; i < cmdheader->prdtl - 1; i++) {
-    cmdtbl->prdt_entry[i].dba = (uint32_t)mem::virt::hhdm_to_direct(buf);
+    cmdtbl->prdt_entry[i].dba = (uint32_t)dest_paddr;
+    cmdtbl->prdt_entry[i].dbau = dest_paddr >> 32;
     cmdtbl->prdt_entry[i].dbc =
         8 * 1024 - 1; // 8K bytes (this value should always be set to 1 less
                       // than the actual value)
     cmdtbl->prdt_entry[i].i = 1;
-    buf += 4 * 1024; // 4K words
-    count -= 16;     // 16 sectors
+    dest_paddr += 4 * 1024; // 4K words
+    count -= 16;            // 16 sectors
   }
   // Last entry
-  cmdtbl->prdt_entry[i].dba = (uint32_t)mem::virt::hhdm_to_direct(buf);
+  cmdtbl->prdt_entry[i].dba = (uint32_t)dest_paddr;
+  cmdtbl->prdt_entry[i].dbau = dest_paddr >> 32;
   cmdtbl->prdt_entry[i].dbc = (count << 9) - 1; // 512 bytes per sector
   cmdtbl->prdt_entry[i].i = 1;
 

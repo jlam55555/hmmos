@@ -1,6 +1,10 @@
 #include "fat32.h"
 #include "drivers/ahci.h"
+#include "drivers/device.h"
+#include "fs/page_cache.h"
+#include "fs/vfs.h"
 #include "libc_minimal.h"
+#include "memdefs.h"
 #include "nonstd/allocator.h"
 #include "nonstd/queue.h"
 #include "nonstd/string.h"
@@ -10,12 +14,6 @@
 #include <functional>
 
 namespace {
-
-/// Returns a unique_ptr to a memory area of size \ref sz.
-///
-inline nonstd::unique_ptr<std::byte> scoped_buf(size_t sz) {
-  return nonstd::unique_ptr(reinterpret_cast<std::byte *>(::operator new(sz)));
-}
 
 /// Mask cluster index. The 4 MSB are reserved and should be ignored
 /// if set when addressing a cluster.
@@ -173,72 +171,52 @@ static_assert(sizeof(DirectoryEntry) == 32);
 Inode::Inode(unsigned _id, Filesystem &_fs, uint32_t _start_cluster,
              uint32_t _file_sz_bytes, bool _is_directory,
              std::array<char, 13> _name)
-    : fs::Inode{_id, _is_directory}, fs{_fs}, start_cluster{_start_cluster},
-      file_sz_bytes{_file_sz_bytes} {
+    : fs::Inode{_fs, _id, _file_sz_bytes, _is_directory}, start_cluster{
+                                                              _start_cluster} {
   nonstd::strncpy(name, _name.data(), _name.size());
   const auto [_, inserted] =
-      fs.start_cluster_to_inode.try_emplace(start_cluster, this);
+      get_fs().start_cluster_to_inode.try_emplace(start_cluster, this);
   ASSERT(inserted);
 }
 
 Inode::~Inode() {
-  const auto it = fs.start_cluster_to_inode.find(start_cluster);
-  ASSERT(it != fs.start_cluster_to_inode.end() && it->second == this);
-  fs.start_cluster_to_inode.erase(it);
+  const auto it = get_fs().start_cluster_to_inode.find(start_cluster);
+  ASSERT(it != get_fs().start_cluster_to_inode.end() && it->second == this);
+  get_fs().start_cluster_to_inode.erase(it);
 }
 
-ssize_t Inode::read(void *buf, size_t offset, size_t count, Result &res) {
-  if (is_directory) {
-    res = Result::IsDirectory;
+uint64_t Inode::get_dev_offset(uint64_t file_offset) const {
+  if (!PG_ALIGNED(file_offset)) {
     return -1;
   }
 
-  if (offset >= file_sz_bytes) {
-    return 0;
+  // NOCOMMIT: make this assertion stricter elsewhere
+  ASSERT(PG_ALIGNED(get_fs().sectors_per_cluster * 512));
+
+  if (is_directory) {
+    return -1;
+  }
+
+  if (file_offset >= size) {
+    return -1;
   }
 
   // buf_pos is redundant since it can be computed from offset and
   // file_pos, but it's straightforward.
   uint32_t cur_cluster = start_cluster;
-  size_t file_pos = 0;
-  size_t buf_pos = 0;
-  const size_t file_sz = file_sz_bytes;
+  const size_t file_sz = size;
 
   // This is more naturally written recursively, but it is iterative
   // to avoid stack overflows.
-  while (1) {
-    if (offset >= fs.sectors_per_cluster * 512) {
-      // Skip this cluster entirely, no need to read it.
-      offset -= fs.sectors_per_cluster * 512;
-      file_pos += fs.sectors_per_cluster * 512;
-    } else {
-      // If the input buffer is aligned we can directly copy to the
-      // output buf and avoid the extra memcpy. The extra memcpy
-      // keeps things simple though.
-      fs.read_cluster_to_data_cache(cur_cluster);
-
-      size_t bytes_to_read_from_cluster =
-          std::min(file_sz - file_pos, (size_t)fs.sectors_per_cluster * 512);
-      size_t bytes_to_write_to_buf =
-          std::min(bytes_to_read_from_cluster - offset, count);
-      assert(bytes_to_read_from_cluster > 0);
-      assert(bytes_to_write_to_buf > 0);
-
-      nonstd::memcpy((char *)buf + buf_pos, fs.data_cache.get() + offset,
-                     bytes_to_write_to_buf);
-      file_pos += bytes_to_read_from_cluster;
-      buf_pos += bytes_to_write_to_buf;
-      offset = 0;
-    }
-
-    if (file_pos == file_sz || buf_pos == count) {
-      return buf_pos;
-    }
-
-    cur_cluster = fs.advance_cluster(cur_cluster);
+  while (file_offset > 0) {
+    file_offset -= get_fs().sectors_per_cluster * 512;
+    cur_cluster = get_fs().advance_cluster(cur_cluster);
   }
 
-  __builtin_unreachable();
+  // -2 because cluster index 2 is the first cluster in the data region.
+  const uint32_t sector = get_fs().data_region_offset_lba +
+                          (cur_cluster - 2) * get_fs().sectors_per_cluster;
+  return sector * 512;
 }
 
 Inode *Inode::lookup(nonstd::string_view _name, Result &res) const {
@@ -248,7 +226,7 @@ Inode *Inode::lookup(nonstd::string_view _name, Result &res) const {
   const auto path_component_8_3 = convert_normal_to_8_3_filename(_name);
 
   std::optional<DirectoryEntry> dirent;
-  fs.iterate_dir(start_cluster, [&](const auto *it) {
+  get_fs().iterate_dir(start_cluster, [&](const auto *it) {
     // Note: VFAT is not supported.
     if (nonstd::string_view{path_component_8_3.data(), 11} ==
         nonstd::string_view{it->short_filename, 11}) {
@@ -270,8 +248,8 @@ Inode *Inode::lookup(nonstd::string_view _name, Result &res) const {
   // FAT32 doesn't support hardlinks, so we expect to see the child
   // inode in the dcache if it exists. This is a failsafe to prevent
   // us from duplicating inodes.
-  if (auto it = fs.start_cluster_to_inode.find(start_cluster);
-      unlikely(it != fs.start_cluster_to_inode.end())) {
+  if (auto it = get_fs().start_cluster_to_inode.find(start_cluster);
+      unlikely(it != get_fs().start_cluster_to_inode.end())) {
     // TODO: need some sort of syslog.
     nonstd::printf("Found existing FAT32 inode but it was not in its parent's "
                    "list of children! Is the filesystem corrupted?\r\n");
@@ -279,8 +257,8 @@ Inode *Inode::lookup(nonstd::string_view _name, Result &res) const {
   }
 
   return new Inode{
-      fs.next_inode++,
-      fs,
+      get_fs().next_inode++,
+      get_fs(),
       start_cluster,
       dirent->file_sz_bytes,
       bool(dirent->attr.subdir),
@@ -289,36 +267,26 @@ Inode *Inode::lookup(nonstd::string_view _name, Result &res) const {
   };
 }
 
-Filesystem::Filesystem(const VBR &vbr, const MBRPartition &part)
-    : bytes_per_sector{vbr.ebpb.bytes_per_sector},
+Filesystem &Inode::get_fs() const { return static_cast<Filesystem &>(fs); }
+
+Filesystem::Filesystem(drivers::BlockDevice &dev, const VBR &vbr,
+                       const MBRPartition &part)
+    : fs::Filesystem{dev}, bytes_per_sector{vbr.ebpb.bytes_per_sector},
       sectors_per_cluster{vbr.ebpb.sectors_per_cluster},
       dir_entries_per_cluster{512 * sectors_per_cluster /
                               sizeof(DirectoryEntry)},
       fat_offset_lba{part.first_sector_lba + vbr.ebpb.reserved_sectors},
       data_region_offset_lba{part.first_sector_lba + vbr.ebpb.reserved_sectors +
                              (vbr.ebpb.fats * vbr.ebpb.sectors_per_fat2)},
-      root_dir_start_cluster{vbr.ebpb.root_dir_start_cluster},
-      // Really we only need 512-byte aligned, but the current stupid
-      // allocator doesn't currently guarantee this. It does guarantee
-      // that allocating >= 1PG is page-aligned however. This will be
-      // fixed with the slab allocator.
-      fat_cache{scoped_buf(PG_SZ)}, //
-      data_cache{
-          scoped_buf(std::min(PG_SZ, (size_t)sectors_per_cluster * 512))} {
-  ASSERT(util::algorithm::aligned_pow2<512>((size_t)fat_cache.get()));
-  ASSERT(util::algorithm::aligned_pow2<512>((size_t)data_cache.get()));
-}
+      root_dir_start_cluster{vbr.ebpb.root_dir_start_cluster} {}
 
-std::optional<MBRPartition> Filesystem::find_boot_part() {
-  // Really we only need 512-byte aligned, but the current stupid
-  // allocator doesn't currently guarantee this. It does guarantee
-  // that allocating >= 1PG is page-aligned however. This will be
-  // fixed with the slab allocator.
-  auto buf = scoped_buf(PG_SZ);
-  assert(drivers::ahci::read_blocking(0, 0, 0, 1,
-                                      reinterpret_cast<uint16_t *>(buf.get())));
+std::optional<MBRPartition>
+Filesystem::find_boot_part(drivers::BlockDevice &dev) {
+  cache::VirtLease lease{dev, 0};
+
   // I'm lazy -- hardcode the start of the partition table in the MBR here.
-  const auto *partitions = reinterpret_cast<MBRPartition *>(buf.get() + 0x01BE);
+  const auto *partitions =
+      reinterpret_cast<MBRPartition *>(lease.get() + 0x01BE);
   for (int i = 0; i < 4; ++i) {
     if (partitions[i].partition_type == 0x0C) {
       return partitions[i];
@@ -327,15 +295,15 @@ std::optional<MBRPartition> Filesystem::find_boot_part() {
   return {};
 }
 
-Filesystem Filesystem::from_partition(MBRPartition &boot_part) {
-  // Really we only need 512-byte aligned, but the current stupid
-  // allocator doesn't currently guarantee this. It does guarantee
-  // that allocating >= 1PG is page-aligned however. This will be
-  // fixed with the slab allocator.
-  auto buf = scoped_buf(PG_SZ);
-  assert(drivers::ahci::read_blocking(0, boot_part.first_sector_lba, 0, 1,
-                                      reinterpret_cast<uint16_t *>(buf.get())));
-  return Filesystem{reinterpret_cast<VBR &>(*buf), boot_part};
+Filesystem Filesystem::from_partition(drivers::BlockDevice &dev,
+                                      MBRPartition &boot_part) {
+  unsigned offset =
+      util::algorithm::floor_pow2<PG_SZ>(boot_part.first_sector_lba * 512);
+  unsigned sector_off = boot_part.first_sector_lba % (PG_SZ / 512) * 512;
+
+  cache::VirtLease lease{dev, offset};
+  auto *vbr = reinterpret_cast<VBR *>(lease.get() + sector_off);
+  return Filesystem{dev, *vbr, boot_part};
 }
 
 uint32_t Filesystem::get_fat_sector_for_cluster(uint32_t cluster) {
@@ -347,29 +315,37 @@ void Filesystem::iterate_dir(uint32_t dir_cluster,
   // This is more naturally written recursively, but it is iterative
   // to avoid stack overflows.
   while (1) {
-    read_cluster_to_data_cache(dir_cluster);
+    // Assume that cluster is a multiple of page size.
+    ASSERT(PG_ALIGNED(sectors_per_cluster * 512));
+    // -2 because cluster index 2 is the first cluster in the data region.
+    const uint64_t start_sector =
+        data_region_offset_lba + (dir_cluster - 2) * sectors_per_cluster;
+    const uint64_t start_pg = start_sector * 512;
+    const uint64_t cluster_sz = sectors_per_cluster * 512;
+    for (unsigned pg_it = start_pg; pg_it < start_pg + cluster_sz;
+         pg_it += PG_SZ) {
+      cache::VirtLease lease{dev, pg_it};
+      const auto *entries = reinterpret_cast<DirectoryEntry *>(lease.get());
+      for (auto *it = entries; it < entries + dir_entries_per_cluster; ++it) {
+        switch (it->short_filename[0]) {
+        case '\0':
+          // No more directory entries.
+          return;
+        case (char)0xE5:
+          // Deleted file.
+          continue;
+        }
 
-    const auto *entries = reinterpret_cast<DirectoryEntry *>(data_cache.get());
-    for (auto *it = entries; it < entries + dir_entries_per_cluster; ++it) {
-      switch (it->short_filename[0]) {
-      case '\0':
-        // No more directory entries.
-        return;
-      case (char)0xE5:
-        // Deleted file.
-        continue;
-      }
+        // Skip VFAT entries.
+        if (bw::id(it->attr) == 0x0F) {
+          continue;
+        }
 
-      // Skip VFAT entries.
-      if (bw::id(it->attr) == 0x0F) {
-        continue;
-      }
-
-      if (cb(it)) {
-        return;
+        if (cb(it)) {
+          return;
+        }
       }
     }
-
     dir_cluster = advance_cluster(dir_cluster);
   }
 
@@ -377,31 +353,17 @@ void Filesystem::iterate_dir(uint32_t dir_cluster,
 }
 
 uint32_t Filesystem::advance_cluster(uint32_t cur_cluster) {
-  auto fat_it = get_fat_sector_for_cluster(cur_cluster);
-  if (fat_it != fat_cache_lba) {
-    assert(drivers::ahci::read_blocking(
-        0, fat_it, 0, 1, reinterpret_cast<uint16_t *>(fat_cache.get())));
-    fat_cache_lba = fat_it;
-  }
-
-  uint32_t next_cluster = mask_cluster(reinterpret_cast<uint32_t *>(
-      fat_cache.get())[cur_cluster % fat_entries_per_sector]);
+  const unsigned fat_it = get_fat_sector_for_cluster(cur_cluster);
+  const uint64_t offset = util::algorithm::floor_pow2<PG_SZ>(fat_it * 512);
+  const unsigned sector_off = fat_it % (PG_SZ / 512) * 512;
+  cache::VirtLease lease{dev, offset};
+  auto *fat_sector =
+      reinterpret_cast<const uint32_t *>(lease.get() + sector_off);
+  const uint32_t next_cluster =
+      mask_cluster(fat_sector[cur_cluster % fat_entries_per_sector]);
   // Assumed in the preconditions of this function.
   assert(!is_last_cluster_in_file(next_cluster));
   return next_cluster;
-}
-
-void Filesystem::read_cluster_to_data_cache(uint32_t cluster) {
-  if (cluster == data_cache_cluster) {
-    // Already cached; nothing to do here.
-    return;
-  }
-
-  // -2 because cluster index 2 is the first cluster in the data region.
-  assert(drivers::ahci::read_blocking(
-      0, data_region_offset_lba + (cluster - 2) * sectors_per_cluster, 0,
-      sectors_per_cluster, reinterpret_cast<uint16_t *>(data_cache.get())));
-  data_cache_cluster = cluster;
 }
 
 } // namespace fs::fat32

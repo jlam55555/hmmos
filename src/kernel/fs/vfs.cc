@@ -1,9 +1,11 @@
 #include "fs/vfs.h"
 #include "fs/drivers/fat32.h"
+#include "fs/page_cache.h"
 #include "nonstd/allocator.h"
 #include "nonstd/libc.h"
 #include "nonstd/node_hash_map.h"
 #include "nonstd/string_view.h"
+#include "util/algorithm.h"
 #include "util/assert.h"
 #include "util/pathutil.h"
 #include <tuple>
@@ -45,6 +47,38 @@ struct DcacheKey {
 std::optional<nonstd::node_hash_map<DcacheKey, Dentry *>> dcache_lookup;
 
 } // namespace
+
+ssize_t Inode::read(void *buf, size_t offset, size_t count, Result &res) {
+  if (is_directory) {
+    res = Result::IsDirectory;
+    return -1;
+  }
+  if (offset >= size || count == 0) {
+    return 0;
+  }
+  count = std::min(count, size - offset);
+  ssize_t rval = 0;
+  auto pg_it = util::algorithm::floor_pow2<PG_SZ>(offset);
+  if (pg_it != offset) {
+    // Non-aligned first page.
+    cache::VirtLease lease{*this, pg_it};
+    const ssize_t bytes_to_copy = std::min(PG_SZ - (offset % PG_SZ), count);
+    nonstd::memcpy(buf, lease.get() + (offset % PG_SZ), bytes_to_copy);
+    count -= bytes_to_copy;
+    rval += bytes_to_copy;
+    pg_it += PG_SZ;
+  }
+  while (count > 0) {
+    // Aligned pages.
+    ssize_t bytes_to_copy = std::min(PG_SZ, count);
+    cache::VirtLease lease{*this, pg_it};
+    nonstd::memcpy((char *)buf + rval, lease.get(), bytes_to_copy);
+    count -= bytes_to_copy;
+    rval += bytes_to_copy;
+    pg_it += PG_SZ;
+  }
+  return rval;
+}
 
 /// See note about dynamic allocation for Inodes. The same applies
 /// here.

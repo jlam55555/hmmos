@@ -40,7 +40,6 @@ _$(1)_objs:=$$(shell find $$(SRC_DIR)/bin/$(1)/ -name *.cc)
 $(1)_objs:=$$(_$(1)_objs:$$(SRC_DIR)/%.cc=$$(OUT_OBJ_DIR)/%.o)
 _$(1)_libs:=$(2)
 $(1)_libs:=$$(_$(1)_libs:%=-l%)
-$$(info LIBS= $$($(1)_libs))
 $$(OUT_BIN_DIR)/$(1): $$($(1)_objs) $$($(1)_libs)
 	@$$(ENSURE_DIR)
 	$$(LD) $$(LDFLAGS) -o $$@ $$^
@@ -54,7 +53,6 @@ _$(1)_deps:=$$(shell find $$(SRC_DIR)/lib/$(1)/ -name *.cc)
 $(1)_deps:=$$(_$(1)_deps:$$(SRC_DIR)/%.cc=$$(OUT_OBJ_DIR)/%.o)
 $$(OUT_LIB_DIR)/lib$(1).a: $$($(1)_deps)
 	@$$(ENSURE_DIR)
-	$$(info DEPS $$@ MORE $$^ DONE)
 	ar rcs $$@ $$^
 
 # Phony target so you can use -l<library_name> as the dependency for a

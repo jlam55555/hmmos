@@ -26,9 +26,9 @@ going to bother linking OSDev wikis since those are implied.
 - _A Primer on Memory Consistency and Cache Coherence_ by Nagarajan et al.
 - ioremap()/memremap(): https://lwn.net/Articles/653585/
 - Strategy for mapping segments from ELF file: https://f.osdev.org/viewtopic.php?p=260156&sid=19fe00f2a5ad12c8db036ef0668be8a1#p260156
-- rmap: https://stackoverflow.com/questions/16581490/how-does-kernel-know-which-pages-in-the-virtual-address-space-correspond-to-a-s
 - "private anonymous memory" vs. "shared anonymous memory": https://lore.kernel.org/linux-mm/af7f036d-a131-985f-edd7-2ab93353b373@redhat.com/
 - "dirty cow attack": https://spectralops.io/blog/what-is-the-dirty-cow-exploit-and-how-to-prevent-it/
+- Recursive mapping technique: https://forum.osdev.org/viewtopic.php?p=348781&sid=61eabe703bf5c208eb5a42d40d446a3b#p348781
 
 ## MBR
 - CHS decoding: https://thestarman.pcministry.com/asm/mbr/PartTables.htm#Decoding
@@ -67,3 +67,12 @@ going to bother linking OSDev wikis since those are implied.
 
 ## Process/timesharing abstraction
 - The Evolution of the Unix Time-sharing System: https://www.read.seas.harvard.edu/~kohler/class/aosref/ritchie84evolution.pdf
+
+## Page cache
+- Is it safe to use Direct-IO write and Page Cache read at the same time? https://stackoverflow.com/a/59712177
+- Linus thoughts on a better (async) O\_DIRECT interface: https://yarchive.net/comp/linux/o_direct.html
+- Diagram of buffer cache (now page cache) within the OS: https://e2fsprogs.sourceforge.net/ext2intro.html
+- Linux buffer cache (explain struct buffer_head, though HmmOS doesn't do this, it'll only manage whole pages at a time): https://msreekan.com/2012/11/04/linux-buffer-cache
+- rmap: https://stackoverflow.com/questions/16581490/how-does-kernel-know-which-pages-in-the-virtual-address-space-correspond-to-a-s
+- page cache lecture: https://people.cs.vt.edu/huaicheng/lkp-sp26/slides/L19-pcache.pdf
+

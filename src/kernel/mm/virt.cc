@@ -40,6 +40,9 @@ bool vmalloc(void *virt, unsigned pg, bool writable) {
     //
     // Note: the kernel heap implementation ensures that this is
     // page-aligned.
+    //
+    // TODO: use a different heap allocator that doesn't allocate from
+    // HHDM pages.
     if (void *pg = ::operator new(PG_SZ);
         unlikely(pg == nullptr) ||
         unlikely(!map(hhdm_to_direct(pg),

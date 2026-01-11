@@ -41,6 +41,7 @@
 ///
 /// TODO: make this thread safe.
 
+#include "drivers/device.h"
 #include "fs/result.h"
 #include "nonstd/allocator.h"
 #include "nonstd/node_hash_map.h"
@@ -53,6 +54,8 @@
 
 namespace fs {
 
+class Filesystem;
+
 class Inode {
 public:
   /// Inodes (and dentries) are shared objects and must be dynamically
@@ -63,8 +66,8 @@ public:
   /// can be used instead of heap allocation.
   ///
   /// TODO: replace dynamic allocation with slab allocator
-  Inode(unsigned _id, bool _is_directory)
-      : id{_id}, is_directory{_is_directory} {}
+  Inode(Filesystem &_fs, unsigned _id, unsigned _size, bool _is_directory)
+      : fs{_fs}, id{_id}, size{_size}, is_directory{_is_directory} {}
   virtual ~Inode() {
     // TODO: if this file is unlinked when deleted, actually clear its
     // contents.
@@ -94,15 +97,17 @@ public:
     return false;
   }
 
+  Filesystem &fs;
   uint32_t id;
-  unsigned rc = 0;
+  uint32_t rc = 0;
+  uint32_t size = 0; // size (in bytes)
   bool is_directory;
 
   // File-only operations.
-  virtual ssize_t read(void *buf, size_t offset, size_t count, Result &res) = 0;
+  // TODO: turn these methods into a function of the page cache
+  ssize_t read(void *buf, size_t offset, size_t count, Result &res);
   virtual Result write(void *buf, size_t offset, size_t count) = 0;
   virtual Result truncate(size_t len) = 0;
-  virtual Result mmap(void *addr, size_t offset, size_t count) = 0;
   virtual Result flush() = 0;
 
   // Directory-only operations.
@@ -118,6 +123,10 @@ public:
   // child's refcount. Do not actually modify the filesystem on
   // disk. Returns nullptr if the child doesn't exist.
   virtual Inode *lookup(nonstd::string_view name, Result &res) const = 0;
+
+  // Page cache. Returns -1 on error.
+  // TODO: better error reporting
+  virtual uint64_t get_dev_offset(uint64_t file_offset) const = 0;
 };
 
 class Dentry;
@@ -205,6 +214,10 @@ public:
 
 class Filesystem {
 public:
+  Filesystem(drivers::BlockDevice &_dev) : dev{_dev} {}
+
+  drivers::BlockDevice dev;
+
   virtual Dentry *get_root_dentry() = 0;
 };
 

@@ -40,8 +40,7 @@ public:
   struct Flags {
     bool map_anon : 1 = false;
     bool map_private : 1 = false;
-    bool map_shared : 1 = false;
-    uint8_t rsv0 : 5 = 0;
+    uint8_t rsv0 : 6 = 0;
   };
 
   VirtualMemoryArea(size_t addr, size_t len, Access prot, Flags flags,
@@ -99,6 +98,67 @@ public:
   void unlink(nonstd::string_view link, fs::Result &res);
   void lseek(fs::FileDescriptor fd, ssize_t offset, Seek whence,
              fs::Result &res);
+
+  /// mmap(): Creates a virtual memory mapping for this
+  /// process. Mappings must have a page-aligned starting address and
+  /// length. There are two primary orthogonal characteristics of
+  /// mappings: (1) shared vs. private; and (2) anonymous
+  /// vs. file-backed. Modifications to writable shared mappings are
+  /// visible to other processes sharing this mapping (via
+  /// fork). File-backed mappings have their contents populated to a
+  /// file, and modifications to writable mappings are written back to
+  /// the file, whereas anonymous pages are not backed by the
+  /// filesystem.
+  ///
+  /// Mapping pages into the page table happens lazily. On mmap(), a
+  /// VMA (virtual memory area) struct describing the new mapping is
+  /// created. Accessing this newly mapped memory will generate a page
+  /// fault, which will scan the process for a matching VMA, at which
+  /// point mapping the page into the page table.
+  ///
+  /// The \a unmap() operation iterates the page table and unmaps each
+  /// mapped (faulted-in) page individually. Unmapping a page involves
+  /// removing from the page table, decreasing its refcount in the
+  /// page frame table, and clearing from the TLB. Note that it is
+  /// also possible for a (shared mapping) page to be evicted from the
+  /// page cache without an unmap() operation, which forces it to be
+  /// unmapped from all processes that it is mapped into. Like
+  /// unmap(), this causes the page to no longer be in the process's
+  /// page tables, but since the VMA still exists, it will be
+  /// reinstated on a future page fault.
+  ///
+  /// Shared mappings are always backed by the page cache. Shared
+  /// anonymous mappings use a temporary shmem file. Private anonymous
+  /// pages do not use the page cache. Private file-backed mappings
+  /// initially are page-cached based, but behave identically to
+  /// private anonymous pages after CoW (see below).
+  ///
+  /// CoW (Copy on Write) is an optimization to avoid unnecessary
+  /// allocations on writable private mapped pages. The behavior
+  /// differs between anonymous and file-backed mappings. Assume that
+  /// CR0.WP (write protection) is enabled after mmap/fork, so that
+  /// kernel writes to read-only pages will trigger a page fault.
+  ///
+  /// - Anonymous: Writable private anonymous mapped pages are marked
+  ///   read-only in both the parent and child's page tables during
+  ///   fork(). On a page fault, the kernel notices that the VMA
+  ///   references a writable segment, which triggers CoW
+  ///   semantics. If this is not the only reference to this CoW
+  ///   mapping, a new page is allocated and the page table entry is
+  ///   remapped; otherwise the current page is marked as writable.
+  ///
+  /// - File-backed: On mmap(), writable private file-backed mappings
+  ///   are marked read-only. On a page fault, the kernel notices that
+  ///   the VMA references a writable segment, which triggers CoW
+  ///   semantics. A new page is allocated and the page table entry is
+  ///   remapped. This new page behaves like a writable private
+  ///   anonymous mapped page (undergoing CoW on fork()).
+  ///
+  /// I/O to shared mappings is coherent with file I/O via
+  /// non-O_DIRECT read/write syscalls. However, coherency with
+  /// O_DIRECT read/writes is not guaranteed. Similarly, writing to a
+  /// file that is mapped via a private file-backed mapping via
+  /// another process is undefined behavior due to CoW.
   void *mmap(size_t addr, size_t length, VirtualMemoryArea::Access prot,
              VirtualMemoryArea::Flags flags, fs::FileDescriptor fd,
              size_t offset, fs::Result &res);

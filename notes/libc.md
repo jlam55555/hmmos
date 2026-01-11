@@ -1,19 +1,31 @@
-userspace compilation strategy
+# userspace
 
-basically:
+## compilation strategy
+
+Keep it simple:
 - jlibc (compiled separately)
 - everything else: single file or single directory compilation
-- everything specified in one makefile
-- simple enough
+- everything specified in one userspace makefile
+- statically compiled binaries, no /lib or /include necessary
 
-what do we do with include paths?
-just need a separate .clangd for this
-c or cpp?
+## dependencies
 
-build everything into /bin
+In order to get a simple shell (/bin/josh) up and running, we need the
+following interfaces:
 
-no need for /lib and /include, since we don't have shared libraries
+- [ ] syscalls
+    - [x] exit
+    - [ ] read
+    - [ ] write
+    - [ ] fork/clone
+    - [ ] exec
+- [ ] simple jlibc syscall wrappers
+- [ ] a simple binary (e.g., /bin/cat)
+- [ ] terminal driver
 
-NOCOMMIT working here
-
-https://en.wikipedia.org/wiki/C_standard_library
+TODO: At the time of writing, read/write are pretty straightforward
+wrappers down to the inode/page cache implementations. fork/clone/exec
+just require some attention to detail. It also requires the teardown
+of process resources (cleaning up the page table mapping, flushing
+files etc.). The terminal driver is its own effort, but we can start
+by having the shell read input from a file rather than stdin.

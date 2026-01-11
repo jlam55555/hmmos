@@ -103,6 +103,64 @@ PIO-mode (slow but simple) and then implement DMA.
   - fat/dir.c (fat_readdir)
   - fat/inode.c (fat inode helpers)
 
+## page cache
+
+The page cache is a LRU cache underlying all block I/O and shared
+memory files. It is a mapping from (block device, page-aligned offset)
+to the physical page containing the contents of that block. This is
+used both by VFS operations (read, write, flush) and by the filesystem
+code itself when it needs to read superblock info and file
+metadata. Even O_DIRECT I/O has to be page-cache-aware, because it
+needs to flush and invalidate the relevant cache entries if present.
+
+HmmOS has a shared buffer + page cache with a single 4KB block
+size. It cannot read/flush a single 512B sector at a
+time. Consequently, the filesystem cluster size must be a multiple of
+4KB or else multiple files may share the same page cache entry,
+breaking encapsulation. Similarly, the kernel must be sure that no
+files and system metadata share a single 4KB page.
+
+For more advanced topics, e.g., O_DIRECT, page eviction (flushing,
+swapping, rmap), shared memory files, etc., please refer to the doc
+comment on PageCache.
+
+At a high level, here's where the page cache sits:
+
+```
+               +---------+          access mmapped memory
+               | Process |------------------------------+
+               +---------+                              | page resident?
+                   |    |                               ?......
+    read() syscall |    +-------------+ mmap() syscall  |no   .yes
+                   |                  |                 |     .     <userspace>
+~~~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~~~~~|~~~~~.~~~~~~~~~~~~~~~~
+                   |                  v                 |      .       <kernel>
+                   v         +------------------+       |       .
+              +---------+    | create VMA entry |       |        .
+              |   VFS   |    +------------------+       |         .
+              +---------+                     ..        |          .
+ Inode::read() |       | Inode::lookup()       ..       v           .
+               |       v                        +------------+       .
+ populate      |   +-------------------+        | Page fault |        .
+ cache entry   |   | Filesystem driver |        | handler    |         .
+ with file     |   | e.g. FAT32, ext4  |        +------------+          .
+ data and copy |   +-------------------+               | populate cache  .
+ to userspace  |        | populate cache entry         | with file data   .
+ buffer        |        | with superblock data,        | + set up user-   .
+               |        | read from cache              | space mappings   .
+               |        |                              |                  .
+               |        v      v-----------------------+                  .
+               |   +------------+                                         .
+               +-> | Page cache | <........................................
+                   +------------+                     read directly from
+                        | read_page()                 userspace mapped memory
+                        v                             (no kernel roundtrip)
+                   +-----------------+
+                   | Block driver    |
+                   | e.g. ACPI, SATA |
+                   +-----------------+
+```
+
 ### TODO
 - [X] write the HmmOS kernel to a FAT32 filesystem
 - [X] implement basic FAT32 support in the bootloader
@@ -112,6 +170,6 @@ PIO-mode (slow but simple) and then implement DMA.
 Further TODO items
 - [X] write an ELF loader and store the binaries in ELF format
 - [X] VFS layer
-- [ ] LRU page cache
+- [X] LRU page cache
 - [ ] ext2 support
 - [ ] NVMe support

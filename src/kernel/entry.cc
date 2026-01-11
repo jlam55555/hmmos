@@ -3,9 +3,11 @@
 #include "console.h"
 #include "drivers/acpi.h"
 #include "drivers/ahci.h"
+#include "drivers/device.h"
 #include "drivers/pci.h"
 #include "drivers/serial.h"
 #include "fs/drivers/fat32.h"
+#include "fs/page_cache.h"
 #include "fs/vfs.h"
 #include "gdt.h"
 #include "idt.h"
@@ -89,10 +91,16 @@ __attribute__((noreturn)) void entry() {
   nonstd::printf("Initializing AHCI driver...\r\n");
   assert(drivers::ahci::init(pci_fn_descs));
 
+  // Used for block-layer requests.
+  nonstd::printf("Initializing page cache...\r\n");
+  drivers::BlockDevice default_dev;
+  fs::cache::init();
+
   nonstd::printf("Initializing FAT filesystem...\r\n");
-  auto boot_part_desc = fs::fat32::Filesystem::find_boot_part();
+  auto boot_part_desc = fs::fat32::Filesystem::find_boot_part(default_dev);
   assert(boot_part_desc.has_value());
-  auto filesystem = fs::fat32::Filesystem::from_partition(*boot_part_desc);
+  auto filesystem =
+      fs::fat32::Filesystem::from_partition(default_dev, *boot_part_desc);
   fs::init(filesystem);
 
   nonstd::printf("Initializing scheduler...\r\n");
@@ -100,12 +108,13 @@ __attribute__((noreturn)) void entry() {
   ::scheduler = &scheduler;
   scheduler.bootstrap();
 
-  nonstd::printf("Spawning the init process...\r\n");
+  nonstd::printf("Creating the init process...\r\n");
   fs::Result res{};
   new proc::Process(scheduler, "/BIN/INIT", res);
   ASSERT(res == fs::Result::Ok);
 
   // This becomes the idle task.
+  nonstd::printf("Finished init...\r\n");
   for (;;) {
     hlt;
   }

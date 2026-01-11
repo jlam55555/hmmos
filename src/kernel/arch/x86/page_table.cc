@@ -197,11 +197,14 @@ bool map(uint64_t phys, void *virt, bool u_s, bool r_w, bool uncacheable) {
   unsigned pt_idx = ((size_t)virt >> PG_SZ_BITS) & 0x03FF;
   auto &pte = pt[pt_idx];
 
-  // We don't support overwriting a page table entry at the
-  // moment. This can be added in the future with an appropriate
-  // change to the interface. For now we assume as a precondition that
-  // if the page is possibly mapped, the caller unmaps the page first.
-  assert(!pte.p);
+  if (pte.p) {
+    // We don't support overwriting a page table entry at the
+    // moment. This can be added in the future with an appropriate
+    // change to the interface. For now we assume as a precondition
+    // that if the page is possibly mapped, the caller unmaps the page
+    // first.
+    return false;
+  }
 
   nonstd::memset(&pte, 0, sizeof pte);
   pte.p = 1;
@@ -217,7 +220,8 @@ bool map(uint64_t phys, void *virt, bool u_s, bool r_w, bool uncacheable) {
   pte.addr = phys >> PG_SZ_BITS;
 
   // I don't think we need to invlpg here since we do it when
-  // unmapping pages.
+  // unmapping pages. It would only be needed if we remap a virtual
+  // address, which is explicitly disallowed above.
   return true;
 }
 
@@ -227,9 +231,9 @@ bool unmap(void *virt) {
     return false;
   }
   pte->p = 0;
-  // TODO: we may not always need the invalpg here, e.g., if we are
+  // TODO: we may not always need the invlpg here, e.g., if we are
   // switching out the entire virtual mapping by writing CR3 when
-  // context switching. For now always invalpg for simplicity.
+  // context switching. For now always invlpg for simplicity.
   __asm__ volatile("invlpg %0" : : "m"(*(unsigned *)virt));
   return true;
 }

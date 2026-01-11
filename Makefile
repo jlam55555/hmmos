@@ -240,7 +240,8 @@ $(KERNEL_TEST_ELF_WITH_SYMBOLS): $(KERNEL_TEST_OBJS) $(KERNEL_LINKER_SCRIPT)
 # userspace executables (KERNEL_FS, KERNEL_FS_TEST).
 $(OUT_DIR)/%_fs.bin: $(OUT_DIR)/%.bin userspace
 	dd if=/dev/zero of=$@ bs=1M count=33
-	/sbin/mkfs.fat -F32 $@
+	truncate $@ -s 300M
+	/sbin/mkfs.fat -F32 -s8 $@
 	mcopy -i $@ $< ::KERNEL.BIN
 	@# Just for fun, copy the source files onto the disk.
 	mcopy -i $@ -s src ::SRC
@@ -264,7 +265,7 @@ run: $(RUN_TARGET)
 # actually run this in QEMU. These will be used by gdb. Run and wait
 # for gdb to attach.
 runi: $(RUN_TARGET) $(BOOTLOADER_ELF_WITH_SYMBOLS) $(KERNEL_TARGET_ELF_WITH_SYMBOLS)
-	$(TEST_INPUT) qemu-system-i386 $(QEMU_FLAGS) -drive format=raw,file=$< -no-reboot -no-shutdown -S -s
+	$(TEST_INPUT) qemu-system-i386 $(QEMU_FLAGS) -drive format=raw,file=$< -no-reboot -no-shutdown -S -s -display none
 
 # Note that this doesn't build the elf files but we should check that
 # they exist. They should be built from the last call to `make runi`

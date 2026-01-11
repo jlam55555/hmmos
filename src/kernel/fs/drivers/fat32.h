@@ -6,6 +6,7 @@
 /// TODO: make this thread-safe
 
 #include "drivers/ahci.h"
+#include "drivers/device.h"
 #include "fs/vfs.h"
 #include "libc_minimal.h"
 #include "memdefs.h"
@@ -44,44 +45,35 @@ public:
         std::array<char, 13> _name);
   ~Inode();
 
-  ssize_t read(void *buf, size_t offset, size_t count, Result &res) final;
-
   // TODO
   Result write(void *buf, size_t offset, size_t count) final {
     return Result::Unsupported;
   }
   Result truncate(size_t len) final { return Result::Unsupported; }
-  Result mmap(void *addr, size_t offset, size_t count) final {
-    return Result::Unsupported;
-  }
   Result flush() final { return Result::Unsupported; }
 
   // Directory entries.
-  virtual Result creat(nonstd::string_view name) final {
+  Result creat(nonstd::string_view name) final { return Result::Unsupported; }
+  Result mkdir(nonstd::string_view name) final { return Result::Unsupported; }
+  Result rmdir(nonstd::string_view name) final { return Result::Unsupported; }
+  Result link(fs::Inode &new_parent, nonstd::string_view name) final {
     return Result::Unsupported;
   }
-  virtual Result mkdir(nonstd::string_view name) final {
-    return Result::Unsupported;
-  }
-  virtual Result rmdir(nonstd::string_view name) final {
-    return Result::Unsupported;
-  }
-  virtual Result link(fs::Inode &new_parent, nonstd::string_view name) final {
-    return Result::Unsupported;
-  }
-  virtual Result unlink() final { return Result::Unsupported; }
-  virtual Inode *lookup(nonstd::string_view name, Result &res) const final;
+  Result unlink() final { return Result::Unsupported; }
+  Inode *lookup(nonstd::string_view name, Result &res) const final;
+  uint64_t get_dev_offset(uint64_t file_offset) const final;
 
 private:
-  Filesystem &fs;
+  Filesystem &get_fs() const;
+
   uint32_t start_cluster;
-  uint32_t file_sz_bytes;
   /// Null-terminated "normal" filename
   char name[13];
 };
 
 /// Interface for interacting with FAT32 filesystem.
 ///
+/// TODO: rewrite data cache to use page cache.
 class Filesystem final : public fs::Filesystem {
   friend class Inode;
 
@@ -90,11 +82,12 @@ public:
   ///
   /// This reads the MBR, duplicating some work from the bootloader.
   ///
-  static std::optional<MBRPartition> find_boot_part();
+  static std::optional<MBRPartition> find_boot_part(drivers::BlockDevice &dev);
 
   /// Initialize a FAT32 filesystem object for the given partition.
   ///
-  static Filesystem from_partition(MBRPartition &boot_part);
+  static Filesystem from_partition(drivers::BlockDevice &dev,
+                                   MBRPartition &boot_part);
 
   Dentry *get_root_dentry() final {
     static auto *root_inode = new Inode{
@@ -122,7 +115,8 @@ public:
 private:
   static constexpr unsigned fat_entries_per_sector = 512 / sizeof(uint32_t);
 
-  Filesystem(const VBR &vbr, const MBRPartition &part);
+  Filesystem(drivers::BlockDevice &dev, const VBR &vbr,
+             const MBRPartition &part);
 
   /// Helper function for iterating directories on disk.
   ///
@@ -142,11 +136,6 @@ private:
   ///
   uint32_t get_fat_sector_for_cluster(uint32_t cluster);
 
-  /// Updates the data cluster cache to contain the data from the
-  /// given cluster. The last read cluster is cached to reduce
-  /// redundant disk reads.
-  void read_cluster_to_data_cache(uint32_t cluster);
-
   /// Returns the next cluster in the linked list by reading the FAT.
   ///
   /// This uses the cached FAT and will avoid a disk read if the
@@ -162,23 +151,6 @@ private:
   const uint32_t fat_offset_lba;
   const uint32_t data_region_offset_lba;
   const uint32_t root_dir_start_cluster;
-
-  /// 1-sector scratch space for storing the last-accessed FAT sector.
-  /// Must be sector-aligned. Should only be used by \ref
-  /// advance_cluster().
-  const nonstd::unique_ptr<std::byte> fat_cache;
-
-  /// LBA (sector linear address from start of disk) of \ref
-  /// fat_cache.
-  uint32_t fat_cache_lba = -1;
-
-  /// 1-cluster scratch space for storing the last-accessed (directory
-  /// or file) data cluster. Must be sector-aligned. Should only be
-  /// modified by \ref read_cluster_to_data_cache().
-  const nonstd::unique_ptr<std::byte> data_cache;
-
-  /// Cluster index of cluster stored in \ref data_cache.
-  uint32_t data_cache_cluster = -1;
 
   /// Next inode number.
   uint32_t next_inode = 0;

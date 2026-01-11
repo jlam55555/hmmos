@@ -26,12 +26,6 @@ VirtualMemoryArea::VirtualMemoryArea(size_t _addr, size_t _len, Access _prot,
     : addr{_addr}, len{_len}, prot{_prot}, flags{_flags}, dentry{_dentry},
       offset{_offset} {
 
-  // Exactly one of MAP_PRIVATE and MAP_SHARED must be specified.
-  if (!(flags.map_private ^ flags.map_shared)) {
-    res = fs::Result::InvalidArgs;
-    return;
-  }
-
   // A mapping is file-backed iff MAP_ANON is specified.
   // (This is a little redundant, but let's be extra safe.)
   if ((dentry == nullptr) != flags.map_anon) {
@@ -361,6 +355,13 @@ void Process::map_elf_segments(nonstd::string_view bin_path, fs::Result &res) {
     //                   CONTENTS, ALLOC, LOAD, DATA
     //   5 .bss          00002000  0804d400  0804d400  00004400  2**5
     //                   ALLOC
+    //
+    // \note If an ELF section doesn't start/end on a page boundary,
+    // sharing the section on fork will not work correctly. (I.e., (1)
+    // and (3) are always privately mapped.) It's up to the
+    // application developer to ensure shared sections are aligned to
+    // page boundaries.
+    // TODO: add check for this
     const auto &floor_pg = util::algorithm::floor_pow2<PG_SZ>;
     const auto &ceil_pg = util::algorithm::ceil_pow2<PG_SZ>;
     const VirtualMemoryArea::Access prot{.executable = phentry->executable(),
@@ -371,7 +372,7 @@ void Process::map_elf_segments(nonstd::string_view bin_path, fs::Result &res) {
                                               .map_private = true};
     const auto copy_page = [&](size_t offset) {
       ASSERT(PG_ALIGNED(offset));
-      lseek(bin_fd, PG_SZ, Seek::Set, res);
+      lseek(bin_fd, offset, Seek::Set, res);
       CHECK_RES;
       const ssize_t n = read(bin_fd, scoped_buf.get(), PG_SZ, res);
       CHECK_RES;
@@ -411,7 +412,7 @@ void Process::map_elf_segments(nonstd::string_view bin_path, fs::Result &res) {
       // 3
       mmap(full_pg_end, PG_SZ, prot, flags_anon, fs::InvalidFD, 0, res);
       CHECK_RES;
-      copy_page(full_pg_end);
+      copy_page(phentry->offset + (full_pg_end - phentry->vaddr));
       CHECK_RES;
 
       const size_t pg_start = full_pg_end;

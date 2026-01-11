@@ -168,7 +168,7 @@ TEST_CLASS(util, IntrusiveList, push_many) {
 }
 
 TEST_CLASS(util, IntrusiveList, insert_back) {
-  auto nodes = std::to_array<SimpleListNode>({1, 2, 3, 4});
+  std::array<SimpleListNode, 4> nodes{1, 2, 3, 4};
   IntrusiveSimpleList list;
 
   TEST_ASSERT(list.empty());
@@ -198,7 +198,7 @@ TEST_CLASS(util, IntrusiveList, insert_back) {
 TEST_CLASS(util, IntrusiveList, reinsert) {
   // Reinserting an element onto a list will remove it from the list
   // and reinsert in the new location.
-  auto nodes = std::to_array<SimpleListNode>({1, 2, 3, 4});
+  std::array<SimpleListNode, 4> nodes{1, 2, 3, 4};
   IntrusiveSimpleList list(nodes.begin(), nodes.end());
 
   TEST_ASSERT(list.size() == 4);
@@ -212,7 +212,7 @@ TEST_CLASS(util, IntrusiveList, reinsert) {
 }
 
 TEST_CLASS(util, IntrusiveList, invariants) {
-  auto nodes = std::to_array<SimpleListNode>({1, 5, 3, -2, 4, 1, 4});
+  std::array<SimpleListNode, 7> nodes{1, 5, 3, -2, 4, 1, 4};
   IntrusiveSimpleList list(nodes.begin(), nodes.end());
 
   auto *it = &list;
@@ -230,7 +230,7 @@ TEST_CLASS(util, IntrusiveList, invariants) {
 
 TEST_CLASS(util, IntrusiveList, iteration) {
   // `for range` loop depends on iterators.
-  auto nodes = std::to_array<SimpleListNode>({1, 5, -3, 4});
+  std::array<SimpleListNode, 4> nodes{1, 5, -3, 4};
   IntrusiveSimpleList list(nodes.begin(), nodes.end());
 
   int i = 0;
@@ -241,7 +241,7 @@ TEST_CLASS(util, IntrusiveList, iteration) {
 
 TEST_CLASS(util, IntrusiveList, safe_iteration) {
   // Allow deletions while iterating.
-  auto nodes = std::to_array<SimpleListNode>({1, 2, 3, 4});
+  std::array<SimpleListNode, 4> nodes{1, 2, 3, 4};
   IntrusiveSimpleList list(nodes.begin(), nodes.end());
 
   // Delete odd nodes.
@@ -259,7 +259,7 @@ TEST_CLASS(util, IntrusiveList, safe_iteration) {
 }
 
 TEST_CLASS(util, IntrusiveList, clear) {
-  auto nodes = std::to_array<SimpleListNode>({1, 2, 3, 4});
+  std::array<SimpleListNode, 4> nodes{1, 2, 3, 4};
   IntrusiveSimpleList list(nodes.begin(), nodes.end());
 
   TEST_ASSERT(list.size() == 4);

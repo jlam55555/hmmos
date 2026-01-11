@@ -13,6 +13,7 @@
 /// terrible (first-fit means poor larger allocations, and using a
 /// sparse table is bad cache-wise).
 
+#include "memdefs.h"
 #include "mm/page_frame_table.h"
 
 namespace mem::phys {
@@ -33,6 +34,14 @@ public:
     return get_total_pages() - get_alloced_pages();
   };
   virtual unsigned get_alloced_pages() const = 0;
+
+  // Used by the page cache.
+  PageFrameDescriptor &get_pfd(uint64_t pf_offset) {
+    return pft.get_pfd(pf_offset);
+  }
+  uint64_t get_paddr(PageFrameDescriptor &pfd) {
+    return pft.get_pf_offset(pfd) * PG_SZ;
+  }
 
   const uint64_t start;
   const uint64_t end;
