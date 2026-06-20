@@ -82,7 +82,8 @@ $(function() {
 
 <p>AHCI driver for SATA devices.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;cstddef&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="virt_8h_source.html">mm/virt.h</a>&quot;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;span&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -90,10 +91,18 @@ Include dependency graph for ahci.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="ahci_8h__incl.png" border="0" usemap="#asrc_2kernel_2drivers_2ahci_8h" alt=""/></div>
 <map name="asrc_2kernel_2drivers_2ahci_8h" id="asrc_2kernel_2drivers_2ahci_8h">
-<area shape="rect" title="AHCI driver for SATA devices." alt="" coords="67,5,201,45"/>
-<area shape="rect" title=" " alt="" coords="5,93,76,119"/>
-<area shape="rect" title=" " alt="" coords="101,93,167,119"/>
-<area shape="rect" title=" " alt="" coords="191,93,245,119"/>
+<area shape="rect" title="AHCI driver for SATA devices." alt="" coords="523,5,658,45"/>
+<area shape="rect" href="virt_8h.html" title="Virtual memory mapping." alt="" coords="370,93,457,119"/>
+<area shape="rect" title=" " alt="" coords="583,167,654,192"/>
+<area shape="rect" title=" " alt="" coords="593,93,660,119"/>
+<area shape="rect" title=" " alt="" coords="684,93,737,119"/>
+<area shape="rect" href="boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="101,167,224,192"/>
+<area shape="rect" href="memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="5,240,101,265"/>
+<area shape="rect" title=" " alt="" coords="248,167,355,192"/>
+<area shape="rect" title=" " alt="" coords="379,167,448,192"/>
+<area shape="rect" title=" " alt="" coords="473,167,559,192"/>
+<area shape="rect" title=" " alt="" coords="125,240,208,265"/>
+<area shape="rect" title=" " alt="" coords="233,240,303,265"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -112,8 +121,8 @@ This graph shows which files directly or indirectly include this file:</div>
 Functions</h2></td></tr>
 <tr class="memitem:a82decb797ed1ff98db115824ea09d1f8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ahci_8cc.html#a82decb797ed1ff98db115824ea09d1f8">drivers::ahci::init</a> (const std::span&lt; const pci::FuncDescriptor &gt; &amp;pci_fn_descriptors)</td></tr>
 <tr class="separator:a82decb797ed1ff98db115824ea09d1f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a389e83b68729b23c03e85905ff08ed46"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ahci_8cc.html#a389e83b68729b23c03e85905ff08ed46">drivers::ahci::read_blocking</a> (uint8_t port_idx, uint32_t startl, uint32_t starth, uint32_t count, uint16_t *buf)</td></tr>
-<tr class="separator:a389e83b68729b23c03e85905ff08ed46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93d185d1716c98a030601d8866ae7f9a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ahci_8cc.html#a93d185d1716c98a030601d8866ae7f9a">drivers::ahci::read_blocking</a> (uint8_t port_idx, uint32_t startl, uint32_t starth, uint32_t count, uint64_t dest_paddr)</td></tr>
+<tr class="separator:a93d185d1716c98a030601d8866ae7f9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>AHCI driver for SATA devices. </p>
@@ -145,8 +154,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a389e83b68729b23c03e85905ff08ed46" name="a389e83b68729b23c03e85905ff08ed46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a389e83b68729b23c03e85905ff08ed46">&#9670;&#160;</a></span>read_blocking()</h2>
+<a id="a93d185d1716c98a030601d8866ae7f9a" name="a93d185d1716c98a030601d8866ae7f9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93d185d1716c98a030601d8866ae7f9a">&#9670;&#160;</a></span>read_blocking()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,8 +187,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t *&#160;</td>
-          <td class="paramname"><em>buf</em>&#160;</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>dest_paddr</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -188,7 +197,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Synchronously read <em>count</em> (512-byte) sectors from LBA <em>starth:starta</em> to <em>buf</em> on port <em>port_idx</em>. </p>
+<p>Synchronously read <em>count</em> (512-byte) sectors from LBA <em>starth:starta</em> to <em>buf</em> on port <em>port_idx</em>.</p>
+<dl class="section note"><dt>Note</dt><dd>The destination buffer <em>dest_paddr</em> is a <b>physical</b> address. AHCI doesn't know about physical address translation. </dd></dl>
 
 </div>
 </div>

@@ -98,8 +98,10 @@ Collaboration diagram for fs::fat32::Filesystem:</div>
 <div class="dyncontent">
 <div class="center"><img src="classfs_1_1fat32_1_1Filesystem__coll__graph.png" border="0" usemap="#afs_1_1fat32_1_1Filesystem_coll__map" alt="Collaboration graph"/></div>
 <map name="afs_1_1fat32_1_1Filesystem_coll__map" id="afs_1_1fat32_1_1Filesystem_coll__map">
-<area shape="rect" title=" " alt="" coords="5,79,160,104"/>
-<area shape="rect" href="classfs_1_1Filesystem.html" title=" " alt="" coords="26,5,139,31"/>
+<area shape="rect" title=" " alt="" coords="6,243,161,268"/>
+<area shape="rect" href="classfs_1_1Filesystem.html" title=" " alt="" coords="27,168,140,193"/>
+<area shape="rect" href="classdrivers_1_1BlockDevice.html" title=" " alt="" coords="5,80,161,105"/>
+<area shape="rect" href="classdrivers_1_1Device.html" title=" " alt="" coords="23,5,143,31"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -107,28 +109,40 @@ Collaboration diagram for fs::fat32::Filesystem:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1d49175261ce2599075bbedbb622ac14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classfs_1_1Dentry.html">Dentry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfs_1_1fat32_1_1Filesystem.html#a1d49175261ce2599075bbedbb622ac14">get_root_dentry</a> () final</td></tr>
 <tr class="separator:a1d49175261ce2599075bbedbb622ac14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57e8fb7393e48137e4beb5ed99c2535a"><td class="memItemLeft" align="right" valign="top"><a id="a57e8fb7393e48137e4beb5ed99c2535a" name="a57e8fb7393e48137e4beb5ed99c2535a"></a>
+<tr class="inherit_header pub_methods_classfs_1_1Filesystem"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classfs_1_1Filesystem')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classfs_1_1Filesystem.html">fs::Filesystem</a></td></tr>
+<tr class="memitem:aaad1db4033f2adaeb4cce894e7faff81 inherit pub_methods_classfs_1_1Filesystem"><td class="memItemLeft" align="right" valign="top"><a id="aaad1db4033f2adaeb4cce894e7faff81" name="aaad1db4033f2adaeb4cce894e7faff81"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Filesystem</b> (<a class="el" href="classdrivers_1_1BlockDevice.html">drivers::BlockDevice</a> &amp;_dev)</td></tr>
+<tr class="separator:aaad1db4033f2adaeb4cce894e7faff81 inherit pub_methods_classfs_1_1Filesystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57e8fb7393e48137e4beb5ed99c2535a inherit pub_methods_classfs_1_1Filesystem"><td class="memItemLeft" align="right" valign="top"><a id="a57e8fb7393e48137e4beb5ed99c2535a" name="a57e8fb7393e48137e4beb5ed99c2535a"></a>
 virtual <a class="el" href="classfs_1_1Dentry.html">Dentry</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>get_root_dentry</b> ()=0</td></tr>
-<tr class="separator:a57e8fb7393e48137e4beb5ed99c2535a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a57e8fb7393e48137e4beb5ed99c2535a inherit pub_methods_classfs_1_1Filesystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae3498c21082b21114e027346e2d43699"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; <a class="el" href="structfs_1_1fat32_1_1MBRPartition.html">MBRPartition</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfs_1_1fat32_1_1Filesystem.html#ae3498c21082b21114e027346e2d43699">find_boot_part</a> ()</td></tr>
-<tr class="separator:ae3498c21082b21114e027346e2d43699"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1237b00c63df9379b51e84516fb80f85"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classfs_1_1fat32_1_1Filesystem.html">Filesystem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfs_1_1fat32_1_1Filesystem.html#a1237b00c63df9379b51e84516fb80f85">from_partition</a> (<a class="el" href="structfs_1_1fat32_1_1MBRPartition.html">MBRPartition</a> &amp;boot_part)</td></tr>
-<tr class="separator:a1237b00c63df9379b51e84516fb80f85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3794d4ee0a5cc748397a30a869aa7b3"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; <a class="el" href="structfs_1_1fat32_1_1MBRPartition.html">MBRPartition</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfs_1_1fat32_1_1Filesystem.html#ad3794d4ee0a5cc748397a30a869aa7b3">find_boot_part</a> (<a class="el" href="classdrivers_1_1BlockDevice.html">drivers::BlockDevice</a> &amp;dev)</td></tr>
+<tr class="separator:ad3794d4ee0a5cc748397a30a869aa7b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a8844dfcb34d05fdf9021e811c67d43"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classfs_1_1fat32_1_1Filesystem.html">Filesystem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfs_1_1fat32_1_1Filesystem.html#a8a8844dfcb34d05fdf9021e811c67d43">from_partition</a> (<a class="el" href="classdrivers_1_1BlockDevice.html">drivers::BlockDevice</a> &amp;dev, <a class="el" href="structfs_1_1fat32_1_1MBRPartition.html">MBRPartition</a> &amp;boot_part)</td></tr>
+<tr class="separator:a8a8844dfcb34d05fdf9021e811c67d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
 <tr class="memitem:a44a04aa26e5a437648e04530c87cc849"><td class="memItemLeft" align="right" valign="top"><a id="a44a04aa26e5a437648e04530c87cc849" name="a44a04aa26e5a437648e04530c87cc849"></a>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>Inode</b></td></tr>
 <tr class="separator:a44a04aa26e5a437648e04530c87cc849"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_classfs_1_1Filesystem"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classfs_1_1Filesystem')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classfs_1_1Filesystem.html">fs::Filesystem</a></td></tr>
+<tr class="memitem:a2f65a37af9bdac1975449fb80779ceff inherit pub_attribs_classfs_1_1Filesystem"><td class="memItemLeft" align="right" valign="top"><a id="a2f65a37af9bdac1975449fb80779ceff" name="a2f65a37af9bdac1975449fb80779ceff"></a>
+<a class="el" href="classdrivers_1_1BlockDevice.html">drivers::BlockDevice</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dev</b></td></tr>
+<tr class="separator:a2f65a37af9bdac1975449fb80779ceff inherit pub_attribs_classfs_1_1Filesystem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface for interacting with FAT32 filesystem. </p>
+<div class="textblock"><p>Interface for interacting with FAT32 filesystem.</p>
+<p>TODO: rewrite data cache to use page cache. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae3498c21082b21114e027346e2d43699" name="ae3498c21082b21114e027346e2d43699"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3498c21082b21114e027346e2d43699">&#9670;&#160;</a></span>find_boot_part()</h2>
+<a id="ad3794d4ee0a5cc748397a30a869aa7b3" name="ad3794d4ee0a5cc748397a30a869aa7b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3794d4ee0a5cc748397a30a869aa7b3">&#9670;&#160;</a></span>find_boot_part()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,7 +153,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Inode</b></td></tr>
         <tr>
           <td class="memname">std::optional&lt; <a class="el" href="structfs_1_1fat32_1_1MBRPartition.html">MBRPartition</a> &gt; fs::fat32::Filesystem::find_boot_part </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classdrivers_1_1BlockDevice.html">drivers::BlockDevice</a> &amp;&#160;</td>
+          <td class="paramname"><em>dev</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -154,8 +169,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Inode</b></td></tr>
 
 </div>
 </div>
-<a id="a1237b00c63df9379b51e84516fb80f85" name="a1237b00c63df9379b51e84516fb80f85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1237b00c63df9379b51e84516fb80f85">&#9670;&#160;</a></span>from_partition()</h2>
+<a id="a8a8844dfcb34d05fdf9021e811c67d43" name="a8a8844dfcb34d05fdf9021e811c67d43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a8844dfcb34d05fdf9021e811c67d43">&#9670;&#160;</a></span>from_partition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -166,9 +181,19 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Inode</b></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classfs_1_1fat32_1_1Filesystem.html">Filesystem</a> fs::fat32::Filesystem::from_partition </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structfs_1_1fat32_1_1MBRPartition.html">MBRPartition</a> &amp;&#160;</td>
-          <td class="paramname"><em>boot_part</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classdrivers_1_1BlockDevice.html">drivers::BlockDevice</a> &amp;&#160;</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="structfs_1_1fat32_1_1MBRPartition.html">MBRPartition</a> &amp;&#160;</td>
+          <td class="paramname"><em>boot_part</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>

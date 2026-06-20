@@ -16,5 +16,8 @@ var searchData=
   ['enter_5fvirtual_5faddress_5fspace_13',['enter_virtual_address_space',['../classproc_1_1Process.html#a0f3514cf4f55aa7d9b391287fac123c3',1,'proc::Process']]],
   ['enumerate_5fpage_5ftables_14',['enumerate_page_tables',['../virt_8h.html#a4573a847019db1cb01868cbab5b6c74d',1,'mem::virt']]],
   ['erase_15',['erase',['../classutil_1_1IntrusiveListHead.html#a9526ed0e326a9a9242caf35408a32c77',1,'util::IntrusiveListHead']]],
-  ['extended_5fbios_5fparameter_5fblock_16',['extended_bios_parameter_block',['../struct__fat32__vbr_1_1extended__bios__parameter__block.html',1,'_fat32_vbr::extended_bios_parameter_block'],['../structextended__bios__parameter__block.html',1,'extended_bios_parameter_block'],['../structfs_1_1fat32_1_1VBR_1_1extended__bios__parameter__block.html',1,'fs::fat32::VBR::extended_bios_parameter_block']]]
+  ['evict_16',['evict',['../classutil_1_1LRUCache.html#ab09d46b374f235dc188864011b4fde13',1,'util::LRUCache']]],
+  ['evict_5fone_17',['evict_one',['../classutil_1_1LRUCache.html#ac6d79ec86be0f428cebc806fa103f997',1,'util::LRUCache']]],
+  ['evictable_18',['evictable',['../classutil_1_1LRUCache.html#a99bdf6cd342d1b77ca2dfe6bf7e2b19d',1,'util::LRUCache']]],
+  ['extended_5fbios_5fparameter_5fblock_19',['extended_bios_parameter_block',['../struct__fat32__vbr_1_1extended__bios__parameter__block.html',1,'_fat32_vbr::extended_bios_parameter_block'],['../structextended__bios__parameter__block.html',1,'extended_bios_parameter_block'],['../structfs_1_1fat32_1_1VBR_1_1extended__bios__parameter__block.html',1,'fs::fat32::VBR::extended_bios_parameter_block']]]
 ];

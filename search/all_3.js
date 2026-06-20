@@ -15,5 +15,6 @@ var searchData=
   ['copy_5fto_5fvolatile_12',['copy_to_volatile',['../objutil_8h.html#a4aa2a1e30fd22434ff885da41ae37004',1,'objutil']]],
   ['cpuid_5ffeatures_13',['cpuid_features',['../structcpuid__features.html',1,'']]],
   ['crt_2eh_14',['crt.h',['../crt_8h.html',1,'']]],
-  ['cur_15',['Cur',['../process_8h.html#a55530c885711bab9338a188ba8ca6649add4b1ecca171981542c71a705aa93f3e',1,'proc']]]
+  ['ctype_2eh_15',['ctype.h',['../ctype_8h.html',1,'']]],
+  ['cur_16',['Cur',['../process_8h.html#a55530c885711bab9338a188ba8ca6649add4b1ecca171981542c71a705aa93f3e',1,'proc']]]
 ];

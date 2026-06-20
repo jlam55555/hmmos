@@ -1,0 +1,8 @@
+<map id="src/kernel/drivers/device.h" name="src/kernel/drivers/device.h">
+<area shape="rect" id="node1" title="Model of a physical device." alt="" coords="128,5,263,45"/>
+<area shape="rect" id="node2" href="$fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="5,167,156,207"/>
+<area shape="rect" id="node3" href="$page__cache_8h.html" title="LRU cache for disk&#45;backed pages." alt="" coords="180,167,317,207"/>
+<area shape="rect" id="node4" href="$vfs_8h.html" title="Virtual filesystem." alt="" coords="233,93,371,119"/>
+<area shape="rect" id="node5" href="$elf_8h.html" title="ELF file parser." alt="" coords="342,174,491,199"/>
+<area shape="rect" id="node6" href="$process_8h.html" title="Process abstraction (a.k.a. userspace thread)." alt="" coords="516,174,699,199"/>
+</map>

@@ -1,6 +1,7 @@
 <map id="src/kernel/fs/vfs.h" name="src/kernel/fs/vfs.h">
-<area shape="rect" id="node1" title="Virtual filesystem." alt="" coords="187,5,324,31"/>
+<area shape="rect" id="node1" title="Virtual filesystem." alt="" coords="264,5,401,31"/>
 <area shape="rect" id="node2" href="$fat32_8h.html" title="FAT32 filesystem driver." alt="" coords="5,79,156,119"/>
-<area shape="rect" id="node3" href="$elf_8h.html" title="ELF file parser." alt="" coords="181,86,330,111"/>
-<area shape="rect" id="node4" href="$process_8h.html" title="Process abstraction (a.k.a. userspace thread)." alt="" coords="355,86,537,111"/>
+<area shape="rect" id="node3" href="$page__cache_8h.html" title="LRU cache for disk&#45;backed pages." alt="" coords="180,79,317,119"/>
+<area shape="rect" id="node4" href="$elf_8h.html" title="ELF file parser." alt="" coords="342,86,491,111"/>
+<area shape="rect" id="node5" href="$process_8h.html" title="Process abstraction (a.k.a. userspace thread)." alt="" coords="516,86,699,111"/>
 </map>

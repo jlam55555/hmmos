@@ -96,25 +96,25 @@ Include dependency graph for page_frame_table.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="page__frame__table_8h__incl.png" border="0" usemap="#asrc_2kernel_2mm_2page__frame__table_8h" alt=""/></div>
 <map name="asrc_2kernel_2mm_2page__frame__table_8h" id="asrc_2kernel_2mm_2page__frame__table_8h">
-<area shape="rect" title="Page frame descriptors and page frame table." alt="" coords="510,5,661,45"/>
-<area shape="rect" href="boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="129,93,252,119"/>
+<area shape="rect" title="Page frame descriptors and page frame table." alt="" coords="503,5,654,45"/>
+<area shape="rect" href="boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="132,93,255,119"/>
 <area shape="rect" href="libc__minimal_8h.html" title="A small subset of the C standard library that can also be used in the bootloader." alt="" coords="306,93,425,119"/>
 <area shape="rect" href="assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="427,167,525,192"/>
-<area shape="rect" href="intrusive__list_8h.html" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="514,93,657,119"/>
-<area shape="rect" href="objutil_8h.html" title="Utility functions/macros for C++ objects." alt="" coords="681,93,781,119"/>
-<area shape="rect" title=" " alt="" coords="804,93,879,119"/>
-<area shape="rect" title=" " alt="" coords="903,93,956,119"/>
-<area shape="rect" href="memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="112,167,208,192"/>
-<area shape="rect" title=" " alt="" coords="5,167,88,192"/>
+<area shape="rect" href="intrusive__list_8h.html" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="507,93,650,119"/>
+<area shape="rect" href="objutil_8h.html" title="Utility functions/macros for C++ objects." alt="" coords="695,167,795,192"/>
+<area shape="rect" title=" " alt="" coords="725,93,800,119"/>
+<area shape="rect" title=" " alt="" coords="824,93,877,119"/>
+<area shape="rect" href="memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="5,167,101,192"/>
+<area shape="rect" title=" " alt="" coords="125,167,208,192"/>
 <area shape="rect" title=" " alt="" coords="233,167,303,192"/>
 <area shape="rect" title=" " alt="" coords="328,167,403,192"/>
-<area shape="rect" href="perf_8h.html" title="Utilities for performance optimization." alt="" coords="491,240,549,265"/>
-<area shape="rect" title=" " alt="" coords="397,240,467,265"/>
-<area shape="rect" title=" " alt="" coords="667,240,738,265"/>
-<area shape="rect" title=" " alt="" coords="550,167,621,192"/>
-<area shape="rect" href="bw_8h.html" title="Bitwise operations, especially on structs." alt="" coords="747,167,824,192"/>
-<area shape="rect" title=" " alt="" coords="879,240,945,265"/>
-<area shape="rect" title=" " alt="" coords="762,240,854,265"/>
+<area shape="rect" href="perf_8h.html" title="Utilities for performance optimization." alt="" coords="456,240,515,265"/>
+<area shape="rect" title=" " alt="" coords="363,240,432,265"/>
+<area shape="rect" title=" " alt="" coords="571,313,642,339"/>
+<area shape="rect" title=" " alt="" coords="601,167,671,192"/>
+<area shape="rect" href="bw_8h.html" title="Bitwise operations, especially on structs." alt="" coords="651,240,728,265"/>
+<area shape="rect" title=" " alt="" coords="783,313,849,339"/>
+<area shape="rect" title=" " alt="" coords="666,313,758,339"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -122,8 +122,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="page__frame__table_8h__dep__incl.png" border="0" usemap="#asrc_2kernel_2mm_2page__frame__table_8hdep" alt=""/></div>
 <map name="asrc_2kernel_2mm_2page__frame__table_8hdep" id="asrc_2kernel_2mm_2page__frame__table_8hdep">
-<area shape="rect" title="Page frame descriptors and page frame table." alt="" coords="5,5,156,45"/>
-<area shape="rect" href="page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="5,93,156,133"/>
+<area shape="rect" title="Page frame descriptors and page frame table." alt="" coords="83,5,233,45"/>
+<area shape="rect" href="page__cache_8h.html" title="LRU cache for disk&#45;backed pages." alt="" coords="5,93,143,133"/>
+<area shape="rect" href="page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="167,93,317,133"/>
 </map>
 </div>
 </div>
@@ -143,6 +144,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a33477cbb6382d9fbac3f7dba6f4dad69"><td class="memItemLeft" align="right" valign="top"><a id="a33477cbb6382d9fbac3f7dba6f4dad69" name="a33477cbb6382d9fbac3f7dba6f4dad69"></a>
 class <a class="el" href="classmem_1_1phys_1_1PageFrameDescriptor.html">mem::phys::PageFrameDescriptor</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mem::phys::__attribute__</b> ((packed, aligned(64)))</td></tr>
 <tr class="separator:a33477cbb6382d9fbac3f7dba6f4dad69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9667b2d73e24b95b180e4455e4f8b2c8"><td class="memItemLeft" align="right" valign="top"><a id="a9667b2d73e24b95b180e4455e4f8b2c8" name="a9667b2d73e24b95b180e4455e4f8b2c8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>NON_MOVABLE</b> (PageFrameDescriptor)</td></tr>
+<tr class="separator:a9667b2d73e24b95b180e4455e4f8b2c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a753cb7b35fbe35bbd1dcb4b3e5eee0a0"><td class="memItemLeft" align="right" valign="top"><a id="a753cb7b35fbe35bbd1dcb4b3e5eee0a0" name="a753cb7b35fbe35bbd1dcb4b3e5eee0a0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>usable</b> () const</td></tr>
 <tr class="separator:a753cb7b35fbe35bbd1dcb4b3e5eee0a0"><td class="memSeparator" colspan="2">&#160;</td></tr>

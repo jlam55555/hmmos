@@ -159,9 +159,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>push_front</b> (Paren
 void&#160;</td><td class="memItemRight" valign="bottom"><b>push_back</b> (Parent &amp;p)</td></tr>
 <tr class="memdesc:a464d74e49752f91df053b38f5d67d959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a node before the current node. <br /></td></tr>
 <tr class="separator:a464d74e49752f91df053b38f5d67d959"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4294a44adc540a19bbaa5bb27f7ad4c9"><td class="memItemLeft" align="right" valign="top"><a id="a4294a44adc540a19bbaa5bb27f7ad4c9" name="a4294a44adc540a19bbaa5bb27f7ad4c9"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
-<tr class="memdesc:a4294a44adc540a19bbaa5bb27f7ad4c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of this list, not including the sentinel node. <br /></td></tr>
+<tr class="memitem:a4294a44adc540a19bbaa5bb27f7ad4c9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classutil_1_1IntrusiveListHead.html#a4294a44adc540a19bbaa5bb27f7ad4c9">size</a> () const</td></tr>
 <tr class="separator:a4294a44adc540a19bbaa5bb27f7ad4c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb40db6ff52d8e64babe6627a6cb34ae"><td class="memItemLeft" align="right" valign="top"><a id="afb40db6ff52d8e64babe6627a6cb34ae" name="afb40db6ff52d8e64babe6627a6cb34ae"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
@@ -337,7 +335,7 @@ template&lt;typename Parent , typename Tag  = void&gt; </div>
 </div><div class="memdoc">
 
 <p>Check if circular list has no elements other than the sentinel. </p>
-<dl class="section return"><dt>Returns</dt><dd>true if <code><a class="el" href="classutil_1_1IntrusiveListHead.html#a4294a44adc540a19bbaa5bb27f7ad4c9" title="Length of this list, not including the sentinel node.">size()</a> == 0</code>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if <code><a class="el" href="classutil_1_1IntrusiveListHead.html#a4294a44adc540a19bbaa5bb27f7ad4c9">size()</a> == 0</code>. </dd></dl>
 
 </div>
 </div>
@@ -411,6 +409,34 @@ template&lt;std::forward_iterator It&gt; </div>
 
 <p>Append elements from a different range of <code>Parent</code> objects. </p>
 <p>Addresses of iterator elements are assumed to be stable and outlive the lifetime of any elements in the intrusive list. </p>
+
+</div>
+</div>
+<a id="a4294a44adc540a19bbaa5bb27f7ad4c9" name="a4294a44adc540a19bbaa5bb27f7ad4c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4294a44adc540a19bbaa5bb27f7ad4c9">&#9670;&#160;</a></span>size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Parent , typename Tag  = void&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="classutil_1_1IntrusiveListHead.html">util::IntrusiveListHead</a>&lt; Parent, Tag &gt;::size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Length of this list, not including the sentinel node. </p><dl class="section note"><dt>Note</dt><dd>Complexity is O(N) </dd></dl>
 
 </div>
 </div>

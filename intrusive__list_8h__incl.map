@@ -1,8 +1,12 @@
 <map id="src/kernel/util/intrusive_list.h" name="src/kernel/util/intrusive_list.h">
-<area shape="rect" id="node1" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="103,5,273,45"/>
-<area shape="rect" id="node2" href="$assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="29,93,128,119"/>
-<area shape="rect" id="node5" title=" " alt="" coords="153,93,223,119"/>
-<area shape="rect" id="node6" title=" " alt="" coords="247,93,318,119"/>
-<area shape="rect" id="node3" href="$perf_8h.html" title="Utilities for performance optimization." alt="" coords="5,167,64,192"/>
-<area shape="rect" id="node4" title=" " alt="" coords="88,167,157,192"/>
+<area shape="rect" id="node1" title="Circular intrusive list implementation, inspired by Linux&#39;s LIST_HEAD." alt="" coords="163,5,333,45"/>
+<area shape="rect" id="node2" href="$assert_8h.html" title="Runtime assertion macros. Note that static_assert will remain as it is." alt="" coords="68,93,167,119"/>
+<area shape="rect" id="node5" href="$objutil_8h.html" title="Utility functions/macros for C++ objects." alt="" coords="261,93,361,119"/>
+<area shape="rect" id="node7" title=" " alt="" coords="213,240,283,265"/>
+<area shape="rect" id="node10" title=" " alt="" coords="385,93,455,119"/>
+<area shape="rect" id="node3" href="$perf_8h.html" title="Utilities for performance optimization." alt="" coords="99,167,157,192"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,167,75,192"/>
+<area shape="rect" id="node6" href="$bw_8h.html" title="Bitwise operations, especially on structs." alt="" coords="292,167,369,192"/>
+<area shape="rect" id="node8" title=" " alt="" coords="424,240,491,265"/>
+<area shape="rect" id="node9" title=" " alt="" coords="307,240,399,265"/>
 </map>

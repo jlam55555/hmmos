@@ -112,8 +112,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>unlink</b> (<a class=
 <tr class="memitem:a39646b98e58ee4cf9e4f0ce8d1557a28"><td class="memItemLeft" align="right" valign="top"><a id="a39646b98e58ee4cf9e4f0ce8d1557a28" name="a39646b98e58ee4cf9e4f0ce8d1557a28"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>lseek</b> (fs::FileDescriptor fd, ssize_t offset, <a class="el" href="process_8h.html#a55530c885711bab9338a188ba8ca6649">Seek</a> whence, fs::Result &amp;res)</td></tr>
 <tr class="separator:a39646b98e58ee4cf9e4f0ce8d1557a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9be386807d73cc9e14d824e6deecd729"><td class="memItemLeft" align="right" valign="top"><a id="a9be386807d73cc9e14d824e6deecd729" name="a9be386807d73cc9e14d824e6deecd729"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><b>mmap</b> (size_t addr, size_t length, <a class="el" href="structproc_1_1VirtualMemoryArea_1_1Access.html">VirtualMemoryArea::Access</a> prot, <a class="el" href="structproc_1_1VirtualMemoryArea_1_1Flags.html">VirtualMemoryArea::Flags</a> flags, fs::FileDescriptor fd, size_t offset, fs::Result &amp;res)</td></tr>
+<tr class="memitem:a9be386807d73cc9e14d824e6deecd729"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classproc_1_1Process.html#a9be386807d73cc9e14d824e6deecd729">mmap</a> (size_t addr, size_t length, <a class="el" href="structproc_1_1VirtualMemoryArea_1_1Access.html">VirtualMemoryArea::Access</a> prot, <a class="el" href="structproc_1_1VirtualMemoryArea_1_1Flags.html">VirtualMemoryArea::Flags</a> flags, fs::FileDescriptor fd, size_t offset, fs::Result &amp;res)</td></tr>
 <tr class="separator:a9be386807d73cc9e14d824e6deecd729"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bde8095cf93f751e5cb85f26edcc2dc"><td class="memItemLeft" align="right" valign="top"><a id="a8bde8095cf93f751e5cb85f26edcc2dc" name="a8bde8095cf93f751e5cb85f26edcc2dc"></a>
 ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>read</b> (fs::FileDescriptor fd, void *buf, size_t count, fs::Result &amp;res)</td></tr>
@@ -157,6 +156,74 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>enter_virtual_address
       </table>
 </div><div class="memdoc">
 <p>Closing is done in the File destructor.</p>
+
+</div>
+</div>
+<a id="a9be386807d73cc9e14d824e6deecd729" name="a9be386807d73cc9e14d824e6deecd729"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9be386807d73cc9e14d824e6deecd729">&#9670;&#160;</a></span>mmap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * proc::Process::mmap </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structproc_1_1VirtualMemoryArea_1_1Access.html">VirtualMemoryArea::Access</a>&#160;</td>
+          <td class="paramname"><em>prot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structproc_1_1VirtualMemoryArea_1_1Flags.html">VirtualMemoryArea::Flags</a>&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">fs::FileDescriptor&#160;</td>
+          <td class="paramname"><em>fd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">fs::Result &amp;&#160;</td>
+          <td class="paramname"><em>res</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><a class="el" href="classproc_1_1Process.html#a9be386807d73cc9e14d824e6deecd729">mmap()</a>: Creates a virtual memory mapping for this process. Mappings must have a page-aligned starting address and length. There are two primary orthogonal characteristics of mappings: (1) shared vs. private; and (2) anonymous vs. file-backed. Modifications to writable shared mappings are visible to other processes sharing this mapping (via fork). File-backed mappings have their contents populated to a file, and modifications to writable mappings are written back to the file, whereas anonymous pages are not backed by the filesystem.</p>
+<p>Mapping pages into the page table happens lazily. On <a class="el" href="classproc_1_1Process.html#a9be386807d73cc9e14d824e6deecd729">mmap()</a>, a VMA (virtual memory area) struct describing the new mapping is created. Accessing this newly mapped memory will generate a page fault, which will scan the process for a matching VMA, at which point mapping the page into the page table.</p>
+<p>The <em>unmap()</em> operation iterates the page table and unmaps each mapped (faulted-in) page individually. Unmapping a page involves removing from the page table, decreasing its refcount in the page frame table, and clearing from the TLB. Note that it is also possible for a (shared mapping) page to be evicted from the page cache without an unmap() operation, which forces it to be unmapped from all processes that it is mapped into. Like unmap(), this causes the page to no longer be in the process's page tables, but since the VMA still exists, it will be reinstated on a future page fault.</p>
+<p>Shared mappings are always backed by the page cache. Shared anonymous mappings use a temporary shmem file. Private anonymous pages do not use the page cache. Private file-backed mappings initially are page-cached based, but behave identically to private anonymous pages after CoW (see below).</p>
+<p>CoW (Copy on Write) is an optimization to avoid unnecessary allocations on writable private mapped pages. The behavior differs between anonymous and file-backed mappings. Assume that CR0.WP (write protection) is enabled after mmap/fork, so that kernel writes to read-only pages will trigger a page fault.</p>
+<ul>
+<li>Anonymous: Writable private anonymous mapped pages are marked read-only in both the parent and child's page tables during fork(). On a page fault, the kernel notices that the VMA references a writable segment, which triggers CoW semantics. If this is not the only reference to this CoW mapping, a new page is allocated and the page table entry is remapped; otherwise the current page is marked as writable.</li>
+<li>File-backed: On <a class="el" href="classproc_1_1Process.html#a9be386807d73cc9e14d824e6deecd729">mmap()</a>, writable private file-backed mappings are marked read-only. On a page fault, the kernel notices that the VMA references a writable segment, which triggers CoW semantics. A new page is allocated and the page table entry is remapped. This new page behaves like a writable private anonymous mapped page (undergoing CoW on fork()).</li>
+</ul>
+<p>I/O to shared mappings is coherent with file I/O via non-O_DIRECT read/write syscalls. However, coherency with O_DIRECT read/writes is not guaranteed. Similarly, writing to a file that is mapped via a private file-backed mapping via another process is undefined behavior due to CoW. </p>
 
 </div>
 </div>

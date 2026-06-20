@@ -8,12 +8,13 @@ var searchData=
   ['intrusivelisthead_3c_20dentry_20_3e_5',['IntrusiveListHead&lt; Dentry &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
   ['intrusivelisthead_3c_20kernelthread_20_3e_6',['IntrusiveListHead&lt; KernelThread &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
   ['intrusivelisthead_3c_20mem_3a_3aphys_3a_3apageframeallocator_20_3e_7',['IntrusiveListHead&lt; mem::phys::PageFrameAllocator &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
-  ['intrusivelisthead_3c_20pageframeallocator_20_3e_8',['IntrusiveListHead&lt; PageFrameAllocator &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
-  ['intrusivelisthead_3c_20sched_3a_3akernelthread_20_3e_9',['IntrusiveListHead&lt; sched::KernelThread &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
-  ['inttypeimpl_10',['IntTypeImpl',['../structbw_1_1detail_1_1IntTypeImpl.html',1,'bw::detail']]],
-  ['inttypeimpl_3c_201_20_3e_11',['IntTypeImpl&lt; 1 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_011_01_4.html',1,'bw::detail']]],
-  ['inttypeimpl_3c_202_20_3e_12',['IntTypeImpl&lt; 2 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_012_01_4.html',1,'bw::detail']]],
-  ['inttypeimpl_3c_204_20_3e_13',['IntTypeImpl&lt; 4 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_014_01_4.html',1,'bw::detail']]],
-  ['inttypeimpl_3c_208_20_3e_14',['IntTypeImpl&lt; 8 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_018_01_4.html',1,'bw::detail']]],
-  ['iterimpl_15',['IterImpl',['../structutil_1_1IntrusiveListHead_1_1IterImpl.html',1,'util::IntrusiveListHead']]]
+  ['intrusivelisthead_3c_20node_20_3e_8',['IntrusiveListHead&lt; Node &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
+  ['intrusivelisthead_3c_20pageframeallocator_20_3e_9',['IntrusiveListHead&lt; PageFrameAllocator &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
+  ['intrusivelisthead_3c_20sched_3a_3akernelthread_20_3e_10',['IntrusiveListHead&lt; sched::KernelThread &gt;',['../classutil_1_1IntrusiveListHead.html',1,'util']]],
+  ['inttypeimpl_11',['IntTypeImpl',['../structbw_1_1detail_1_1IntTypeImpl.html',1,'bw::detail']]],
+  ['inttypeimpl_3c_201_20_3e_12',['IntTypeImpl&lt; 1 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_011_01_4.html',1,'bw::detail']]],
+  ['inttypeimpl_3c_202_20_3e_13',['IntTypeImpl&lt; 2 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_012_01_4.html',1,'bw::detail']]],
+  ['inttypeimpl_3c_204_20_3e_14',['IntTypeImpl&lt; 4 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_014_01_4.html',1,'bw::detail']]],
+  ['inttypeimpl_3c_208_20_3e_15',['IntTypeImpl&lt; 8 &gt;',['../structbw_1_1detail_1_1IntTypeImpl_3_018_01_4.html',1,'bw::detail']]],
+  ['iterimpl_16',['IterImpl',['../structutil_1_1IntrusiveListHead_1_1IterImpl.html',1,'util::IntrusiveListHead']]]
 ];

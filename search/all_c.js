@@ -16,5 +16,6 @@ var searchData=
   ['mbrpartition_13',['MBRPartition',['../structfs_1_1fat32_1_1MBRPartition.html',1,'fs::fat32']]],
   ['mem_5flimit_14',['mem_limit',['../classmem_1_1phys_1_1PageFrameTable.html#a2c2e1744eb0943183f5198f619a8e23a',1,'mem::phys::PageFrameTable']]],
   ['memdefs_2eh_15',['memdefs.h',['../memdefs_8h.html',1,'']]],
-  ['memory_16',['Memory',['../md_notes_mem.html',1,'']]]
+  ['memory_16',['Memory',['../md_notes_mem.html',1,'']]],
+  ['mmap_17',['mmap',['../classproc_1_1Process.html#a9be386807d73cc9e14d824e6deecd729',1,'proc::Process']]]
 ];

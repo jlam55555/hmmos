@@ -1,4 +1,5 @@
 <map id="src/kernel/mm/page_frame_table.h" name="src/kernel/mm/page_frame_table.h">
-<area shape="rect" id="node1" title="Page frame descriptors and page frame table." alt="" coords="5,5,156,45"/>
-<area shape="rect" id="node2" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="5,93,156,133"/>
+<area shape="rect" id="node1" title="Page frame descriptors and page frame table." alt="" coords="83,5,233,45"/>
+<area shape="rect" id="node2" href="$page__cache_8h.html" title="LRU cache for disk&#45;backed pages." alt="" coords="5,93,143,133"/>
+<area shape="rect" id="node3" href="$page__frame__allocator_8h.html" title="Allocator for (4KB) physical page frames." alt="" coords="167,93,317,133"/>
 </map>

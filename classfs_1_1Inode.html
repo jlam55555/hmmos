@@ -90,11 +90,22 @@ Inheritance diagram for fs::Inode:</div>
 <area shape="rect" href="classfs_1_1fat32_1_1Inode.html" title=" " alt="" coords="5,79,125,104"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for fs::Inode:</div>
+<div class="dyncontent">
+<div class="center"><img src="classfs_1_1Inode__coll__graph.png" border="0" usemap="#afs_1_1Inode_coll__map" alt="Collaboration graph"/></div>
+<map name="afs_1_1Inode_coll__map" id="afs_1_1Inode_coll__map">
+<area shape="rect" title=" " alt="" coords="44,256,123,281"/>
+<area shape="rect" href="classfs_1_1Filesystem.html" title=" " alt="" coords="27,168,140,193"/>
+<area shape="rect" href="classdrivers_1_1BlockDevice.html" title=" " alt="" coords="5,80,161,105"/>
+<area shape="rect" href="classdrivers_1_1Device.html" title=" " alt="" coords="23,5,143,31"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad9b81a05ddd923c67faa9264b44c5973"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfs_1_1Inode.html#ad9b81a05ddd923c67faa9264b44c5973">Inode</a> (unsigned _id, bool _is_directory)</td></tr>
-<tr class="separator:ad9b81a05ddd923c67faa9264b44c5973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a373638b85d88183502abf999cbe7c38e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfs_1_1Inode.html#a373638b85d88183502abf999cbe7c38e">Inode</a> (<a class="el" href="classfs_1_1Filesystem.html">Filesystem</a> &amp;_fs, unsigned _id, unsigned _size, bool _is_directory)</td></tr>
+<tr class="separator:a373638b85d88183502abf999cbe7c38e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a840d6663a282a47991508563ca910ca2"><td class="memItemLeft" align="right" valign="top"><a id="a840d6663a282a47991508563ca910ca2" name="a840d6663a282a47991508563ca910ca2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>NON_MOVABLE</b> (<a class="el" href="classfs_1_1Inode.html">Inode</a>)</td></tr>
 <tr class="separator:a840d6663a282a47991508563ca910ca2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -102,18 +113,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7039b0de7a900112aa9dbdd14f8401e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a238d3de1ecf991d0995dc655075a4436"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfs_1_1Inode.html#a238d3de1ecf991d0995dc655075a4436">dec_rc</a> ()</td></tr>
 <tr class="separator:a238d3de1ecf991d0995dc655075a4436"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2de71fa33b5b59a79c31621b9f7bdde8"><td class="memItemLeft" align="right" valign="top"><a id="a2de71fa33b5b59a79c31621b9f7bdde8" name="a2de71fa33b5b59a79c31621b9f7bdde8"></a>
-virtual ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>read</b> (void *buf, size_t offset, size_t count, Result &amp;res)=0</td></tr>
-<tr class="separator:a2de71fa33b5b59a79c31621b9f7bdde8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8cc8461b6c0c7559ddf6a0cfd49cff3"><td class="memItemLeft" align="right" valign="top"><a id="ad8cc8461b6c0c7559ddf6a0cfd49cff3" name="ad8cc8461b6c0c7559ddf6a0cfd49cff3"></a>
+ssize_t&#160;</td><td class="memItemRight" valign="bottom"><b>read</b> (void *buf, size_t offset, size_t count, Result &amp;res)</td></tr>
+<tr class="separator:ad8cc8461b6c0c7559ddf6a0cfd49cff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28b972f7a3a1d0bac89fe4f16196e1af"><td class="memItemLeft" align="right" valign="top"><a id="a28b972f7a3a1d0bac89fe4f16196e1af" name="a28b972f7a3a1d0bac89fe4f16196e1af"></a>
 virtual Result&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (void *buf, size_t offset, size_t count)=0</td></tr>
 <tr class="separator:a28b972f7a3a1d0bac89fe4f16196e1af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acec00ab4febeee6af78e7802c2bd4d27"><td class="memItemLeft" align="right" valign="top"><a id="acec00ab4febeee6af78e7802c2bd4d27" name="acec00ab4febeee6af78e7802c2bd4d27"></a>
 virtual Result&#160;</td><td class="memItemRight" valign="bottom"><b>truncate</b> (size_t len)=0</td></tr>
 <tr class="separator:acec00ab4febeee6af78e7802c2bd4d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c1066ecc22ec1f2cd35c0d1ee1394b7"><td class="memItemLeft" align="right" valign="top"><a id="a3c1066ecc22ec1f2cd35c0d1ee1394b7" name="a3c1066ecc22ec1f2cd35c0d1ee1394b7"></a>
-virtual Result&#160;</td><td class="memItemRight" valign="bottom"><b>mmap</b> (void *addr, size_t offset, size_t count)=0</td></tr>
-<tr class="separator:a3c1066ecc22ec1f2cd35c0d1ee1394b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e40f557bbadc01a473f3fe1a41e0944"><td class="memItemLeft" align="right" valign="top"><a id="a0e40f557bbadc01a473f3fe1a41e0944" name="a0e40f557bbadc01a473f3fe1a41e0944"></a>
 virtual Result&#160;</td><td class="memItemRight" valign="bottom"><b>flush</b> ()=0</td></tr>
 <tr class="separator:a0e40f557bbadc01a473f3fe1a41e0944"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,22 +143,31 @@ virtual Result&#160;</td><td class="memItemRight" valign="bottom"><b>unlink</b> 
 <tr class="memitem:a6741651ca4430605d603467a6efe4545"><td class="memItemLeft" align="right" valign="top"><a id="a6741651ca4430605d603467a6efe4545" name="a6741651ca4430605d603467a6efe4545"></a>
 virtual <a class="el" href="classfs_1_1Inode.html">Inode</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>lookup</b> (<a class="el" href="classnonstd_1_1string__view.html">nonstd::string_view</a> name, Result &amp;res) const =0</td></tr>
 <tr class="separator:a6741651ca4430605d603467a6efe4545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedb790b0d3e6fe1579f3999e5b0d1eeb"><td class="memItemLeft" align="right" valign="top"><a id="aedb790b0d3e6fe1579f3999e5b0d1eeb" name="aedb790b0d3e6fe1579f3999e5b0d1eeb"></a>
+virtual uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_dev_offset</b> (uint64_t file_offset) const =0</td></tr>
+<tr class="separator:aedb790b0d3e6fe1579f3999e5b0d1eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a9c87b9853033f30f149a2928f7b25ae1"><td class="memItemLeft" align="right" valign="top"><a id="a9c87b9853033f30f149a2928f7b25ae1" name="a9c87b9853033f30f149a2928f7b25ae1"></a>
+<a class="el" href="classfs_1_1Filesystem.html">Filesystem</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>fs</b></td></tr>
+<tr class="separator:a9c87b9853033f30f149a2928f7b25ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab834673fc81b41b342180f4eb4a7083f"><td class="memItemLeft" align="right" valign="top"><a id="ab834673fc81b41b342180f4eb4a7083f" name="ab834673fc81b41b342180f4eb4a7083f"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>id</b></td></tr>
 <tr class="separator:ab834673fc81b41b342180f4eb4a7083f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1c85e86551fc6cde417a93d9dec4cea"><td class="memItemLeft" align="right" valign="top"><a id="ad1c85e86551fc6cde417a93d9dec4cea" name="ad1c85e86551fc6cde417a93d9dec4cea"></a>
-unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>rc</b> = 0</td></tr>
-<tr class="separator:ad1c85e86551fc6cde417a93d9dec4cea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2886b0e3491ba7e05398c41efe9943a"><td class="memItemLeft" align="right" valign="top"><a id="ac2886b0e3491ba7e05398c41efe9943a" name="ac2886b0e3491ba7e05398c41efe9943a"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rc</b> = 0</td></tr>
+<tr class="separator:ac2886b0e3491ba7e05398c41efe9943a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99d7cc1b263374c50ffd4e1ca841b5dc"><td class="memItemLeft" align="right" valign="top"><a id="a99d7cc1b263374c50ffd4e1ca841b5dc" name="a99d7cc1b263374c50ffd4e1ca841b5dc"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> = 0</td></tr>
+<tr class="separator:a99d7cc1b263374c50ffd4e1ca841b5dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9c23f555e68946fdc8936d2fae547f2"><td class="memItemLeft" align="right" valign="top"><a id="ad9c23f555e68946fdc8936d2fae547f2" name="ad9c23f555e68946fdc8936d2fae547f2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_directory</b></td></tr>
 <tr class="separator:ad9c23f555e68946fdc8936d2fae547f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad9b81a05ddd923c67faa9264b44c5973" name="ad9b81a05ddd923c67faa9264b44c5973"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9b81a05ddd923c67faa9264b44c5973">&#9670;&#160;</a></span>Inode()</h2>
+<a id="a373638b85d88183502abf999cbe7c38e" name="a373638b85d88183502abf999cbe7c38e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a373638b85d88183502abf999cbe7c38e">&#9670;&#160;</a></span>Inode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -161,8 +178,20 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_directory</b></td>
         <tr>
           <td class="memname">fs::Inode::Inode </td>
           <td>(</td>
+          <td class="paramtype"><a class="el" href="classfs_1_1Filesystem.html">Filesystem</a> &amp;&#160;</td>
+          <td class="paramname"><em>_fs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">unsigned&#160;</td>
           <td class="paramname"><em>_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>_size</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -240,8 +269,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_directory</b></td>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/kernel/fs/<a class="el" href="vfs_8h_source.html">vfs.h</a></li>
+<li>src/kernel/fs/vfs.cc</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

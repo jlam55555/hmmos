@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['or_5f_0',['or_',['../bw_8h.html#afb94caf9be810e00abd98e46e5f8fc43',1,'bw']]],
-  ['override_5fcurr_5fproc_1',['override_curr_proc',['../classsched_1_1Scheduler.html#a9179d5c418fde1086bc9d52a8a6bdab2',1,'sched::Scheduler']]]
+  ['new_5fthread_0',['new_thread',['../classsched_1_1Scheduler.html#ac1de099834b6ba092fa99becdcbc5468',1,'sched::Scheduler']]],
+  ['not_5f_1',['not_',['../bw_8h.html#a5c04a319eec24a5bdfb3561f2fd64690',1,'bw']]]
 ];

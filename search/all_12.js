@@ -7,7 +7,7 @@ var searchData=
   ['serial_2eh_4',['serial.h',['../serial_8h.html',1,'']]],
   ['setup_5fstack_5',['setup_stack',['../arch_2x86_2stack_8h.html#a640da971a670958de7c6e46743c5a5e3',1,'arch::sched']]],
   ['simplepfa_6',['SimplePFA',['../classmem_1_1phys_1_1SimplePFA.html',1,'mem::phys']]],
-  ['size_7',['size',['../classutil_1_1IntrusiveListHead.html#a4294a44adc540a19bbaa5bb27f7ad4c9',1,'util::IntrusiveListHead']]],
+  ['size_7',['size',['../classutil_1_1IntrusiveListHead.html#a4294a44adc540a19bbaa5bb27f7ad4c9',1,'util::IntrusiveListHead::size()'],['../classutil_1_1LRUCache.html#a32501ebaf0fafecc5a1ccc242aac09b7',1,'util::LRUCache::size()']]],
   ['stack_8',['stack',['../classnonstd_1_1stack.html',1,'nonstd']]],
   ['stack_2eh_9',['stack.h',['../arch_2x86_2stack_8h.html',1,'']]],
   ['stdlib_2emd_10',['stdlib.md',['../md_notes_stdlib.html',1,'']]],

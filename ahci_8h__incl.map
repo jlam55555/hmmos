@@ -1,6 +1,14 @@
 <map id="src/kernel/drivers/ahci.h" name="src/kernel/drivers/ahci.h">
-<area shape="rect" id="node1" title="AHCI driver for SATA devices." alt="" coords="67,5,201,45"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,93,76,119"/>
-<area shape="rect" id="node3" title=" " alt="" coords="101,93,167,119"/>
-<area shape="rect" id="node4" title=" " alt="" coords="191,93,245,119"/>
+<area shape="rect" id="node1" title="AHCI driver for SATA devices." alt="" coords="523,5,658,45"/>
+<area shape="rect" id="node2" href="$virt_8h.html" title="Virtual memory mapping." alt="" coords="370,93,457,119"/>
+<area shape="rect" id="node9" title=" " alt="" coords="583,167,654,192"/>
+<area shape="rect" id="node11" title=" " alt="" coords="593,93,660,119"/>
+<area shape="rect" id="node12" title=" " alt="" coords="684,93,737,119"/>
+<area shape="rect" id="node3" href="$boot__protocol_8h.html" title="The runtime interface between the bootloader and kernel." alt="" coords="101,167,224,192"/>
+<area shape="rect" id="node4" href="$memdefs_8h.html" title="Useful definitions related to memory sizing." alt="" coords="5,240,101,265"/>
+<area shape="rect" id="node7" title=" " alt="" coords="248,167,355,192"/>
+<area shape="rect" id="node8" title=" " alt="" coords="379,167,448,192"/>
+<area shape="rect" id="node10" title=" " alt="" coords="473,167,559,192"/>
+<area shape="rect" id="node5" title=" " alt="" coords="125,240,208,265"/>
+<area shape="rect" id="node6" title=" " alt="" coords="233,240,303,265"/>
 </map>

@@ -6,7 +6,9 @@ var searchData=
   ['dentry_3',['Dentry',['../classfs_1_1Dentry.html#aa72ad136e0e1246aecb48e35882eedbd',1,'fs::Dentry::Dentry()'],['../classfs_1_1Dentry.html',1,'fs::Dentry']]],
   ['deque_4',['deque',['../classnonstd_1_1deque.html',1,'nonstd']]],
   ['destroy_5fthread_5',['destroy_thread',['../classsched_1_1Scheduler.html#a1cce6adda77c0c6d1f7f2ae46b6c2e9d',1,'sched::Scheduler']]],
-  ['directory_20layout_6',['directory layout',['../md_notes_dir_layout.html',1,'']]],
-  ['directoryentry_7',['DirectoryEntry',['../structfs_1_1fat32_1_1DirectoryEntry.html',1,'fs::fat32']]],
-  ['fis_8',['fis',['../namespacedrivers_1_1ahci_1_1fis.html',1,'drivers::ahci']]]
+  ['device_6',['Device',['../classdrivers_1_1Device.html',1,'drivers']]],
+  ['device_2eh_7',['device.h',['../device_8h.html',1,'']]],
+  ['directory_20layout_8',['directory layout',['../md_notes_dir_layout.html',1,'']]],
+  ['directoryentry_9',['DirectoryEntry',['../structfs_1_1fat32_1_1DirectoryEntry.html',1,'fs::fat32']]],
+  ['fis_10',['fis',['../namespacedrivers_1_1ahci_1_1fis.html',1,'drivers::ahci']]]
 ];

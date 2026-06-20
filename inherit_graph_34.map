@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classmem_1_1phys_1_1PageFrameTable.html" title="An array containing one page frame descriptor for each physical 4KB page." alt="" coords="5,5,215,31"/>
+<area shape="rect" id="node1" href="$classfs_1_1Inode.html" title=" " alt="" coords="5,5,84,31"/>
+<area shape="rect" id="node2" href="$classfs_1_1fat32_1_1Inode.html" title=" " alt="" coords="132,5,252,31"/>
 </map>

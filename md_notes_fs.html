@@ -147,7 +147,45 @@ Linux fs implementations</h1>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md27"></a>
+page cache</h1>
+<p>The page cache is a LRU cache underlying all block I/O and shared memory files. It is a mapping from (block device, page-aligned offset) to the physical page containing the contents of that block. This is used both by VFS operations (read, write, flush) and by the filesystem code itself when it needs to read superblock info and file metadata. Even O_DIRECT I/O has to be page-cache-aware, because it needs to flush and invalidate the relevant cache entries if present.</p>
+<p>HmmOS has a shared buffer + page cache with a single 4KB block size. It cannot read/flush a single 512B sector at a time. Consequently, the filesystem cluster size must be a multiple of 4KB or else multiple files may share the same page cache entry, breaking encapsulation. Similarly, the kernel must be sure that no files and system metadata share a single 4KB page.</p>
+<p>For more advanced topics, e.g., O_DIRECT, page eviction (flushing, swapping, rmap), shared memory files, etc., please refer to the doc comment on PageCache.</p>
+<p>At a high level, here's where the page cache sits:</p>
+<div class="fragment"><div class="line">               +---------+          access mmapped memory</div>
+<div class="line">               | Process |------------------------------+</div>
+<div class="line">               +---------+                              | page resident?</div>
+<div class="line">                   |    |                               ?......</div>
+<div class="line">    read() syscall |    +-------------+ mmap() syscall  |no   .yes</div>
+<div class="line">                   |                  |                 |     .     &lt;userspace&gt;</div>
+<div class="line">~~~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~~~~~|~~~~~.~~~~~~~~~~~~~~~~</div>
+<div class="line">                   |                  v                 |      .       &lt;kernel&gt;</div>
+<div class="line">                   v         +------------------+       |       .</div>
+<div class="line">              +---------+    | create VMA entry |       |        .</div>
+<div class="line">              |   VFS   |    +------------------+       |         .</div>
+<div class="line">              +---------+                     ..        |          .</div>
+<div class="line"> Inode::read() |       | Inode::lookup()       ..       v           .</div>
+<div class="line">               |       v                        +------------+       .</div>
+<div class="line"> populate      |   +-------------------+        | Page fault |        .</div>
+<div class="line"> cache entry   |   | Filesystem driver |        | handler    |         .</div>
+<div class="line"> with file     |   | e.g. FAT32, ext4  |        +------------+          .</div>
+<div class="line"> data and copy |   +-------------------+               | populate cache  .</div>
+<div class="line"> to userspace  |        | populate cache entry         | with file data   .</div>
+<div class="line"> buffer        |        | with superblock data,        | + set up user-   .</div>
+<div class="line">               |        | read from cache              | space mappings   .</div>
+<div class="line">               |        |                              |                  .</div>
+<div class="line">               |        v      v-----------------------+                  .</div>
+<div class="line">               |   +------------+                                         .</div>
+<div class="line">               +-&gt; | Page cache | &lt;........................................</div>
+<div class="line">                   +------------+                     read directly from</div>
+<div class="line">                        | read_page()                 userspace mapped memory</div>
+<div class="line">                        v                             (no kernel roundtrip)</div>
+<div class="line">                   +-----------------+</div>
+<div class="line">                   | Block driver    |</div>
+<div class="line">                   | e.g. ACPI, SATA |</div>
+<div class="line">                   +-----------------+</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md28"></a>
 TODO</h2>
 <ul>
 <li>[X] write the HmmOS kernel to a FAT32 filesystem</li>
@@ -158,7 +196,7 @@ TODO</h2>
 <p>Further TODO items</p><ul>
 <li>[X] write an ELF loader and store the binaries in ELF format</li>
 <li>[X] VFS layer</li>
-<li>[ ] LRU page cache</li>
+<li>[X] LRU page cache</li>
 <li>[ ] ext2 support</li>
 <li>[ ] NVMe support </li>
 </ul>

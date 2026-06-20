@@ -1,10 +1,13 @@
 <map id="proc::VirtualMemoryArea" name="proc::VirtualMemoryArea">
-<area shape="rect" id="node1" title=" " alt="" coords="215,211,400,236"/>
-<area shape="rect" id="node2" href="$structproc_1_1VirtualMemoryArea_1_1Access.html" title=" " alt="" coords="5,108,191,148"/>
-<area shape="rect" id="node3" href="$structproc_1_1VirtualMemoryArea_1_1Flags.html" title=" " alt="" coords="215,108,400,148"/>
-<area shape="rect" id="node4" href="$classfs_1_1Dentry.html" title=" " alt="" coords="424,115,511,141"/>
-<area shape="rect" id="node5" href="$classutil_1_1IntrusiveListHead.html" title=" " alt="" coords="197,13,330,38"/>
-<area shape="rect" id="node6" href="$classfs_1_1Inode.html" title=" " alt="" coords="355,13,433,38"/>
-<area shape="rect" id="node7" href="$classutil_1_1IntrusiveListHead.html" title=" " alt="" coords="458,5,623,45"/>
-<area shape="rect" id="node8" href="$classnonstd_1_1string.html" title=" " alt="" coords="648,13,759,38"/>
+<area shape="rect" id="node1" title=" " alt="" coords="215,461,400,487"/>
+<area shape="rect" id="node2" href="$structproc_1_1VirtualMemoryArea_1_1Access.html" title=" " alt="" coords="5,359,191,399"/>
+<area shape="rect" id="node3" href="$structproc_1_1VirtualMemoryArea_1_1Flags.html" title=" " alt="" coords="215,359,400,399"/>
+<area shape="rect" id="node4" href="$classfs_1_1Dentry.html" title=" " alt="" coords="424,366,511,391"/>
+<area shape="rect" id="node5" href="$classutil_1_1IntrusiveListHead.html" title=" " alt="" coords="178,263,311,289"/>
+<area shape="rect" id="node6" href="$classfs_1_1Inode.html" title=" " alt="" coords="336,263,415,289"/>
+<area shape="rect" id="node7" href="$classfs_1_1Filesystem.html" title=" " alt="" coords="319,168,432,193"/>
+<area shape="rect" id="node8" href="$classdrivers_1_1BlockDevice.html" title=" " alt="" coords="297,80,453,105"/>
+<area shape="rect" id="node9" href="$classdrivers_1_1Device.html" title=" " alt="" coords="315,5,435,31"/>
+<area shape="rect" id="node10" href="$classutil_1_1IntrusiveListHead.html" title=" " alt="" coords="439,256,605,296"/>
+<area shape="rect" id="node11" href="$classnonstd_1_1string.html" title=" " alt="" coords="629,263,740,289"/>
 </map>
