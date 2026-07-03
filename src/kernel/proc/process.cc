@@ -52,11 +52,13 @@ VirtualMemoryArea::~VirtualMemoryArea() {
     dentry->dec_rc();
   }
 
-// NOCOMMIT TODO: walk the page table, unmap each page. If the
-// mapped page refcount drops to zero, also free the page.
-#if 0
-  ASSERT(false);
-#endif
+  nonstd::printf("NOCOMMIT killing VMA\r\n");
+
+  {
+    using namespace arch::page_table;
+    iter_page_table(addr >> PG_SZ_BITS, (addr + len) >> PG_SZ_BITS,
+                    &arch::page_table::unmap_at);
+  }
 }
 
 namespace {
@@ -84,14 +86,6 @@ private:
 Process::Process(sched::Scheduler &_sched, nonstd::string_view bin_path,
                  fs::Result &res)
     : sched{_sched} {
-
-  // This is the page table created by exec(), which only copies the
-  // kernel mappings.
-  //
-  // TODO: more complicated cloning methods for fork(), clone() etc.
-  page_directory = arch::page_table::clone_kernel_page_directory(
-      arch::page_table::get_page_directory());
-
   {
     // We have to temporarily enter the context of the new process,
     // because the process of loading the ELF image may involve
@@ -122,13 +116,6 @@ Process::Process(sched::Scheduler &_sched, nonstd::string_view bin_path,
       this,
       [](void *p) { reinterpret_cast<Process *>(p)->jump_to_userspace(); },
       this);
-}
-
-Process::~Process() {
-  // NOCOMMIT TODO: cleanup page tables
-  //
-  // VM mappings will automatically be cleaned up when the VMA objects
-  // get destructed
 }
 
 fs::FileDescriptor Process::get_next_fd() {
@@ -276,8 +263,21 @@ ssize_t Process::read(fs::FileDescriptor fd, void *buf, size_t count,
 
 void Process::exit(int status) {
   ASSERT(tid != sched::InvalidTID);
-  sched.destroy_thread(tid);
+  auto tmp_tid = tid;
+  auto &tmp_sched = sched;
+
+  // TODO: record exit status somewhere. In process table?
+
+  // See note in \ref Process::~Process(). We must destroy the thread
+  // after destructing the object and all of its fields. Everything
+  // after this statement cannot reference fields on the object
+  // directly.
   delete this;
+
+  // This must happen last. If this is the active process, execution
+  // doesn't continue past destroy_thread(). If not, execution will
+  // continue in the current thread.
+  tmp_sched.destroy_thread(tmp_tid);
 }
 
 // TODO: implement these
@@ -444,6 +444,16 @@ void Process::jump_to_userspace() {
   arch::gdt::set_tss_esp0((void *)util::algorithm::ceil_pow2<PG_SZ>(esp0));
 
   arch::sched::enter_userspace(esp3, eip3);
+}
+
+Process::ScopedPageDirectory::ScopedPageDirectory() {
+  data = arch::page_table::clone_kernel_page_directory(
+      arch::page_table::get_page_directory());
+}
+
+Process::ScopedPageDirectory::~ScopedPageDirectory() {
+  arch::page_table::delete_cloned_page_directory(data);
+  data = nullptr;
 }
 
 } // namespace proc

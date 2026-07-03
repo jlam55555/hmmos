@@ -178,6 +178,8 @@ void isr_syscall(uint32_t ivec, RegisterFrame reg_frame, InterruptFrame frame) {
     nonstd::printf("Processing exit syscall w/ retcode %u\r\n", reg_frame.ebx);
     proc->exit(reg_frame.ebx);
     return;
+  case proc::Syscall::Exec:
+    return;
   default:
     nonstd::printf("Unknown syscall %u\r\n", nonstd::to_underlying(syscall));
     ASSERT(false);

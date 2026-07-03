@@ -2,8 +2,10 @@
 #include "asm.h"
 #include "memdefs.h"
 #include "mm/kmalloc.h"
+#include "mm/virt.h"
 #include "nonstd/libc.h"
 #include "nonstd/node_hash_map.h"
+#include "page_table.h"
 #include "perf.h"
 #include "proc/process.h"
 #include "sched/lock.h"
@@ -109,7 +111,11 @@ void Scheduler::schedule(bool switch_stack) {
   context_switch_start = arch::time::rdtsc();
 
   if (new_task->proc != nullptr) {
+    // Switch to userspace proc thread.
     new_task->proc->enter_virtual_address_space();
+  } else if (current_task->proc != nullptr) {
+    // Switch from userspace proc thread to kernel thread.
+    arch::page_table::set_page_directory(mem::virt::get_canonical_pt());
   }
 
   // Unit tests aren't multithreaded, don't actually switch stacks but

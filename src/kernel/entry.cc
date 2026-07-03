@@ -59,10 +59,6 @@ __attribute__((noreturn)) void entry() {
   nonstd::printf("\tFound %u entries in the memory map. Usable=0x%llx\r\n",
                  mem_map.size(), usable_mem);
 
-#ifdef DEBUG
-  mem::virt::enumerate_page_tables();
-#endif
-
   nonstd::printf("Initializing kernel GDT...\r\n");
   arch::gdt::init();
 
@@ -73,8 +69,17 @@ __attribute__((noreturn)) void entry() {
 
   nonstd::printf("Initializing PFA...\r\n");
   mem::phys::SimplePFA simple_allocator{pft, 0, pft.mem_limit()};
-
   mem::set_pfa(&simple_allocator); // for simple kmalloc
+
+  // After this point, kernel memory allocation is available, and
+  // there are no more references to the low memory direct memory map
+  // needed by the bootloader!
+
+  nonstd::printf("Setting up canonical page table...\r\n");
+  mem::virt::setup_canonical_pt();
+#ifdef DEBUG
+  mem::virt::enumerate_page_tables();
+#endif
 
   nonstd::printf("Enabling interrupts...\r\n");
   arch::idt::init();
@@ -116,6 +121,7 @@ __attribute__((noreturn)) void entry() {
   // This becomes the idle task.
   nonstd::printf("Finished init...\r\n");
   for (;;) {
+    nonstd::printf("Idle task scheduled...\r\n");
     hlt;
   }
 }

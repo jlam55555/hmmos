@@ -19,6 +19,7 @@ void _start() {
   for (int i = 0; i < sizeof bss; ++i) {
     rval += bss[i];
   }
+
   exit(rval);
 }
 

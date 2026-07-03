@@ -12,7 +12,14 @@
 ///    label).
 /// 4. Add thread to scheduler.
 ///
-/// Syscalls are implemented as methods of \ref Process.
+/// A process owns the following resources (which need to be cleaned
+/// up on exec/fork/exit):
+///
+/// 1. Kernel thread
+/// 2. Memory mappings / page table
+/// 3. Open file descriptors
+/// 4. The \ref Process object itself
+///
 
 #include "fs/result.h"
 #include "fs/vfs.h"
@@ -72,6 +79,13 @@ public:
   // object isn't reference counted.
   fs::Dentry *dentry = nullptr;
   size_t offset = 0;
+
+  // TODO: rmap mechanism to allow page cache eviction for shared or
+  // file-backed files. To implement this, this will exist in a linked
+  // list of VMAs for this file, and it should contain a reference to
+  // the page table. On page cache eviction, we'll walk these VMAs and
+  // unmap all page table entries that map this page. Currently, pages
+  // can never be evicted from the page cache while mapped.
 };
 
 /// Options for lseek(2)'s \a whence parameter.
@@ -85,7 +99,22 @@ class Process {
 public:
   Process(sched::Scheduler &sched, nonstd::string_view bin_path,
           fs::Result &res);
-  ~Process();
+
+  /// The kernel thread is destroyed by exit(), which is called after
+  /// this destructor, and after this field's destructors. We can't
+  /// call it at the end of this destructor because we lose execution
+  /// control before calling the field constructors. This has the side
+  /// effect that the thread object can be shared between the original
+  /// and replaced program.
+  ///
+  /// There's nothing to do in this destructor itself -- teardown is
+  /// handled by field destructors, in reverse order of construction:
+  ///
+  /// 1. Memory mappings are unmapped by destructing \ref vmas.
+  /// 2. The custom page tables are freed by destructing \ref
+  ///    page_directory.
+  /// 3. File descriptors are closed by destructing \ref fds.
+  ~Process() = default;
 
   fs::FileDescriptor open(nonstd::string_view path, fs::Result &res);
   void close(fs::FileDescriptor fd, fs::Result &res);
@@ -194,11 +223,19 @@ private:
   /// nullopt if file is closed.
   nonstd::vector<std::optional<fs::File>> fds;
 
+  /// Virtual address space. This clones the kernel page directory,
+  /// then deletes the clone on process destruction.
+  struct ScopedPageDirectory {
+    ScopedPageDirectory();
+    ~ScopedPageDirectory();
+    operator arch::page_table::PageDirectoryEntry *() const { return data; }
+
+  private:
+    arch::page_table::PageDirectoryEntry *data;
+  } page_directory;
+
   /// Virtual memory areas/mappings, sorted by address.
   nonstd::list<VirtualMemoryArea> vmas;
-
-  /// Virtual address space.
-  arch::page_table::PageDirectoryEntry *page_directory;
 };
 
 } // namespace proc

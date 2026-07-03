@@ -7,6 +7,7 @@ namespace mem::virt {
 
 bool ioremap(uint64_t phys, void *virt, unsigned pg) {
   for (int i = 0; i < pg; ++i) {
+    // TODO: map global
     if (unlikely(!map(phys + (i << PG_SZ_BITS),
                       (void *)((uint32_t)virt + (i << PG_SZ_BITS)),
                       /*userspace=*/false,

@@ -29,6 +29,19 @@
 /// from kernel heap-allocated structures, and we can possibly use
 /// different caching for the kernel virtual addresses.
 ///
+/// The kernel mapping and the HHDM are mapped using hugepages on
+/// kernel entry and copied through to every processes' page
+/// directory. The device mapped I/O memory hole occupies one page
+/// directory entry -- this corresponds to one page table. This page
+/// table may be added to but it is not copied when cloning the page
+/// directory for a new process, instead its PDE is copied. This
+/// kernel mapping (comprising the HHDM, device-mapped memory hole,
+/// and kernel executable) is referred to the "canonical kernel map"
+/// and does not change over the lifetime of the OS (except additions
+/// to the device mapped page table). Of course, userspace low memory
+/// is mapped, cloned, and unmapped as expected during the process
+/// lifecycle.
+///
 
 #include "boot_protocol.h"
 #include "memdefs.h"
@@ -66,6 +79,18 @@ inline uint64_t hhdm_to_direct(void *_virt_addr) {
   assert(virt_addr >= hhdm_start && virt_addr < hhdm_start + hhdm_len);
   return virt_addr - hhdm_start;
 }
+
+/// Setup the page tables for the canonical kernel mapping.
+///
+/// 1. Allocate page table for mapping I/O hole.
+/// 2. Unmap 1MB direct mapping.
+/// 3. Set this as the canonical kernel mapping.
+///
+/// Page tables in the canonical mapping will never be copied (the
+/// page directory will be cloned with references to the existing page
+/// tables).
+inline void setup_canonical_pt() { arch::page_table::setup_canonical_pt(); }
+inline auto *get_canonical_pt() { return arch::page_table::get_canonical_pt(); }
 
 /// Walk page tables and log page mappings.
 inline void enumerate_page_tables() {

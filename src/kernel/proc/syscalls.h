@@ -9,6 +9,7 @@ namespace proc {
 
 enum class Syscall : uint16_t {
   Exit = 1,
+  Exec = 2,
 };
 
 }
